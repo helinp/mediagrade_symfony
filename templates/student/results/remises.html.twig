@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{{ include("student/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("student/_topbar.html.twig") }}
+{% endblock %}
+
+{% block title %}Remises des projets
+{% endblock %}
+
+{% block body %}
+
+
+	{% for project in projects %}
+		<div class="row results-overview-row">
+			<div class="col-xl-3 col-md-12 mb-2">
+				<h5 class="font-weight-bold text-primary text-uppercase">
+					{{project.course.name}}
+					/
+					{{project.name}}
+					<br/><small>{{project.term.description}}
+						/
+						{{project.assessmentType.description}}</small>
+				</h5>
+				<p class="text-context">{{project.context}}</p>
+
+
+				<div class="row mb-2">
+					{% set submitted = false %}
+					{% for submission in submissions %}
+
+						{% for submissionFile in submission.submissionFiles  %}
+							{% if submission.project.id == project.id %}
+								{% set submitted = true %}
+								{% if "image" in submissionFile.mime %}
+									<div class="col-3">
+										{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('squared_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
+									{% elseif "video" in submissionFile.mime %}
+										<div class="col-12 mb-2">
+											{{ asset(vich_uploader_asset(submissionFile)) | get_html_media_viewer(submissionFile.mime) }}
+										{% endif %}
+									</div>
+								{% endif %}
+							{% endfor %}
+
+						{% endfor %}
+					</div>
+
+					<div class="text-primary">
+						<i class="fas fa-calendar-times"></i>
+						À remettre pour le
+						<b>{{project.softDeadline|format_date('full', '', 'Europe/Brussels' )}}</b>.
+					</div>
+
+
+				</div>
+				<div class="col-xl-4 col-md-12  mb-2">
+
+
+					<div class="student-instructions-div">
+						<h5 class="text-primary text-uppercase">Consignes</h5>
+						<p class="text-context">{{project.instructions | raw}}</p>
+					</div>
+				</div>
+				<div class="col-xl-5 col-md-12 mb-2">
+					<h5 class="text-primary text-uppercase">Critères d'évaluation</h5>
+					<table class="table table-sm table-borderless">
+						{% for assessment in project.assessments %}
+							{% for result in assessment.results %}
+
+								<tr>
+									{% if result.student == student %}
+										<td class="result">
+											<span class="gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}" data-toggle="tooltip" data-placement="left" title="{{get_text_from_letter_vote(result.userLetter)}}">
+												{{result.userLetter}}</span>
+										</td>
+										<td class="indicator">
+											<p>J'ai
+												{{assessment.indicator}}</p>
+											{% if (result.comment | length > 2) %}
+												<p>
+													<quote>{{result.comment}}</quote>
+												</p>
+											{% endif %}
+										</td>
+									{% else %}
+										<td class="result"></td>
+										<td class="indicator">
+											<p>J'ai
+												{{assessment.indicator}}</p>
+										</td>
+									{% endif %}
+								</tr>
+
+							{% endfor %}
+						{% endfor %}
+					</tr>
+				</table>
+			</div>
+			<div class="col-12 pt-2 dashed-top-border">
+
+				{% if project.hardDeadline|date("ymd") > "now"|date("ymd") %}
+					{% if submitted == true %}
+						{% set submitted = false %}
+						<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-success btn-sm">
+							<i class="fas fa-file-upload"></i>
+							Remettre à nouveau
+						</a>
+					{% else %}
+						{% if project.softDeadline|date("ymd") >= "now"|date("ymd") %}
+							<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-warning btn-sm">
+								<i class="fas fa-file-upload"></i>
+								Remettre
+							</a>
+						{% else %}
+							<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-danger btn-sm">
+								<i class="fas fa-file-upload"></i>
+								Remettre en retard
+							</a>
+						{% endif %}
+					{% endif %}
+				{% endif %}
+
+
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}
+{% block page_scripts %}{% endblock %}

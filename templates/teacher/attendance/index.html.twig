@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Présences{% endblock %}
+
+{% block sidebar %}
+{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+
+{% block body %}
+
+<div class="col-12 mb-4">
+	<div class="card shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-danger text-uppercase mb-1">
+						Encoder les présences
+					</div>
+
+					{% for course in courses %}
+					<a class="btn btn-primary mb-1" href="{{path('teacher_attendance_new', {'course_id': course.id, 'action': 'new'})}}">{{course.name}}</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="col-12 mb-4">
+	<div class="card shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-danger text-uppercase mb-1">
+						Registres de présences
+					</div>
+
+					<table class="table table-sm table-responsive-sm">
+						<tr>
+							<th>Date</th>
+							<th>Heure</th>
+							<th>Classe</th>
+							<th class="text-center">Présences</th>
+							<th>Photo</th>
+							<th></th>
+						</tr>
+						{% for attendanceGrid in attendancesGrid %}
+						<tr>
+							<td>{{attendanceGrid.date | date("d/m/y") }}</td>
+							<td>{{attendanceGrid.schoolHour}}</td>
+							<td>{{attendanceGrid.course.name | upper}}</td>
+							<td class="text-center">{{attendanceGrid.attendances | filter(v => v.status != "A") | length}} / {{attendanceGrid.attendances | length}}</td>
+							<td>
+							{% if attendanceGrid.picture is not null %}
+							<a href="{{vich_uploader_asset(attendanceGrid)}}"><i class="far fa-image"></i> </a>
+							{% endif %}
+							</td>
+							<td>
+								<a class="btn btn-sm btn-primary" href="{{path('teacher_attendance_new', {'course_id' : 0, 'attendance_grid_id': attendanceGrid.id, 'action': 'edit'})}}"><i class="fas fa-edit"></i></a>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

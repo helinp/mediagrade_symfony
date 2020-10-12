@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats globaux{% endblock %}
+
+{% block sidebar %}
+{{ include("student/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("student/_topbar.html.twig") }}
+{% endblock %}
+
+{% block body %}
+
+
+<div class="col-xl-6 col-lg-6 col-12 mb-4">
+	<div class="card border-left-primary shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-primary text-uppercase mb-1">
+						Résultat global par pôle de compétences
+					</div>
+					<div class="">
+						<canvas id="skillsGroupsChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-xl-6 col-lg-6 col-12 mb-4">
+	<div class="card border-left-primary shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-primary text-uppercase mb-1">
+						Résultat global par thème
+					</div>
+					<div class="">
+						<canvas id="topicsChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-xl-6 col-lg-6 col-12 mb-4">
+	<div class="card border-left-primary shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-primary text-uppercase mb-1">
+						Résultat global par critère
+					</div>
+					<table class="table table-sm">
+					{% for result in criterion_results %}
+						<tr>
+							<td>{{result.name}}</td>
+							<td>
+								<div role="progressbar" 
+									class="progress-bar gradebook-lsu-{{get_color_from_percentage(result.percentage | custom_round)}}" style="width: {{result.percentage | custom_round}}%;" 
+									aria-valuenow="{{result.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
+									{{get_title_from_percentage(result.percentage | custom_round)}}
+								</div>
+							
+							</td>
+							<td>({{result.nbAssessed}})</td>
+							<td></td>
+						</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="col-xl-6 col-lg-6 col-12 mb-4">
+	<div class="card border-left-primary shadow h-100 py-2">
+		<div class="card-body">
+			<div class="row no-gutters align-items-center">
+				<div class="col mr-2">
+					<div class=" font-weight-bold text-primary text-uppercase mb-1">
+						Résultat global par compétence
+					</div>
+					<div class="">
+						<canvas id="skillsChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<script>
+var ctx = document.getElementById('topicsChart');
+var topicsChart = new Chart(ctx, {
+	data: {
+		labels: [{{topics_results | chart_data_convert('name') | raw }}],
+		datasets: [{
+			data: [{{topics_results | chart_data_convert('percentage') | raw }}],
+			backgroundColor: [
+				'rgba(255, 99, 132, .6)',
+				'rgba(54, 162, 235, .6)',
+				'rgba(255, 206, 86, .6)',
+				'rgba(75, 192, 192, .6)',
+				'rgba(153, 102, 255, .6)',
+			],
+			borderWidth: 0
+		}]
+	},
+	{{ get_chart_radar_config() | raw}},
+});
+
+var ctx1 = document.getElementById('skillsChart');
+var skillsChart = new Chart(ctx1, {
+	data: {
+		labels: [{{skills_results | chart_data_convert('shortName') | raw }}],
+		datasets: [{
+			data: [{{skills_results | chart_data_convert('percentage') | raw }}],
+			backgroundColor: [
+				'rgba(255, 99, 132, 1)',
+				'rgba(54, 162, 235, 1)',
+				'rgba(255, 206, 86, 1)',
+				'rgba(75, 192, 192, 1)',
+				'rgba(153, 102, 255, 1)',
+			],
+			borderWidth: 0,
+			maxBarThickness: 50,
+		}]
+	},
+	{{ get_chart_bar_config() | raw}},
+});
+
+var ctx2 = document.getElementById('skillsGroupsChart');
+var groupChart = new Chart(ctx2, {
+	data: {
+		labels: [{{skills_groups_results | chart_data_convert('name') | raw }}],
+		datasets: [{
+			data: [{{skills_groups_results | chart_data_convert('percentage') | raw }}],
+			backgroundColor: [
+				'rgba(255, 99, 132, .6)',
+				'rgba(54, 162, 235, .6)',
+				'rgba(255, 206, 86, .6)',
+				'rgba(75, 192, 192, .6)',
+				'rgba(153, 102, 255, .6)',
+			],
+			borderWidth: 0
+		}]
+	},
+	{{ get_chart_radar_config() | raw}},
+});
+</script>
+
+{% endblock %}

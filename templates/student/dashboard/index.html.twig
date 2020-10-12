@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord
+{% endblock %}
+
+{% block sidebar %}
+	{{ include("student/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("student/_topbar.html.twig") }}
+{% endblock %}
+
+{% block body %}
+
+	<!-- A corriger-->
+	<div class="col-12 mb-4">
+		<div class="card shadow border-left-primary h-100 py-2">
+			<div class="card-body">
+				<div class="font-weight-bold text-uppercase mb-1">
+					Résultats globaux
+				</div>
+				<div class="d-flex justify-content-center text-center results-board">
+					{% for result in terms_results %}
+						<div class="p-2 m-2">
+
+							<div class="card">
+								<div class="card-header text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
+									<big>{{ result.description }}</big>
+								</div>
+
+								<div class="card-body">
+									<h5 class="card-text">"{{ get_title_from_percentage(result.percentage) }}"</h5>
+									{{ result.percentage | custom_round }}
+									%
+								</div>
+							</div>
+
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ./ a corriger -->
+
+
+	<!-- A corriger-->
+	<div class="col-12 col-md-6  mb-4">
+		<div class="card shadow border-left-primary h-100 py-2">
+			<div class="card-body">
+				<div class="font-weight-bold text-uppercase mb-1">
+					Status des projets
+				</div>
+				<div class="d-flex results-board">
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>Projet</th>
+								<th>Période</th>
+								<th>Deadline</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for project in projects %}
+								<tr>
+									<td>{{project.name}}</td>
+									<td>{{project.term.description}}</td>
+									<td>{{project.softDeadline | date('d/m/y')}}</td>
+									<td></td>
+								</tr>
+
+							{% endfor %}
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ./ a corriger -->
+	{% if attendance is not empty %}
+		<div class="col-12 col-md-6 mb-4">
+			<div class="card shadow border-left-primary h-100 py-2">
+				<div class="card-body">
+					<div class="font-weight-bold text-uppercase mb-1">
+						Taux de présence aux cours
+					</div>
+					<div class="d-flex justify-content-center text-center results-board">
+						<div class="progress-student">
+							<div class="progress-bar" role="progressbar" style="background-color:{{get_color_from_attendance_percentage(attendance.percentage | custom_round)}};width: {{attendance.percentage | custom_round}}%;" aria-valuenow="{{attendance.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
+								{{attendance.percentage | custom_round}}%
+							</div>
+						</div>
+					</div>
+					<table class="table table-sm table-bordered mt-2">
+						<tr class="text-center">
+							<td>Présences:
+								{{attendance.present}}</td>
+							<td>Retards:
+								{{attendance.late}}</td>
+							<td>Absences:
+								{{attendance.absent}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+
+	<script></script>
+
+{% endblock %}

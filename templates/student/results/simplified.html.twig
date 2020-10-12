@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{{ include("student/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("student/_topbar.html.twig") }}
+{% endblock %}
+
+{% block title %}Mes résultats
+{% endblock %}
+
+{% block body %}
+
+
+	{% if submissions is empty %}
+		<div class="row results-overview-row">
+			<div class="col-md-3">
+				<p>Aucun projet n'a encore été remis.</p>
+			</div>
+		</div>
+	{% endif %}
+	{% for submission in submissions %}
+		<div class="row results-overview-row">
+			<div class="col-md-3">
+				<h5>{{submission.project.name}}
+					<small>({{submission.project.course.name}})
+						<br/>{{submission.project.term.description}}
+						/
+						{{submission.project.softDeadline | format_date('medium', '', 'Europe/Brussels' )}}</small>
+				</h5>
+				<!--		<p class="text-danger">Travail non remis.</p> -->
+				<div class="row">
+					{% for submissionFile in submission.submissionFiles  %}
+						{% if "image" in submissionFile.mime %}
+							<div class="col-3">
+								{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('squared_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
+							{% elseif "video" in submissionFile.mime %}
+								<div class="col-12 mb-2">
+									{{ asset(vich_uploader_asset(submissionFile)) | get_html_media_viewer(submissionFile.mime) }}
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h5>Mise en situation</h5>
+					<p class="text-context">{{submission.project.context}}</p>
+					<!--
+						<h5>Auto-évaluation</h5>
+						<h6>--</h6>
+					
+						<p>Pas de réponse.</p>
+					
+						<h5>Commentaires sur ton projet</h5>
+						<p>- -</p>-->
+				</div>
+				<div class="col-md-5">
+					<h5>Résultats simplifiés</h5>
+					<table class="table table-sm">
+						{% for assessment in submission.project.assessments %}
+							{% for result in assessment.results %}
+								<tr>
+
+									{% if result.student == student %}
+										<td class="result">
+											<span class="gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}"
+											 data-toggle="tooltip" data-placement="left" title="{{get_text_from_letter_vote(result.userLetter)}}">
+												{{result.userLetter}}</span>
+										</td>
+									{% else %}
+										<td class="result">
+											<span class="" data-toggle="tooltip" data-placement="left" title="Non évalué">NE</span>
+										</td>
+									{% endif %}
+									<td class="indicator">
+										<p>J'ai {{assessment.indicator}}</p>
+										<p>
+											<quote>{{result.comment}}</quote>
+										</p>
+									</td>
+
+								</tr>
+							{% endfor %}
+						{% endfor %}
+					</table>
+					<!--	<a data-toggle="modal" data-target="#projectModal" href="/admin/results/details/221/279"><h5><span class="glyphicon glyphicon-arrow-right"> </span> Résultats détaillés</a></h5>-->
+				</div>
+			</div>
+		{% endfor %}
+
+	{% endblock %}
+	{% block page_scripts %}
+	<script>
+	$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+	{% endblock %}

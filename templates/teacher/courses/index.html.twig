@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des cours{% endblock %}
+{% block sidebar %}
+{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+{% block body %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom court</th>
+                <th>Description</th>
+                <th>Modifier</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.name }}</td>
+                <td>{{ course.description }}</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="{{ path('courses_edit', {'id': course.id}) }}"> <i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-sm btn-primary" href="{{ path('courses_new') }}"><i class="fas fa-plus-circle"></i> Ajouter</a>
+{% endblock %}

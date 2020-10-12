@@ -1,0 +1,24 @@
+vich_uploader:
+   db_driver: orm
+
+   mappings:
+      submission_file:
+         uri_prefix: /uploads/projets
+         upload_destination: '%kernel.project_dir%/public/uploads/projets'
+         directory_namer: app.directory_namer.submission
+         namer: app.namer.submission
+         #namer: Vich\UploaderBundle\Naming\SlugNamer
+         delete_on_remove: true # suppression du fichier à la suppression de l’entité
+         delete_on_update: true # suppression du fichier quand un nouveau fichier est envoyé
+      attendance_file:
+         uri_prefix: /uploads/attendance
+         upload_destination: '%kernel.project_dir%/public/uploads/attendance'
+         namer: app.namer.attendance
+         delete_on_remove: true # suppression du fichier à la suppression de l’entité
+         delete_on_update: true # suppression du fichier quand un nouveau fichier est envoyé
+      profile_file:
+         uri_prefix: /uploads/profile
+         upload_destination: '%kernel.project_dir%/public/uploads/profile'
+         namer: app.namer.profile
+         delete_on_remove: true # suppression du fichier à la suppression de l’entité
+         delete_on_update: true # suppression du fichier quand un nouveau fichier est envoyé

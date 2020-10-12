@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compétences{% endblock %}
+
+{% block sidebar %}
+{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+
+
+{% block body %}
+<div class="col-xs-12 col mb-2">
+<div class="shadow mb-4">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+
+<!-- A corriger-->
+<h3>Compétences</h3>
+						<table id="table-skills" class="table table-striped text-sm">
+							<thead>
+								<tr>
+									<th>Pôle</th>
+									<th>Référence</th>
+									<th>Compétence disciplinaire / <em>transversale</em></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for skill in skills %}
+								<tr>
+									<td>{{ skill.skillsGroup.name }}</td>
+									<td>{{ skill.shortName }}</td>
+									<td>{{ skill.description }}<hr><em>{{ skill.transverseSkill }}</em></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}
+{% block page_scripts %}
+<script>
+var table = $('#table-skills').DataTable({
+	"lengthChange": false,
+	"paging": false,
+	"language": {
+			"url": "dataTables.french.lang"
+	},
+	"field": {
+		"className" : 'form-control bg-light border-0 small'
+	}
+});
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ajouter un cours{% endblock %}
+{% block sidebar %}
+{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+{% block body %}
+
+    {{ include('teacher/courses/_form.html.twig') }}
+
+    <a href="{{ path('courses_index') }}">back to list</a>
+{% endblock %}

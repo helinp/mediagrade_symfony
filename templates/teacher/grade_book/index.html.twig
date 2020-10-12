@@ -1,0 +1,252 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("teacher/_topbar.html.twig") }}
+
+	{% block topbar_widget %}
+		<div class="container-fluid row">
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(courses_form)}}
+				</div>
+			</div>
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(term_form)}}
+				</div>
+			</div>
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(school_year_form)}}
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}
+{% endblock %}
+{% block title %}Cahier de cotes
+{% endblock %}
+{% block body %}
+
+	<div class="col-12 mb-4">
+		<div class="card shadow h-100 p-2">
+			<table id="table-gradebook" class="table table-bordered table-sm table-hover">
+				<colgroup>
+					<col class="gradebook_col_1">
+				</colgroup>
+
+				<thead>
+					<tr class="bg-primary text-white">
+						<th class="text-center align-middle">
+							<big>{{ course.name }}</big><br />
+							{% if totals_terms is defined %}
+							Période
+							{% else %}
+							Année {{school_year}}
+							{% endif %}
+						</th>
+						{% for project in projects %}
+							<th class="" colspan="{{project.assessments|length}}">
+								<div>
+									<big>{{project.name}}</big>
+								</div>
+								{{project.term.name}}
+								-
+								{{project.startDate | date('d/m')}}<br/>
+								{{project.assessmentType.description}}
+							</th>
+						{% endfor %}
+						<th class="text-center align-middle" colspan="{{skills | length + 1}}">Totaux</th>
+					</tr>
+					<tr class="table-primary">
+						<th>Compétence</th>
+						{% for project in projects %}
+							{% for assessment in project.assessments %}
+								<td data-toggle="tooltip" data-html="true" data-placement="bottom" title="<b>{{assessment.skill.skillsGroup.name}}</b><p>{{assessment.skill.description}}</p>">
+									{{assessment.skill.skillsGroup.shortName}}
+									-
+									{{assessment.skill.shortName}}
+								</td>
+							{% endfor %}
+						{% endfor %}
+						{% for skill in skills %}
+							<td class="align-middle text-center" data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{skill.name }}">{{skill.shortName }}</td>
+						{% endfor %}
+						<td class="align-middle text-center"><b>TOTAL</b></td>
+
+					</tr>
+					<tr class="table-primary">
+						<th>Critère</th>
+						{% for project in projects %}
+							{% for assessment in project.assessments %}
+								<td data-toggle="tooltip" data-placement="bottom" title="{{assessment.indicator}}">
+									{{assessment.criterion.name}}
+								</td>
+							{% endfor %}
+						{% endfor %}
+						{% for skill in skills %}
+							<td style="width: 3em;" class="align-middle text-center"></td>
+						{% endfor %}
+						<td></td>
+					</tr>
+					<tr class="table-primary">
+						<th>Pondération</th>
+						{% for project in projects %}
+							{% for assessment in project.assessments %}
+								<td>
+									{{assessment.maxVote}}
+								</td>
+							{% endfor %}
+						{% endfor %}
+						{% for skill in skills %}
+							<td class="align-middle text-center">%</td>
+						{% endfor %}
+
+
+						<td class="align-middle text-center">%</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for studentClasse in course.classe.currentStudents(schoolyear) %}
+						<tr>
+							<th>{{studentClasse.student.lastName | upper}}&nbsp;{{studentClasse.student.firstName}}</th>
+							{% for project in projects %}
+								{% for assessment in project.assessments %}
+
+									{% set result_test = null %}
+									{% for result in assessment.results %}
+										{% if result.student == studentClasse.student %}
+											{% set result_test = 'ok' %}
+											<td>
+												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">{{result.userLetter}}
+												</span>
+												<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+											</td>
+										{% endif %}
+									{% endfor %}
+									{% if result_test is null %}
+										<td>
+											--
+										</td>
+									{% endif %}
+								{% endfor %}
+							{% endfor %}
+							{% for skill in skills %}
+								<td class="align-middle text-center">
+								{% if sg_totals[studentClasse.student.id] is defined %}
+									{% for sr in sg_totals[studentClasse.student.id] %}
+										{% if sr.id == skill.id %}
+										{{sr.percentage | custom_round }}
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									--
+								{% endif %}
+								</td>
+							{% endfor %}
+
+							<td class="align-middle text-center">
+								{% if totals_terms is defined %}
+									{% if totals_terms[studentClasse.student.id] is defined %}
+										{% if totals_terms[studentClasse.student.id].percentage is defined %}
+
+
+												<span  data-toggle="tooltip" data-html="true" data-placement="bottom" 
+													title="{{get_title_from_percentage(totals_terms[studentClasse.student.id].percentage)}}"  
+													class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals_terms[studentClasse.student.id].percentage)}}">
+												{{get_letter_from_percentage(totals_terms[studentClasse.student.id].percentage | custom_round)}}
+												</span>
+												<span class="align-middle number-vote">{{totals_terms[studentClasse.student.id].percentage | custom_round}}</span>
+
+
+							
+										{% endif %}
+									{% endif %}
+								{% elseif totals is defined %}
+									{% if totals[studentClasse.student.id] is defined %}
+										{% if totals[studentClasse.student.id].percentage is defined %}
+
+												<span  data-toggle="tooltip" data-html="true" data-placement="bottom" 
+													title="{{get_title_from_percentage(totals[studentClasse.student.id].percentage)}}"  
+													class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals[studentClasse.student.id].percentage)}}">
+												{{get_letter_from_percentage(totals[studentClasse.student.id].percentage | custom_round)}}
+												</span>
+												<span class="align-middle number-vote">{{totals[studentClasse.student.id].percentage | custom_round}}</span>
+
+
+											<b></b>
+										{% endif %}
+									{% endif %}
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+
+				</tbody>
+
+
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block page_scripts %}
+	<script>
+		$(document).ready(function () {
+$("body").tooltip({selector: '[data-toggle=tooltip]'});
+});
+
+{% set currentPath = path(app.request.attributes.get('_route'),
+                       app.request.attributes.get('_route_params')) %}
+
+$('#school_years_schoolYear').change(function () { // set the window's location property to the value of the option the user has selected
+window.location = '{{ currentPath }}?school_year=' + $(this).val();
+});
+
+$('#terms_id').change(function () { // set the window's location property to the value of the option the user has selected
+url = window.location.href;
+const pathArray = url.split("/");
+
+if (typeof pathArray[6] !== 'undefined') {
+
+parts = url.split('/');
+parts.pop();
+url = parts.join('/');
+
+}
+window.location = url + '/' + $(this).val();
+})
+
+$('#courses_topbar_id').change(function () { // set the window's location property to the value of the option the user has selected
+url = window.location.href;
+
+const pathArray = url.split("/");
+
+if (typeof pathArray[6] !== 'undefined') {
+
+parts = url.split('/');
+parts.pop();
+url = parts.join('/');
+
+}
+if (typeof pathArray[5] !== 'undefined') {
+
+parts = url.split('/');
+parts.pop();
+url = parts.join('/');
+
+}
+if (typeof pathArray[6] !== 'undefined') {
+
+window.location = url + '/' + $(this).val() + '/' + pathArray[6];
+
+} else {
+
+window.location = url + '/' + $(this).val();
+}
+
+})
+	</script>
+{% endblock %}

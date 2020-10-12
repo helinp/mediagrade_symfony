@@ -1,0 +1,4 @@
+    <!-- Il faut préciser l'action dans le formulaire -->
+    {{ form_start(form, {'action': path('teacher_students_edit', { 'id': user.id })}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}

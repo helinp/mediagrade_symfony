@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block sidebar %}
+{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+
+{% block body %}
+
+<div class="col-12 mb-2">
+	<div class="shadow mb-4">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-12">
+					<div class="col mr-2 dashed-bottom-border">
+						<div class=" font-weight-bold text-uppercase mb-1">
+							{{project.name}} <br /> <span class="text-primary">{{student.fullName}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+				<div class="row">
+					{% for submission in submissions %}
+					<div class="col-12 col-sm-6 col-md-4">
+						<a href="{{submission.url}}">Fichier </a>
+					</div>
+					{% endfor %}
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="col-12 mb-2">
+	<div class="shadow mb-4">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-xs-12 col-md-12">
+					{{ form_start(form) }}
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>
+									Cpt.
+								</th>
+								<th>
+									Critère
+								</th>
+								<th>
+									Indicateur
+								</th>
+								<th>
+									Pondération
+								</th>
+								<th>
+									Évaluation
+								</th>
+								<th>
+									Commentaire
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% set i = 0 %}
+							{% for result in form.results %}
+							<tr>
+								<td data-toggle="tooltip" data-placement="top" title="{{ assessments[i].skill.description}}">
+									{{ assessments[i].skill.shortName}}
+								</td>
+								<td>
+									{{ assessments[i].criterion.name}}
+								</td>
+								<td>
+									{{ assessments[i].indicator}}
+								</td>
+								<td>
+									{{ assessments[i].maxVote}}
+								</td>
+								<td>
+									{{ form_widget(result.userLetter) }}
+								</td>
+								<td>
+									{{ form_widget(result.comment) }}
+								</td>
+							</tr>
+						</tbody>
+						{% set i = i + 1 %}
+						{% endfor %}
+					</table>
+					{{ form_widget(form.save) }}
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+{% endblock %}

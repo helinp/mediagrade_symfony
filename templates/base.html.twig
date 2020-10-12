@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>MediaGrade / {% block title %}{% endblock %}</title>
+	{% block stylesheets %}
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.min.css') }}" />
+	<link href="{{ asset('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css') }}" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
+	{% endblock %}
+
+	<!-- SCRIPTS -->
+	{% block scripts %}
+
+	<script type="text/javascript" src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.21/af-2.3.5/b-1.6.3/b-flash-1.6.3/cr-1.5.2/r-2.2.5/datatables.min.js') }}"></script>
+	<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js') }}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="{{ asset('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js') }}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	
+
+	{% endblock %}
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Sidebar -->
+		<ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color:#34495e" id="accordionSidebar">
+
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+				<div class="sidebar-brand-icon">
+					<img src="/img/logo_white.svg" />
+				</div>
+			</a>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0">
+
+			{% block sidebar %}
+			{% endblock %}
+
+			<!-- Sidebar Toggler (Sidebar) -->
+			<div class="text-center d-none d-md-inline">
+				<button class="rounded-circle border-0" id="sidebarToggle"></button>
+			</div>
+
+		</ul>
+		<!-- End of Sidebar -->
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				{% block topbar %}
+				{% endblock %}
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						{% if h1_title is defined %}<h1 class="h3 mb-0 text-gray-800"> {{h1_title}} </h1>{% endif %}
+					</div>
+
+					<!-- Content Row -->
+					<div class="row">
+						{% block body %}
+						{% endblock %}
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer class="sticky-footer bg-white">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+
+						<p>Les médias présents sur ce site sont soumis au droit d'auteur. Toute utilisation non expressement autorisée est strictement interdite.<br /><a href="https://github.com/helinp/MediaGrade">MediaGrade</a> (v2020.dev) | <a class="hidden-print" rel="license" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU AGPLv3 2015-2020</a>, Pierre Hélin</p>
+
+
+					</div>
+
+				</div>
+			</footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Logout Modal-->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Déconnexion</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">Veuillez confirmer la déconnexion.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+					<a class="btn btn-primary" href="{{ path('app_logout') }}">Se déconnecter</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- SCRIPTS -->
+	<!-- Page level plugins -->
+	{% block page_scripts %}
+{% endblock %}
+
+	<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+</body>
+
+</html>
