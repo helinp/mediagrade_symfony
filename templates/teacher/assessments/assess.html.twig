@@ -26,7 +26,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row m-3">
+				<div class="d-flex m-3">
 					{% set submitted = false %}
 					{% for submission in submissions %}
 
@@ -34,13 +34,13 @@
 							{% if submission.project.id == project.id %}
 								{% set submitted = true %}
 								{% if "image" in submissionFile.mime %}
-									<div class="col-3">
+									<div class="p-2">
 										<a href="{{asset(vich_uploader_asset(submissionFile))}}" data-toggle="lightbox" data-max-width="100%">
-											{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('squared_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
+											{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('letterbox_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
 										</a>
 									</div>
 								{% elseif "video" in submissionFile.mime %}
-									<div class="col-12 mb-2">
+									<div class="p-2">
 										{{ asset(vich_uploader_asset(submissionFile)) | get_html_media_viewer(submissionFile.mime) }}
 									</div>
 								{% endif %}

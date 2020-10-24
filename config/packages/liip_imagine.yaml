@@ -13,6 +13,16 @@ liip_imagine:
                     size:          [100, 100]
                     mode:          outbound
                     allow_upscale: true
+                    auto_rotate: ~
+
+        letterbox_thumbnail_small:
+            filters:
+                thumbnail:
+                    size:          [150, 100]
+                    mode:          outbound
+                    allow_upscale: true
+                    jpeg_quality:          85
+                    auto_rotate: ~
 #
 #            # set your image quality defaults
 #            jpeg_quality:          85
