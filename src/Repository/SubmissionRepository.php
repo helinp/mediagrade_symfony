@@ -19,6 +19,17 @@ class SubmissionRepository extends ServiceEntityRepository
         parent::__construct($registry, Submission::class);
     }
 
+    public function getSubmissionByStudentAndProject($student, $project)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.student = :val0')
+            ->setParameter('val0', $student)
+            ->andWhere('s.project = :val')
+            ->setParameter('val', $project)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
     // /**
     //  * @return Submission[] Returns an array of Submission objects
     //  */

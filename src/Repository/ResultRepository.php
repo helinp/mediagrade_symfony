@@ -65,6 +65,32 @@ public function getStudentResultByTerms($student, $shoolyear)
 	->getResult();
 	;
 }
+
+/**
+ *  Used by teacher gradebook
+ */
+public function getStudentResultByCourseAndTerm($course, $student, $shoolyear, $term_id)
+{
+	return $this->createQueryBuilder('r')
+
+	->select('SUM(r.userVote) / SUM(r.maxVote) * 100 AS percentage, t.name, t.description')
+	->leftjoin('r.assessment', 'a')
+	->leftjoin('a.project', 'p')
+	->leftJoin('p.term', 't')
+	->andWhere('p.course = :valc')
+	->setParameter('valc', $course)
+	->andWhere('r.student = :val')
+	->setParameter('val', $student)
+	->andWhere('p.schoolYear = :val1')
+	->setParameter('val1', $shoolyear)
+	->andWhere('t.id = :val2')
+	->setParameter('val2', $term_id)
+	->groupBy('t.id')
+	->getQuery()
+	->getOneOrNullResult()
+	;
+}
+
 public function getStudentResultByTerm($student, $shoolyear, $term_id)
 {
 	return $this->createQueryBuilder('r')
@@ -92,6 +118,28 @@ public function getStudentResultBySchoolyear($student, $shoolyear)
 	->select('SUM(r.userVote) / SUM(r.maxVote) * 100 AS percentage')
 	->leftjoin('r.assessment', 'a')
 	->leftjoin('a.project', 'p')
+	->andWhere('r.student = :val')
+	->setParameter('val', $student)
+	->andWhere('p.schoolYear = :val1')
+	->setParameter('val1', $shoolyear)
+	->groupBy('p.schoolYear')
+	->getQuery()
+	->getOneOrNullResult()
+	;
+}
+
+/**
+ *  Used by Teacher gradebook
+ */
+public function getStudentResultByCourseAndSchoolyear($course, $student, $shoolyear)
+{
+	return $this->createQueryBuilder('r')
+
+	->select('SUM(r.userVote) / SUM(r.maxVote) * 100 AS percentage')
+	->leftjoin('r.assessment', 'a')
+	->leftjoin('a.project', 'p')
+	->andWhere('p.course = :valc')
+	->setParameter('valc', $course)
 	->andWhere('r.student = :val')
 	->setParameter('val', $student)
 	->andWhere('p.schoolYear = :val1')
@@ -142,7 +190,7 @@ public function getStudentResultByCriterion($student)
 	->leftjoin('a.criterion', 'c')
 	->andWhere('r.student = :val')
 	->setParameter('val', $student)
-	->groupBy('c.id')
+	->groupBy('c.name')
 	->getQuery()
 	->getResult();
 	;
@@ -183,7 +231,10 @@ public function getStudentResultBySkillsGroupsAndSchoolYear($student, $schoolyea
 	;
 }
 
-public function getStudentResultBySkillsGroupsAndTermAndSchoolYear($student, $term_id, $schoolyear)
+/**
+ *  Used by teacher gradebook
+ */
+public function getStudentResultByCourseAndSkillsGroupsAndTermAndSchoolYear($course, $student, $term_id, $schoolyear)
 {
 	return $this->createQueryBuilder('r')
 
@@ -192,6 +243,8 @@ public function getStudentResultBySkillsGroupsAndTermAndSchoolYear($student, $te
 	->leftjoin('a.project', 'p')
 	->leftjoin('a.skill', 's')
 	->leftjoin('s.skillsGroup', 'sg')
+	->andWhere('p.course = :valc')
+	->setParameter('valc', $course)
 	->andWhere('r.student = :val')
 	->setParameter('val', $student)
 	->andWhere('p.schoolYear = :val1')
@@ -204,5 +257,20 @@ public function getStudentResultBySkillsGroupsAndTermAndSchoolYear($student, $te
 	;
 }
 
+public function getResultByStudentAndProject($student, $project)
+{
+	return $this->createQueryBuilder('r')
+	
+	->select('r.userVote')
+	->leftjoin('r.assessment', 'a')
+	->andWhere('r.student = :val')
+	->setParameter('val', $student)
+	->andWhere('a.project = :val1')
+	->setParameter('val1', $project)
+	->groupBy('r.student')
+	->getQuery()
+	->getOneOrNullResult()
+	;
+}
 
 }

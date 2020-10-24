@@ -105,7 +105,7 @@ class Result
         return $this->userVote;
     }
 
-    public function setUserVote(float $userVote): self
+    public function setUserVote(?float $userVote): self
     {
         $this->userVote = $userVote;
 
@@ -115,6 +115,22 @@ class Result
     public function getUserLetter(): ?string
     {
         return $this->userLetter;
+    }
+
+    public function getPercentage()
+    {
+        if($this->userVote === null)
+        {
+            return null;
+        }
+        elseif( $this->maxVote > 0 ) 
+        {
+            return $this->userVote / $this->maxVote * 100;
+        }
+        else
+        {
+            return 0.0;
+        }
     }
 
     public function setUserLetter(?string $userLetter): self

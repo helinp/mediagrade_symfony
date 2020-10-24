@@ -16,13 +16,14 @@ use App\Repository\ResultRepository;
 use App\Entity\Project;
 use App\Entity\Assessment;
 use App\Entity\Result;
-
+use App\Form\Type\AssessGridManualType;
 use App\Utils\CustomRound;
 use App\Utils\LettersVote;
 
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\Type\AssessGridType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
@@ -45,8 +46,13 @@ class assessController extends AbstractController
 		Request $request
 		)
 	{
+
+
 		$this->data['project'] = $project = $projectRepository->findOneBy(
-			array('teacher' => $teacher->getId(), 'id' => $project_id),
+			array(
+				'teacher' => $teacher->getId(), 
+				'id' => $project_id
+				)
 		);
 
 		$this->data['student'] = $student = $studentRepository->find($student_id);
@@ -73,7 +79,6 @@ class assessController extends AbstractController
 				$result->setAssessment($assessment);
 				$result->setStudent($student);
 				$result->setMaxVote($assessment->getMaxVote());
-				dump($result);
 			}
 			else
 			{
@@ -125,7 +130,7 @@ class assessController extends AbstractController
 
 			$request->getSession()->getFlashBag()->add('notice', 'Évaluation enregistrée.');
 
-			$this->redirectToRoute('teacher_assessments_list');
+			return $this->redirectToRoute('teacher_assessments_list');
 		}
 
 		$this->data['form'] = $form->createView();

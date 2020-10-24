@@ -37,6 +37,8 @@ class studentsController extends AbstractController
 		//
 		$users = $userRepository->findAllStudents($school_year);
 		$this->data['users'] = $users;
+		$old_users = $userRepository->findAllOldStudents($school_year);
+		$this->data['old_users'] = $old_users;
 
 		//
 		// FORM
@@ -86,7 +88,17 @@ class studentsController extends AbstractController
 	*/
 	public function edit(User $user, Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
 	{
-		//$user = $userRepository->find($id);
+		// If current classe is set to this schoolyear
+		$current_school_year = \App\Utils\SchoolYear::getSchoolYear();
+
+		if($user->getCurrentClasse() === false OR $user->getCurrentClasse()->getSchoolYear() !== $current_school_year)
+		{
+			$student_class = new StudentClasse();
+			$student_class->setSchoolYear($current_school_year);
+			$user->addStudentClass($student_class);
+		}
+
+
 		$form = $this->createForm(NewStudentType::class, $user);
 		$this->data['form'] = $form->createView();
 		$this->data['user'] = $user;

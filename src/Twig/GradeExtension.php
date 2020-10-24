@@ -34,6 +34,9 @@ class GradeExtension extends AbstractExtension
 			new TwigFunction('get_color_from_letter_vote', [$this, 'getColorFromLetterVote']),
 			new TwigFunction('get_text_from_letter_vote', [$this, 'getTextFromLetterVote']),
 
+			new TwigFunction('get_color_from_old_letter_vote', [$this, 'getColorFromOldLetterVote']),
+			new TwigFunction('get_text_from_old_letter_vote', [$this, 'getTextFromOldLetterVote']),
+
 			new TwigFunction('get_color_from_percentage', [$this, 'getColorFromPercentage']),
 			new TwigFunction('get_title_from_percentage', [$this, 'getTitleFromPercentage']),
 			new TwigFunction('get_letter_from_percentage', [$this, 'getLetterFromPercentage']),
@@ -41,6 +44,39 @@ class GradeExtension extends AbstractExtension
 	}
 
 
+	static public function getColorFromOldLetterVote($letter)
+	{
+		switch ($letter) {
+		  case 'M':
+			  return 'blue';
+			  break;
+		  case 'A':
+			  return 'green';
+			  break;
+		  case 'EA':
+			  return 'orange';
+			  break;
+		  case 'NA':
+			  return 'red';
+			  break;
+		}
+	}	static public function getTextFromOldLetterVote($letter)
+	{
+		switch ($letter) {
+		  case 'M':
+			  return 'Maîtrisé';
+			  break;
+		  case 'A':
+			  return 'Acquis';
+			  break;
+		  case 'AE':
+			  return 'En aquisition';
+			  break;
+		  case 'NA':
+			  return 'Non acquis';
+			  break;
+		}
+	}
 	static public function getColorFromLetterVote($letter)
 	{
 		switch ($letter) {
@@ -76,7 +112,12 @@ class GradeExtension extends AbstractExtension
 	}
 	static public function getColorFromPercentage($percentage)
 	{
-		if($percentage > 79)
+		if( ! is_numeric($percentage) OR $percentage === null)
+		{
+			return 'na';
+		}
+		
+		elseif($percentage > 79)
 		{
 			return 'blue';
 		}
@@ -88,10 +129,11 @@ class GradeExtension extends AbstractExtension
 		{
 			return 'orange';
 		}
-		else
+		elseif ($percentage <= 49)
 		{
 			return 'red';
 		}
+		
 	}
 
 	static public function getTitleFromPercentage($percentage)
@@ -108,9 +150,14 @@ class GradeExtension extends AbstractExtension
 		{
 			$title = 'Novice';
 		}
-		else
+		elseif($percentage <= 49)
 		{
 			$title = 'Âme égarée';
+		}
+
+		if($percentage === '--' OR $percentage === null)
+		{
+			$title = 'Fantôme';
 		}
 
 		return $title . ' de l\'Audiovisuel';
@@ -134,9 +181,14 @@ class GradeExtension extends AbstractExtension
 		{
 			$title = 'I';
 		}
-		else
+		elseif ($percentage <= 30)
 		{
 			$title = 'TI';
+		}
+		
+		if($percentage === '--')
+		{
+			$title = 'NE';
 		}
 
 		return $title;

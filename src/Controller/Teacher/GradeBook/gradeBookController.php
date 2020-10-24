@@ -42,6 +42,7 @@ class gradeBookController extends AbstractController
 
 		/**
 		 * Get User FILTERS 
+		 * TODO : Make a service? 
 		 */
 
 		// get school Year
@@ -69,7 +70,7 @@ class gradeBookController extends AbstractController
 		$termForm = $this->createForm(TermsType::class, $terms);
 		$this->data['term_form'] = $termForm->createView();
 
-		// Terms 
+		// SchoolYear 
 		$school_years = new stdClass();
 		$school_years->schoolYear = $schoolYear;
 
@@ -114,14 +115,15 @@ class gradeBookController extends AbstractController
 		$students = $course->getClasse()->getCurrentStudents($schoolYear);
 		$totals = array();
 		$skillsGroupsTotal = array();
+		if ($term_id)
 
-		if ($term_id) 
 		{
 
 			foreach ($students as $student) 
 			{
-				$totals[$student->getId()] = $resultRepository->getStudentResultByTerm($student, $schoolYear, $term_id);
-				$skillsGroupsTotal[$student->getId()] = $resultRepository->getStudentResultBySkillsGroupsAndTermAndSchoolYear($student, $term_id, $schoolYear);
+				$student = $student->getStudent();
+				$skillsGroupsTotal[$student->getId()] = $resultRepository->getStudentResultByCourseAndSkillsGroupsAndTermAndSchoolYear($course, $student, $term_id, $schoolYear);
+				$totals[$student->getId()] = $resultRepository->getStudentResultByCourseAndTerm($course, $student, $schoolYear, $term_id);
 			}
 			
 			$this->data['totals_terms'] = $totals;
@@ -131,8 +133,9 @@ class gradeBookController extends AbstractController
 			
 			foreach ($students as $student) 
 			{
+				$student = $student->getStudent();
 				$skillsGroupsTotal[$student->getId()] = $resultRepository->getStudentResultBySkillsGroupsAndSchoolYear($student, $schoolYear);
-				$totals[$student->getId()] = $resultRepository->getStudentResultBySchoolyear($student, $schoolYear);
+				$totals[$student->getId()] = $resultRepository->getStudentResultByCourseAndSchoolyear($course, $student, $schoolYear);
 			}
 
 			$this->data['totals'] = $totals;
@@ -140,10 +143,6 @@ class gradeBookController extends AbstractController
 		
 		
 		$this->data['sg_totals'] = $skillsGroupsTotal;
-		dump($skillsGroupsTotal);
-
-		//dump($projects);
-		//dump(\App\Utils\GradeBook::getGradeBook($projects, $course)); 
 
 		return $this->render('teacher/grade_book/index.html.twig', $this->data);
 	}

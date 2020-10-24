@@ -6,22 +6,24 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * £Used for single assessment (assessController)
- */
-class AssessRowType extends AbstractType
+class AssessRowManualType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
 				->add('comment', TextType::class, [
 					'required' => false
+					])
+					->add('userVote', NumberType::class, [
+						'required' => false,
+						'attr' => ['size' => 3]
 				])
-				->add('userLetter', ChoiceType::class, [
+					
+				/*->add('userLetter', ChoiceType::class, [
 			    'choices'  => [
 			        'Acquis' => 'A',
 			        'En Aquisition' => 'EA',
@@ -30,7 +32,7 @@ class AssessRowType extends AbstractType
 			        'Absent' => 'ABS',
 			        'Non évalué' => 'NE'
 			    ]
-				])
+				])*/
 				;
 	}
 

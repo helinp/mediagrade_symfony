@@ -72,7 +72,9 @@ class User implements UserInterface
     private $selfAssessmentQuestions;
 
 
+    private $classe;
 
+    
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -496,7 +498,20 @@ class User implements UserInterface
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('schoolyear', \App\Utils\SchoolYear::getSchoolYear()));
-        return $this->getStudentClasses()->matching($criteria)->last();
+            $result = $this->getStudentClasses()->matching($criteria)->last();
+        
+        if($result === false)
+        {
+
+            return $this->getStudentClasses()->last();
+             
+        }
+        else
+        {
+            return $result;
+            
+        }
+        
     }
 
     public function addStudentClass(StudentClasse $studentClass): self

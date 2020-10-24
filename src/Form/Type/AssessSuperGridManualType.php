@@ -7,18 +7,18 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use App\Form\Type\AssessRowManualType;
+use App\Form\Type\AssessGridType;
 
 /**
  * £Used for single assessment (assessController)
  */
-class AssessGridType extends AbstractType
+class AssessSuperGridManualType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-		->add('results', CollectionType::class, [
-				'entry_type'    => AssessRowType::class,
+		->add('students', CollectionType::class, [
+				'entry_type'    => AssessGridManualType::class,
 				'allow_add'     => false,
 				'allow_delete'  => false,
 				'by_reference'	=> false,

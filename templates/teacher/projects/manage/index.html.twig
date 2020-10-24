@@ -4,7 +4,23 @@
 {{ include("teacher/_sidebar.html.twig") }}
 {% endblock %}
 {% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
+	{{ include("teacher/_topbar.html.twig") }}
+
+	{% block topbar_widget %}
+		<div class="container-fluid row">
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(courses_form)}}
+				</div>
+			</div>
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(school_year_form)}}
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}
 {% endblock %}
 
 {% block title %}Gestion des projets{% endblock %}
@@ -54,5 +70,14 @@
 
 {% endblock %}
 {% block page_scripts %}
+<script>
 
+
+{% set currentPath = path(app.request.attributes.get('_route'),
+                       app.request.attributes.get('_route_params')) %}
+					   
+$('#school_years_schoolYear').change(function () { // set the window's location property to the value of the option the user has selected
+window.location = '{{ currentPath }}?school_year=' + $(this).val();
+});
+</script>
 {% endblock %}

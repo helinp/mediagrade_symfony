@@ -22,12 +22,17 @@ use App\Entity\Assessment;
 
 class AssessmentGridType extends AbstractType
 {
+
+	/**
+	 * Used to set up a new project 
+	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
 		->add('skill', EntityType::class, [
 			'class' => Skill::class,
-			'choice_label' => 'shortName',
+			'choice_label' => 'shortDisplayName',
+			'group_by' => 'skillsGroup.name',
 			'attr' => array('style' => 'width: 5em')
 		])
 		->add('criterion', CriterionType::class )
@@ -39,7 +44,7 @@ class AssessmentGridType extends AbstractType
 			'choice_label' => 'name'
 		])
 		->add('maxVote', IntegerType ::class, [
-			'attr' => array('style' => 'width: 5em', 'step' => '5')
+			'attr' => array('style' => 'width: 5em', 'step' => '1')
 		])
 		->add('topic', EntityType::class, [
 			'class' => Topic::class,

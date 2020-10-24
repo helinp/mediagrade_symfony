@@ -12,13 +12,13 @@ use App\Form\Type\AssessRowManualType;
 /**
  * £Used for single assessment (assessController)
  */
-class AssessGridType extends AbstractType
+class AssessGridManualType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
 		->add('results', CollectionType::class, [
-				'entry_type'    => AssessRowType::class,
+				'entry_type'    => AssessRowManualType::class,
 				'allow_add'     => false,
 				'allow_delete'  => false,
 				'by_reference'	=> false,
@@ -30,10 +30,10 @@ class AssessGridType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		/*
+		
 		$resolver->setDefaults([
-			'data_class' => Result::class
-		]);*/
+			'data_class' => null
+		]);
 	}
 
 }

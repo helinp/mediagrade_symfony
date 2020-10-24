@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -22,50 +23,49 @@ class NewStudentType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-		->add('studentClasses', CollectionType::class, [
-			'entry_type'    => StudentClassesType::class,
-			'allow_add'     => true,
-			'allow_delete'  => false,
-			'required' => true,
-			'by_reference'	=> false,
-			'error_bubbling' => true
-		])
+			->add('studentClasses', CollectionType::class, [
+				'entry_type'    => StudentClassesType::class,
+				'allow_add'     => true,
+				'allow_delete'  => false,
+				'required' => true,
+				'by_reference'	=> false,
+				'error_bubbling' => true,
+				'label' => 'Annéees scolaires'
+			])
 
-		->add('firstName', TextType::class, [
+			->add('firstName', TextType::class, [
 				'attr' => [],
 				'label' => 'Prénom'
 			])
-		->add('lastName', TextType::class, [
+			->add('lastName', TextType::class, [
 				'attr' => [],
 				'label' => 'Nom'
 			])
-		->add('email', EmailType::class, [
+			->add('email', EmailType::class, [
 				'attr' => [],
 				'label' => 'Courriel',
 				'empty_data' => '',
 				'required' => false,
 			])
-		->add('userName', TextType::class, [
+			->add('userName', TextType::class, [
 				'attr' => [],
 				'label' => 'Nom d\'utilisateur'
 			])
-		->add('password', PasswordType::class, [
+			->add('password', PasswordType::class, [
 				'attr' => [],
 				'label' => 'Mot de passe',
 				'required' => false,
 				'empty_data' => ''
 			])
-		->add('active', CheckboxType::class, [
+			->add('active', CheckboxType::class, [
 				'attr' => [],
 				'required' => false,
 				'label' => 'Actif?'
 			])
-		->add('save', SubmitType::class, [
-			'label' => 'Enregistrer',
-			'attr' => ['class' => 'btn-primary btn-sm'],
-			])
-
-		;
+			->add('save', SubmitType::class, [
+				'label' => 'Enregistrer',
+				'attr' => ['class' => 'btn-primary btn-sm'],
+			]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)
@@ -74,4 +74,6 @@ class NewStudentType extends AbstractType
 			'data_class' => User::class
 		]);
 	}
+
+
 }

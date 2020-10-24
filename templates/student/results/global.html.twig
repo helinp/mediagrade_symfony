@@ -18,7 +18,7 @@
 			<div class="row no-gutters align-items-center">
 				<div class="col mr-2">
 					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Résultat global par pôle de compétences
+						Moyenne globale par pôle de compétences
 					</div>
 					<div class="">
 						<canvas id="skillsGroupsChart" width="400" height="200"></canvas>
@@ -34,7 +34,7 @@
 			<div class="row no-gutters align-items-center">
 				<div class="col mr-2">
 					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Résultat global par thème
+						Moyenne globale par thème
 					</div>
 					<div class="">
 						<canvas id="topicsChart" width="400" height="200"></canvas>
@@ -50,9 +50,18 @@
 			<div class="row no-gutters align-items-center">
 				<div class="col mr-2">
 					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Résultat global par critère
+						Moyenne globale par critère
 					</div>
-					<table class="table table-sm">
+					<table id="table-criterion" class="table table-sm">
+					<thead>
+					<tr>
+						<th>Critère</th>
+						<th>Évaluation</th>
+						<th>Nombre d'évaluations</th>
+						
+					</tr>
+					</thead>
+					<tbody>
 					{% for result in criterion_results %}
 						<tr>
 							<td>{{result.name}}</td>
@@ -64,10 +73,11 @@
 								</div>
 							
 							</td>
-							<td>({{result.nbAssessed}})</td>
-							<td></td>
+							<td>{{result.nbAssessed}}</td>
+							
 						</tr>
 					{% endfor %}
+					</tbody>
 					</table>
 				</div>
 			</div>
@@ -81,7 +91,7 @@
 			<div class="row no-gutters align-items-center">
 				<div class="col mr-2">
 					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Résultat global par compétence
+						Moyenne globale par compétence
 					</div>
 					<div class="">
 						<canvas id="skillsChart" width="400" height="200"></canvas>
@@ -137,6 +147,27 @@ var skillsChart = new Chart(ctx1, {
 	{{ get_chart_bar_config() | raw}},
 });
 
+var dataset = skillsChart.data.datasets[0];
+for (var i = 0; i < dataset.data.length; i++) {
+  if (dataset.data[i] > 79) {
+    dataset.backgroundColor[i] = '#2b4cff';
+  }
+  else if (dataset.data[i] > 69) {
+    dataset.backgroundColor[i] = '#56d90d';
+
+  }
+  else if (dataset.data[i] > 49) {
+    dataset.backgroundColor[i] = '#f4aa1b';
+
+  }
+  else {
+    dataset.backgroundColor[i] = '#E61806';
+
+  }
+}
+skillsChart.update();
+
+
 var ctx2 = document.getElementById('skillsGroupsChart');
 var groupChart = new Chart(ctx2, {
 	data: {
@@ -155,6 +186,19 @@ var groupChart = new Chart(ctx2, {
 	},
 	{{ get_chart_radar_config() | raw}},
 });
+
+
+var table = $('#table-criterion').DataTable({
+	"lengthChange": false,
+	"paging": false,
+        "language": {
+            "url": "{{asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json')}}"
+        },
+	"field": {
+		"className" : 'form-control bg-light border-0 small'
+	}
+});
+
 </script>
 
 {% endblock %}

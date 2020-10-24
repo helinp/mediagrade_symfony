@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Assessment
 {
+
+    const GRADING_3_LETTRES = 1;
+    const GRADING_POINTS = 2;
+    const GRADING_OLD_LETTRES = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

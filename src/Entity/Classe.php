@@ -37,9 +37,9 @@ class Classe
     private $courses;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="classe")
+     * //@ORM\ManyToMany(targetEntity=User::class, mappedBy="classe")
      */
-    private $students;
+   // private $students;
 
     /**
      * @ORM\OneToMany(targetEntity=StudentClasse::class, mappedBy="classe")

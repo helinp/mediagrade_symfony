@@ -169,7 +169,7 @@ class Achievement
 
 		public function getDisplayName()
 		{
-			return $this->name .  ' ' .  str_repeat('★', $this->nbStar);
+			return $this->name .  ' ' .  str_repeat('★', $this->numberOfStars);
 		}
 
 }

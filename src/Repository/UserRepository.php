@@ -36,22 +36,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-	 public function findAllStudents($school_year)
+    public function findAllStudents($school_year)
     {
         return $this->createQueryBuilder('u')
-		  ->where('u.roles LIKE :roles')
-		  ->setParameter('roles', '%"ROLE_STUDENT"%')
-		  ->andWhere('sc.schoolyear = :val')
-  	  	->setParameter('val', $school_year)
-		  ->leftJoin('u.studentClasses', 'sc')
-		  ->leftJoin('sc.classe', 'c')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_STUDENT"%')
+            ->andWhere('sc.schoolyear = :val')
+            ->setParameter('val', $school_year)
+            ->leftJoin('u.studentClasses', 'sc')
+            ->leftJoin('sc.classe', 'c')
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('u.lastName', 'ASC')
             ->addOrderBy('u.firstName', 'ASC')
             ->getQuery()
-				->getResult()
+            ->getResult();
+    }
 
-        ;
+    public function findAllOldStudents($school_year)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_STUDENT"%')
+            ->andWhere('sc.schoolyear < :val')
+            ->setParameter('val', $school_year)
+            ->orWhere('sc.schoolyear IS NULL')
+            ->leftJoin('u.studentClasses', 'sc')
+            ->leftJoin('sc.classe', 'c')
+            ->orderBy('sc.schoolyear', 'DESC')
+            ->groupBy('u.id')
+            ->addOrderBy('sc.classe', 'ASC')
+            ->addOrderBy('u.lastName', 'ASC')
+            ->addOrderBy('u.firstName', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 

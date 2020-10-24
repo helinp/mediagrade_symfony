@@ -28,7 +28,7 @@
 							{{studentClasse.student.firstName}} {{studentClasse.student.lastName | upper}}
 						</td>
 						<td>
-							Status
+							{{status[project.id][studentClasse.student.id] | get_submission_status}}
 						</td>
 						<td>
 							<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}"><i class="fas fa-pencil-alt"> </i></a>

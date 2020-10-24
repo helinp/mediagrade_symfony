@@ -39,6 +39,12 @@ class SelfAssessmentAnswer
      */
     private $datetime;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=SelfAssessmentQuestion::class, inversedBy="selfAssessmentAnswers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $selfAssessmentQuestion;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +94,18 @@ class SelfAssessmentAnswer
     public function setDatetime(\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
+
+        return $this;
+    }
+
+    public function getSelfAssessmentQuestion(): ?SelfAssessmentQuestion
+    {
+        return $this->selfAssessmentQuestion;
+    }
+
+    public function setSelfAssessmentQuestion(?SelfAssessmentQuestion $selfAssessmentQuestion): self
+    {
+        $this->selfAssessmentQuestion = $selfAssessmentQuestion;
 
         return $this;
     }

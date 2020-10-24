@@ -26,10 +26,18 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityRepository;
-
+use Symfony\Component\Security\Core\Security;
 
 class ProjectType extends AbstractType
 {
+
+	private $security;
+
+	public function __construct(Security $security)
+	{
+		$this->security = $security;
+	}
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
@@ -56,9 +64,11 @@ class ProjectType extends AbstractType
 		])
 		->add('course',  EntityType::class, [
 			'class' => Course::class,
-			'choice_label' => 'description',
+			'choice_label' => 'name',
 			'query_builder' => function (EntityRepository $er) {
 				return $er->createQueryBuilder('c')
+					->where('c.teacher = :uid')
+					->setParameter('uid', $this->security->getUser()->getId())
 					->orderBy('c.name', 'ASC');
 			},
 		])
@@ -86,6 +96,10 @@ class ProjectType extends AbstractType
 		])
 		->add('teacherSubmitted', CheckboxType::class, [
 			'label'    => 'Les fichiers seront téléversés par le professeur?',
+			'required' => false,
+		])
+		->add('external', CheckboxType::class, [
+			'label'    => 'Encodage manuel des points?',
 			'required' => false,
 		])
 		->add('selfAssessments', EntityType::class, [

@@ -59,6 +59,11 @@ class Skill
     {
         return $this->shortName;
     }
+    
+    public function getShortDisplayName(): ?string
+    {
+        return $this->shortName . ' - ' .  mb_substr($this->getDescription(), 0, 25) . '...';
+    }
 
     public function setShortName(string $shortName): self
     {

@@ -32,7 +32,7 @@
 {% block body %}
 
 	<div class="col-12 mb-4">
-		<div class="card shadow h-100 p-2">
+		<div class="card shadow card-gradebook h-100 p-2" style="overflow-y: auto;">
 			<table id="table-gradebook" class="table table-bordered table-sm table-hover">
 				<colgroup>
 					<col class="gradebook_col_1">
@@ -121,9 +121,21 @@
 										{% if result.student == studentClasse.student %}
 											{% set result_test = 'ok' %}
 											<td>
-												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">{{result.userLetter}}
+											{% if(assessment.gradingSystem.id == 3) %}
+												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
+												{{result.userLetter}}
 												</span>
 												<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+
+											{% elseif (assessment.gradingSystem.id == 1)%}
+												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
+												{{result.userLetter}}
+												</span>
+												<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+											
+											{% else %}
+												<span class="align-middle number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.userVote | custom_round}}</span>
+											{% endif %}
 											</td>
 										{% endif %}
 									{% endfor %}
@@ -139,7 +151,7 @@
 								{% if sg_totals[studentClasse.student.id] is defined %}
 									{% for sr in sg_totals[studentClasse.student.id] %}
 										{% if sr.id == skill.id %}
-										{{sr.percentage | custom_round }}
+										<span class="number-result-{{get_color_from_percentage(sr.percentage) }}">{{sr.percentage | custom_round }}</span>
 										{% endif %}
 									{% endfor %}
 								{% else %}
@@ -148,7 +160,7 @@
 								</td>
 							{% endfor %}
 
-							<td class="align-middle text-center">
+							<td class="align-middle text-left">
 								{% if totals_terms is defined %}
 									{% if totals_terms[studentClasse.student.id] is defined %}
 										{% if totals_terms[studentClasse.student.id].percentage is defined %}
@@ -248,5 +260,23 @@ window.location = url + '/' + $(this).val();
 }
 
 })
+
+
+
+
+
+var table = $('#table-gradebook').DataTable({
+	"lengthChange": false,
+	"paging": false,
+        "language": {
+            "url": "{{asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json')}}"
+        },
+	"field": {
+		"className" : 'form-control bg-light border-0 small'
+	}
+});
+
+
+
 	</script>
 {% endblock %}

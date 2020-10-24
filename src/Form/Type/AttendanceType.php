@@ -18,12 +18,15 @@ class AttendanceType extends AbstractType
 			'expanded' => TRUE,
 			'multiple' => FALSE,
 			'attr' => ['class' => 'form-check form-check-inline'],
-			'choice_attr' => ['class' => 'form-check-input'],
+			//'choice_attr' => ['class' => 'form-check-input'],
 			'choices'  => [
 				'P' => 'P',
 				'A' => 'A',
 				'R' => 'R'
-			]
+			],
+			'data' => 'P',
+			'label_attr' => ['class' => 'btn btn-info'],
+		//	'attr' => ['class' => 'btn-group',  'data-toggle' => 'buttons']
 		]);
 	}
 

@@ -1,155 +1,209 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification d'un projet{% endblock %}
+{% block title %}Modification d'un projet
+{% endblock %}
 
 {% block sidebar %}
-{{ include("teacher/_sidebar.html.twig") }}
+	{{ include("teacher/_sidebar.html.twig") }}
 {% endblock %}
 {% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
+	{{ include("teacher/_topbar.html.twig") }}
 {% endblock %}
 
 
 {% block body %}
 
-<div class="col-xs-12 col mb-2">
-<div class="shadow mb-4">
-	<div class="card-body">
-		<div class="row">
-			<div class="col-xs-12 col-md-12">
-				<h3>Ajouter un élève</h3>
-				{{ form_start(form) }}
-				<table id="rows" class="table">
+	<div class="col-xs-12 col mb-2">
+		<div class="shadow mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xs-12 col-md-12">
+						<h3>Ajouter un élève</h3>
+						{{ form_start(form) }}
+						<table id="rows" class="table">
 
-					<thead>
-						<tr>
-							<th>Classe*</th>
-							<th>Nom*</th>
-							<th>Prénom*</th>
-							<th>Nom d'utilisateur*</th>
-							<th>Courriel</th>
-							<th>Mot de passe*</th>
-							<th>Actif?</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							{% for subForm in form.studentClasses %}
-							<td>{{ form_widget(subForm.classe) }}</td>
-							{% endfor %}
-							<td>{{ form_widget(form.lastName) }}</td>
-							<td>{{ form_widget(form.firstName) }}</td>
-							<td>{{ form_widget(form.userName) }}</td>
-							<td>{{ form_widget(form.email) }}</td>
-							<td>{{ form_widget(form.password) }}</td>
-							<td>{{ form_widget(form.active) }}</td>
-							<td>{{ form_widget(form.save) }}</td>
-						</tr>
-					</tbody>
-				</table>
-				{{ form_errors(form) }}
-				{{ form_end(form) }}
+							<thead>
+								<tr>
+									<th>Classe*</th>
+									<th>Nom*</th>
+									<th>Prénom*</th>
+									<th>Nom d'utilisateur*</th>
+									<th>Courriel</th>
+									<th>Mot de passe*</th>
+									<th>Actif?</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									{% for subForm in form.studentClasses %}
+										<td>{{ form_widget(subForm.classe) }}</td>
+									{% endfor %}
+									<td>{{ form_widget(form.lastName) }}</td>
+									<td>{{ form_widget(form.firstName) }}</td>
+									<td>{{ form_widget(form.userName) }}</td>
+									<td>{{ form_widget(form.email) }}</td>
+									<td>{{ form_widget(form.password) }}</td>
+									<td>{{ form_widget(form.active) }}</td>
+									<td>{{ form_widget(form.save) }}</td>
+								</tr>
+							</tbody>
+						</table>
+						{{ form_errors(form) }}
+						{{ form_end(form) }}
 
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="shadow mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+						<h3>Liste des élèves de cette année</h3>
+
+						<table id="users-table" class="datatables table table-sm table-bordered table-hover table-stripped">
+							<thead>
+								<tr>
+									<th>Classe</th>
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Nom d'utilisateur</th>
+									<th>Courriel</th>
+									<th>Mot de passe</th>
+									<th>Actif?</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for user in users %}
+									<tr>
+										<td>{{user.currentClasse.classe.name}}</td>
+										<td>{{user.lastName | upper}}</td>
+										<td>{{user.firstName}}</td>
+										<td>{{user.userName}}</td>
+										<td>{{user.email}}</td>
+										<td>{{user.password ? '****' : '-'}}</td>
+										<td>{{user.active ? 'oui' : 'non'}}</td>
+										<td>
+											<a data-toggle="modal" data-target="#modal-add" data-remote="{{ path('teacher_students_edit', {id: user.id}) }}" class="btn btn-primary btn-sm">
+												<i class="fas fa-pencil-alt text-white"></i>
+											</a>
+										</td>
+
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="shadow mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12">
+						<h3>Liste des anciens élèves</h3>
+
+						<table id="old-users-table" class="datatables table table-sm table-bordered table-hover table-stripped">
+							<thead>
+								<tr>
+								
+									<th>Nom</th>
+									<th>Prénom</th>
+									<th>Nom d'utilisateur</th>
+									<th>Courriel</th>
+									<th>Mot de passe</th>
+									<th>Actif?</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for user in old_users %}
+									<tr>
+										<td>{{user.lastName | upper}}</td>
+										<td>{{user.firstName}}</td>
+										<td>{{user.userName}}</td>
+										<td>{{user.email}}</td>
+										<td>{{user.password ? '****' : '-'}}</td>
+										<td>{{user.active ? 'oui' : 'non'}}</td>
+										<td>
+											<a data-toggle="modal" data-target="#modal-add" data-remote="{{ path('teacher_students_edit', {id: user.id}) }}" class="btn btn-primary btn-sm">
+												<i class="fas fa-pencil-alt text-white"></i>
+											</a>
+										</td>
+
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="shadow mb-4">
-	<div class="card-body">
-		<div class="row">
-			<div class="col-12">
-				<h3>Liste des élèves</h3>
+	<!-- Modal -->
 
-				<table id="users-table" class="datatables table table-bordered table-hover table-stripped">
-					<thead>
-						<tr>
-							<th>Classe</th>
-							<th>Nom</th>
-							<th>Prénom</th>
-							<th>Nom d'utilisateur</th>
-							<th>Courriel</th>
-							<th>Mot de passe</th>
-							<th>Actif?</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for user in users %}
-						<tr>
-							<td>{{user.currentClasse.classe.name}}</td>
-							<td>{{user.lastName | upper}}</td>
-							<td>{{user.firstName}}</td>
-							<td>{{user.userName}}</td>
-							<td>{{user.email}}</td>
-							<td>{{user.password ? '****' : '-'}}</td>
-							<td>{{user.active ? 'oui' : 'non'}}</td>
-							<td>
-								<a data-toggle="modal" data-target="#modal-add" data-remote="{{ path('teacher_students_edit', {id: user.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt text-white"> </i></a>
-							</td>
-
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+	<div id="modal-add" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modifier un utilisateur</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body"></div>
 			</div>
 		</div>
 	</div>
-</div>
-</div>
-<!-- Modal -->
-
-<div id="modal-add" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modifier un utilisateur</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      </div>
-    </div>
-  </div>
-</div>
 
 
 {% endblock %}
 
 {% block page_scripts %}
-{{ parent() }}
-<script src="{{ asset('js/projects-management.min.js') }}"></script>
+	{{ parent() }}
+	<script src="{{ asset('js/projects-management.min.js') }}"></script>
 
-<script>
-$('body').on('click', '[data-toggle="modal"]', function(){
-        $($(this).data("target")+' .modal-body').load($(this).data("remote"));
-    });
+	<script>
+		$('body').on('click', '[data-toggle="modal"]', function () {
+$($(this).data("target") + ' .modal-body').load($(this).data("remote"));
+});
 
 // Datatables
 
 var table = $('#users-table').DataTable({
-	"lengthChange": false,
-	"paging": false,
-	"language": {
-			"url": "dataTables.french.lang"
-	},
-	"field": {
-		"className" : 'form-control bg-light border-0 small'
-	}
+
+"language": {
+"url": "dataTables.french.lang"
+},
+"field": {
+"className": 'form-control bg-light border-0 small'
+}
 });
 
-$(':input').on('propertychange input', (function() {
+var tableb = $('#old-users-table').DataTable({
+"order": [],
+"paging": true,
+"language": {
+"url": "dataTables.french.lang"
+},
+"field": {
+"className": 'form-control bg-light border-0 small'
+}
+});
 
-	var lastName = $("#new_student_lastName").val();
-	var firstName = $("#new_student_firstName").val();
-	var userName = firstName + "." + lastName;
-	userName = userName.toLowerCase();
-	userName = userName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-	$("#new_student_userName").val(userName);
+$(':input').on('propertychange input', (function () {
+
+var lastName = $("#new_student_lastName").val();
+var firstName = $("#new_student_firstName").val();
+var userName = firstName + "." + lastName;
+userName = userName.toLowerCase();
+userName = userName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+$("#new_student_userName").val(userName);
 }));
-
-</script>
+	</script>
 
 {% endblock %}

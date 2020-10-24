@@ -1,54 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présences{% endblock %}
+{% block title %}Présences
+{% endblock %}
 
 {% block sidebar %}
-{{ include("teacher/_sidebar.html.twig") }}
+	{{ include("teacher/_sidebar.html.twig") }}
 {% endblock %}
 {% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
+	{{ include("teacher/_topbar.html.twig") }}
 {% endblock %}
 
 {% block body %}
 
 
-<div class="col-12 mb-4">
-	<div class="card shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-danger text-uppercase mb-1">
-						Liste des présences
-					</div>
-					{{ form_start(form) }}
+	<div class="col-12 mb-4">
+		<div class="card card-no-overflow shadow h-100 py-2">
+			<div class="card-body">
+				<div class="row no-gutters align-items-center">
+					<div class="col mr-2">
+						<div class=" font-weight-bold text-danger text-uppercase mb-1">
+							Liste des présences
+						</div>
+						{{ form_start(form) }}
 
-					<div class="form-group">
-						{{form_label(form.schoolHour)}}
-						{{form_widget(form.schoolHour)}}
-					</div>
-					<div class="form-group">
-						{{form_label(form.date)}}
-						{{form_widget(form.date)}}
-					</div>
+						<div class="form-group">
+							{{form_label(form.schoolHour)}}
+							{{form_widget(form.schoolHour)}}
+						</div>
+						<div class="form-group">
+							{{form_label(form.date)}}
+							{{form_widget(form.date)}}
+						</div>
 
-					<div class="form-group">
-						<table class="table table-sm table-hover table-responsive-sm">
-							{% for attendance in form.attendances %}
-							<tr>
-								<td>{{attendance.vars.value.getStudent.lastName | upper}}<br/>{{attendance.vars.value.getStudent.firstName}}</td>
-								<td>{{form_widget(attendance.status)}}</td>
-							</tr>
-							{% endfor %}
-						</table>
-						{{ form_end(form) }}
+						<div class="form-group">
+							<table class="table table-sm table-hover table-responsive-sm">
+								{% for attendance in form.attendances %}
+									<tr>
+										<td>{{attendance.vars.value.getStudent.lastName | upper}}<br/>{{attendance.vars.value.getStudent.firstName}}</td>
+										<td>
+										{{form_widget(attendance.status)}}
+										</td>
+									</tr>
+								{% endfor %}
+							</table>
+							{{ form_end(form) }}
 
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
 
 
 {% endblock %}

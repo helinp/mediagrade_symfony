@@ -13,7 +13,7 @@ class CoursesTopbarType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('id', EntityType::class, [
-			'choice_label' => 'description',
+			'choice_label' => 'name',
 			'label' => 'Cours',
 			'class' => Course::class,
 			'required' => true

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord
+{% endblock %}
+
+{% block sidebar %}
+	{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("teacher/_topbar.html.twig") }}
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="col-12 mb-2">
+		<div class="shadow mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xs-12 col-md-12">
+						{{ form_start(form) }}
+						<table class="table table-responsive table-sm table-hover">
+							<thead>
+								<tr>
+									<th>
+									</th>
+									{% for assessment in assessments %}
+									<th colspan="2">
+										{{assessment.criterion.name}}
+									</th>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th>
+										Élève
+										
+									</th>
+									{%for assessment in assessments %}
+									<th>Évaluation (/{{assessment.maxVote}})</th>
+									<th>Commentaire</th>
+									{% endfor %}
+								</tr>
+							</thead>
+							<tbody>
+
+								{% for student in form.students %}
+								
+											
+									<tr>
+									<td>
+							{{students[loop.index0].lastName | upper}} {{students[loop.index0].firstName}}
+									</td>
+								{% for result in student.results %}
+									
+										
+												<td>
+											{{form_widget(result.userVote)}}
+												</td>
+												<td>
+											{{form_widget(result.comment)}}
+											
+												</td>
+
+											
+										
+									{% endfor %}
+										</tr>
+									{% endfor %}
+								</tbody>
+							</tbody>
+						</table>
+						{{ form_widget(form.save) }}
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
