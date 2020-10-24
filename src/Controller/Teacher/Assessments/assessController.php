@@ -16,6 +16,8 @@ use App\Repository\ResultRepository;
 use App\Entity\Project;
 use App\Entity\Assessment;
 use App\Entity\Result;
+use App\Entity\Submission;
+use App\Entity\SubmissionFile;
 use App\Form\Type\AssessGridManualType;
 use App\Utils\CustomRound;
 use App\Utils\LettersVote;
@@ -23,6 +25,7 @@ use App\Utils\LettersVote;
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\Type\AssessGridType;
+use App\Form\Type\SubmissionType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -47,7 +50,6 @@ class assessController extends AbstractController
 		)
 	{
 
-
 		$this->data['project'] = $project = $projectRepository->findOneBy(
 			array(
 				'teacher' => $teacher->getId(), 
@@ -57,11 +59,10 @@ class assessController extends AbstractController
 
 		$this->data['student'] = $student = $studentRepository->find($student_id);
 
-		$this->data['submissions'] = $submissionRepository->findBy(
-			array('project' => $project, 'student' => $student),
-		);
 
-		// Formuilaire
+		/**
+		*		Formulaire d'évaluation
+		*/
 		$assessments = $assessmentRepository->findBy(
 			array('project' => $project_id)
 		);
@@ -95,11 +96,56 @@ class assessController extends AbstractController
 			'attr' => ['class' => 'btn btn-danger'],
 			'label' => 'Enregistrer l\'évaluation'
 		]);
+		$this->data['form'] = $form->createView();
 
 		/**
-		*		POST
+		*		Get student submission, if any 
 		*/
-		if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+		$this->data['submissions'] = $submissionRepository->findBy(
+			array('project' => $project, 'student' => $student),
+		);
+
+		/**
+		*		SUBMISSION FORM 
+		*/
+
+		$teacher_submission = new Submission();
+
+		// add nb required files
+		for ($i = $project->getNumberOfFiles() ; $i > 0 ; $i--)
+		{				
+			$teacher_submission->addSubmissionFile(new SubmissionFile());
+		}
+		$submission_form = $this->createForm(SubmissionType::class, $teacher_submission);			
+		$this->data['submission_form'] = $submission_form->createView();
+
+		/**
+		*		POST SUBMISSION
+		*/
+		$submission_form->handleRequest($request);
+		if ($request->isMethod('POST') 
+		&& $submission_form->isSubmitted() 
+		&& $submission_form->isValid()
+		)
+		{
+				// Add mandatory values
+				$teacher_submission->setProject($project);
+				$teacher_submission->setStudent($student);
+
+				// Persist submission
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($teacher_submission);
+				$em->flush();
+		}
+
+		/**
+		*		POST ASSESSMENT
+		*/
+		$form->handleRequest($request);
+		if ($request->isMethod('POST') 
+			&& $form->isSubmitted() 
+			&& $form->isValid()
+		)
 		{
 			$em = $this->getDoctrine()->getManager();
 
@@ -114,7 +160,6 @@ class assessController extends AbstractController
 				if(is_numeric($numeric_result))
 				{
 					$customVote = CustomRound::customVote($numeric_result, $result->getMaxVote());
-
 					$result->setUserVote($customVote + .0);
 				}
 				else
@@ -133,7 +178,10 @@ class assessController extends AbstractController
 			return $this->redirectToRoute('teacher_assessments_list');
 		}
 
-		$this->data['form'] = $form->createView();
+
+
+
+
 		$this->data['assessments'] = $assessments;
 
 		return $this->render('teacher/assessments/assess.html.twig', $this->data);

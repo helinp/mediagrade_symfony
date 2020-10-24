@@ -21,7 +21,7 @@ use App\Form\Type\SubmissionType;
 use App\Repository\StudentClasseRepository;
 
 use Symfony\Component\Mime\MimeTypes;
-use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,8 +41,8 @@ class submissionsController extends AbstractController
 	public function index(
 		ProjectRepository $projectRepository,
 		UserInterface $student,
-		SubmissionRepository $submissionRepository,
-		StudentClasseRepository $studentClasseRepository)
+		SubmissionRepository $submissionRepository
+		)
 	{
 
 		// get current student classe and courses
@@ -104,9 +104,10 @@ class submissionsController extends AbstractController
 		else
 		{
 			// add nb required files
+			$submission = new Submission();
+			
 			for ($i = $project->getNumberOfFiles() ; $i > 0 ; $i--)
 			{
-				$submission = new Submission();
 				$submission->addSubmissionFile(new SubmissionFile());
 			}
 		}
