@@ -20,7 +20,7 @@ class SubmissionNamer implements NamerInterface
 		$file = $object->getImageFile();
 		$extension = $file->guessExtension();
 
-		$filename = mb_strtoupper($last_name) . '_' . $first_name . '_' . $project_name . '_' . ($object->getId() - 1);
+		$filename = mb_strtoupper($last_name) . '_' . $first_name . '_' . $project_name . '_' . ($object->i);
 		$slug = sprintf('%s.%s', $filename, $extension);
 
 

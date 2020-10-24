@@ -112,9 +112,13 @@ class assessController extends AbstractController
 		$teacher_submission = new Submission();
 
 		// add nb required files
-		for ($i = $project->getNumberOfFiles() ; $i > 0 ; $i--)
+		for ($i = 0, $j = $project->getNumberOfFiles() ; $i < $j ; $i++)
 		{				
-			$teacher_submission->addSubmissionFile(new SubmissionFile());
+			$submission_file = new SubmissionFile();
+
+			// Workaround to iterate file name.
+			$submission_file->i = $i;
+			$teacher_submission->addSubmissionFile($submission_file);
 		}
 		$submission_form = $this->createForm(SubmissionType::class, $teacher_submission);			
 		$this->data['submission_form'] = $submission_form->createView();
@@ -135,6 +139,14 @@ class assessController extends AbstractController
 				// Persist submission
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($teacher_submission);
+				
+				// Persist submission files 
+				$sfs = $teacher_submission->getSubmissionFiles();
+
+				foreach($sfs as $sf)
+				{
+					$em->persist($sf);
+				}
 				$em->flush();
 		}
 

@@ -103,13 +103,15 @@ class submissionsController extends AbstractController
 		}
 		else
 		{
-			// add nb required files
-			$submission = new Submission();
-			
-			for ($i = $project->getNumberOfFiles() ; $i > 0 ; $i--)
-			{
-				$submission->addSubmissionFile(new SubmissionFile());
-			}
+		// add nb required files
+		for ($i = 0, $j = $project->getNumberOfFiles() ; $i < $j ; $i++)
+		{				
+			$submission_file = new SubmissionFile();
+
+			// Workaround to iterate file name.
+			$submission_file->i = $i;
+			$submission->addSubmissionFile($submission_file);
+		}
 		}
 
 		// Get mime to get file or image formtype
@@ -133,6 +135,15 @@ class submissionsController extends AbstractController
 				// Persist submission
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($submission);
+
+				// Persist submission files 
+				$sfs = $submission->getSubmissionFiles();
+
+				foreach($sfs as $sf)
+				{
+					$em->persist($sf);
+				}
+
 				$em->flush();
 
 				return $this->redirectToRoute('student_submissions');
