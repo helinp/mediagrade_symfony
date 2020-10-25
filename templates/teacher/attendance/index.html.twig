@@ -39,7 +39,8 @@
 						Registres de présences
 					</div>
 
-					<table class="table table-sm table-responsive-sm">
+					<table class="table table-sm table-responsive-sm"  id="lightgallery">
+					<thead>
 						<tr>
 							<th>Date</th>
 							<th>Heure</th>
@@ -48,6 +49,8 @@
 							<th>Photo</th>
 							<th></th>
 						</tr>
+					</thead>
+					<tbody>
 						{% for attendanceGrid in attendancesGrid %}
 						<tr>
 							<td>{{attendanceGrid.date | date("d/m/y") }}</td>
@@ -56,7 +59,7 @@
 							<td class="text-center">{{attendanceGrid.attendances | filter(v => v.status != "A") | length}} / {{attendanceGrid.attendances | length}}</td>
 							<td>
 							{% if attendanceGrid.picture is not null %}
-							<a href="{{vich_uploader_asset(attendanceGrid)}}"><i class="far fa-image"></i> </a>
+							<a href="{{vich_uploader_asset(attendanceGrid)}}" class="selector"><i class="far fa-image"></i> </a>
 							{% endif %}
 							</td>
 							<td>
@@ -64,6 +67,7 @@
 							</td>
 						</tr>
 						{% endfor %}
+					</tbody>
 					</table>
 
 				</div>
@@ -71,5 +75,26 @@
 		</div>
 	</div>
 </div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
+{% endblock %}
+
+{% block page_scripts %}
+	<script type="text/javascript">
+	
+$('#lightgallery').lightGallery({
+    selector: '.selector'
+});
+
+	</script>
 
 {% endblock %}
