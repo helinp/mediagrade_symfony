@@ -91,8 +91,8 @@ class ProjectType extends AbstractType
 			'required' => false
 		])
 		->add('numberOfFiles', ChoiceType::class, [
-			'choices'  => [range(0, 20)],
-			'required' => false
+			'choices'  => range(0, 20),
+			'required' => true
 		])
 		->add('teacherSubmitted', CheckboxType::class, [
 			'label'    => 'Les fichiers seront téléversés par le professeur?',
