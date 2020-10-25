@@ -81,7 +81,6 @@ class attendanceController extends AbstractController
 				elseif ($action === 'edit')
 				{
 					$attendanceGrid = $attendanceGridRepository->find($attendance_grid_id);
-					$this->data['attendanceGrid'] = $attendanceGrid;
 				}
 
 				$form = $this->createForm(AttendancesGridType::class, $attendanceGrid);
