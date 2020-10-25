@@ -24,16 +24,15 @@ class AttendanceType extends AbstractType
 				'A' => 'A',
 				'R' => 'R'
 			],
-			'data' => 'P',
 			'label_attr' => ['class' => 'btn btn-info'],
-		//	'attr' => ['class' => 'btn-group',  'data-toggle' => 'buttons']
-		]);
-	}
-
-	public function configureOptions(OptionsResolver $resolver)
-	{
-		$resolver->setDefaults([
-			'data_class' => Attendance::class,
+			//	'attr' => ['class' => 'btn-group',  'data-toggle' => 'buttons']
+			]);
+		}
+		
+		public function configureOptions(OptionsResolver $resolver)
+		{
+			$resolver->setDefaults([
+				'data_class' => Attendance::class,
 		]);
 	}
 }

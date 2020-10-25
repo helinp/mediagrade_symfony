@@ -74,6 +74,9 @@ class attendanceController extends AbstractController
 						$attendance = new Attendance();
 						$s = $student->getStudent();
 						$attendance->setStudent($s);
+						
+						// default choice
+						$attendance->setStatus('P');
 
 						$attendanceGrid->addAttendance($attendance);
 					}
