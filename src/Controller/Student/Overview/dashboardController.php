@@ -34,6 +34,9 @@ class dashboardController extends AbstractController
 		$school_year = \App\Utils\SchoolYear::getSchoolYear();
 		$classe = $student->getCurrentClasse()->getClasse();
 
+		$school_year = \App\Utils\SchoolYear::getSchoolYear();
+		$this->data['attendances'] =  $attendanceRepository->getStudentAttendance($student, $school_year);
+
 		$this->data['student'] = $student;
 		$this->data['projects'] = $projectRepository->findByClasseAndSchoolyear($classe, $school_year);
 		$this->data['attendance'] = $attendanceRepository->getAttendanceStatistics($school_year, $student);

@@ -103,6 +103,14 @@
 								{{attendance.absent}}</td>
 						</tr>
 					</table>
+					<table class="table table-sm table-hover table-bordered mt-2">
+					{% for attendanceR in attendances %}
+						<tr>
+							<td>{{attendanceR.date | format_date('full', '', 'Europe/Brussels' ) | capitalize}}</td>
+							<td class="text-center">{{attendanceR.status}}</td>
+						</tr>
+					{% endfor %}
+					</table>
 				</div>
 			</div>
 		</div>

@@ -42,6 +42,22 @@ class AttendanceRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public function getStudentAttendance($student, $school_year)
+    {
+        return $this->createQueryBuilder('a')
+        ->select('a.status AS status, ag.date AS date')
+       ->join('a.attendanceGrid', 'ag')
+  
+        ->andWhere('ag.schoolYear = :val')
+         ->setParameter('val', $school_year)
+        ->andWhere('a.student = :val1')
+        ->setParameter('val1', $student)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Attendance[] Returns an array of Attendance objects
     //  */
