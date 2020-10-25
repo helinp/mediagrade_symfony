@@ -55,7 +55,7 @@
 								</div>
 								{{project.term.name}}
 								-
-								{{project.startDate | date('d/m')}}<br/>
+								{{project.startDate | date('d/m')}} > {{project.softDeadline | date('d/m')}} > {{project.hardDeadline | date('d/m')}}<br/>
 								{{project.assessmentType.description}}
 							</th>
 						{% endfor %}
