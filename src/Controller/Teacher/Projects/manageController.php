@@ -203,13 +203,17 @@ class manageController extends AbstractController
 		{
 			$em = $this->getDoctrine()->getManager();
 			
-
 			$assessments = $project->getAssessments();
 
 			$project = clone($project);
+
+			// Force current school Year
 			$project->setSchoolYear(\App\Utils\SchoolYear::getSchoolYear());
+
+			// Default values
 			if(empty($project->getExternal)) $project->setExternal(FALSE);
 
+			// Relink assessments 
 			foreach($assessments as $assessment)
 			{
 				$assessment = clone($assessment);
@@ -218,6 +222,7 @@ class manageController extends AbstractController
 
 			$em->persist($project);
 			$em->flush();
+
 			return $this->redirectToRoute('teacher_projects_manage');
 		}
 		else
