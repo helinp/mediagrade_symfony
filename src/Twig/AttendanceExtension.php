@@ -36,29 +36,29 @@ class AttendanceExtension extends AbstractExtension
 
 	static public function getColorFromPercentage($percentage)
 	{
-		if($percentage > 95)
+		if($percentage >= 90)
 		{
-			return '#13c613';
+			return '#00ff00';
 		}
-		elseif ($percentage > 90)
+		elseif ($percentage >= 80)
 		{
-			return 'OliveDrab';
+			return '#aaff00';
 		}
-		elseif ($percentage > 85)
+		elseif ($percentage >= 70)
 		{
-			return 'orange';
+			return '#ffff00';
 		}
-		elseif ($percentage > 80)
+		elseif ($percentage >= 60)
 		{
-			return 'orangeRed';
+			return '#ff9800';
 		}
-		elseif ($percentage > 75)
+		elseif ($percentage >= 50)
 		{
-			return 'red';
+			return '#ff5600';
 		}
 		else
 		{
-			return 'maroon';
+			return '#EA0000';
 		}
 	}
 
