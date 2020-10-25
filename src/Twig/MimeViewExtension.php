@@ -44,7 +44,7 @@ class MimeViewExtension extends AbstractExtension
 
 			if(strpos($mimeType, 'image') !== false)
 			{
-					return '<img class="img-fluid" style="border: 1px solid lightgray" src="' . $url . '" />';
+					return '<img class="img-fluid m-1" style="border: 1px solid lightgray" src="' . $url . '" />';
 			}
 			elseif (strpos($mimeType, 'video') !== false)
 			{
