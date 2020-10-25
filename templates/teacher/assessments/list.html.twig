@@ -20,12 +20,13 @@
 					<div class=" font-weight-bold text-danger text-uppercase mb-1">
 						{{project.course.name}} / {{project.term.name}} / {{project.name}}
 					</div>
+					<div class="table-max-height">
 					<table class="table table-sm">
 
 					{% for studentClasse in project.course.classe.currentStudents %}
 					<tr>
 						<td>
-							{{studentClasse.student.firstName}} {{studentClasse.student.lastName | upper}}
+							{{studentClasse.student.lastName | upper}} {{studentClasse.student.firstName}} 
 						</td>
 						<td>
 							{{status[project.id][studentClasse.student.id] | get_submission_status}}
@@ -36,6 +37,7 @@
 					</tr>
 					{% endfor %}
 				</table>
+				</div>
 
 				</div>
 			</div>

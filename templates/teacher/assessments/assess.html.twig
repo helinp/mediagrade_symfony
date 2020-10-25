@@ -53,6 +53,8 @@
 				</div>
 
 				{% if project.teacherSubmitted %}
+				 <a data-toggle="collapse" href="#collapseUpload" role="button" aria-expanded="false" aria-controls="collapseUpload"><i class="my-2 fas fa-file-import"></i></a>
+				<div class=" collapse" id="collapseUpload">
 					{{ form_start(submission_form) }}
 					<div class="row">
 						{% for formSub in submission_form.submissionFiles %}
@@ -64,6 +66,7 @@
 
 					</div>
 					{{ form_end(submission_form)}}
+					</div>
 				{% endif %}
 
 			</div>

@@ -262,3 +262,10 @@ th.rotate > div > span {
 .accordion-toggle.collapsed:before {
   content: "\f078";
 }
+
+.table-max-height
+{
+	overflow-y: auto;
+	max-height: 25em;
+
+}

@@ -32,7 +32,12 @@ class listController extends AbstractController
 		
 		$this->data['projects'] = $projects = $projectRepository->findBy(
 			array('teacher' => $teacher->getId(), 
-			'schoolYear' => $school_year)
+			'schoolYear' => $school_year),
+			
+			array(
+				'course' => 'ASC', 
+				'startDate' => 'DESC'
+			)
 		);
 
 

@@ -80,7 +80,7 @@ class manageController extends AbstractController
 				),
 				array(
 					'course' => 'ASC', 
-					'hardDeadline' => 'DESC'
+					'startDate' => 'DESC'
 				)
 			);
 		}
@@ -92,7 +92,7 @@ class manageController extends AbstractController
 					'schoolYear' => $schoolYear
 				),
 				array('course' => 'ASC', 
-				'hardDeadline' => 'DESC'
+				'startDate' => 'DESC'
 				)
 			);
 		}
