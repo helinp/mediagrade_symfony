@@ -2,6 +2,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Course;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,8 +17,11 @@ class CoursesTopbarType extends AbstractType
 			'choice_label' => 'name',
 			'label' => 'Cours',
 			'class' => Course::class,
-			'required' => true
-		
+			'required' => true,
+			'query_builder' => function (EntityRepository $er) {
+				return $er->createQueryBuilder('u')
+					->orderBy('u.name', 'ASC');
+			},
 		]);
 
 	}
