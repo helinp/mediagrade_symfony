@@ -37,7 +37,13 @@ class manageController extends AbstractController
 	/**
 	* @Route("/teacher/projects/manage/{course_id}", methods="GET", defaults={"course_id"=null}, name="teacher_projects_manage")
 	*/
-	public function index($course_id = false, ProjectRepository $projectRepository, Request $request, CourseRepository $courseRepository)
+	public function index(
+		$course_id = false, 
+		ProjectRepository $projectRepository, 
+		Request $request, 
+		CourseRepository $courseRepository,
+		UserInterface $teacher
+		)
 	{
 
 		// get school Year
@@ -54,55 +60,20 @@ class manageController extends AbstractController
 		$schoolYearForm = $this->createForm(SchoolYearsType::class, $school_years);
 		$this->data['school_year_form'] = $schoolYearForm->createView();
 
-		// Courses 
-		$courses = new stdClass();
+		// Courses selector
 		if ($course_id)
 		{
-			$courses->id = $courseRepository->find($course_id);
+			$courses = $courseRepository->find($course_id);
 		} 
 		else 
 		{
-			$courses->id = null;
+			$courses = $teacher->getOrderedCourses();
+			$course_id = null;
 		}
-		$coursesForm = $this->createForm(CoursesTopbarType::class, $courses);
+		$coursesForm = $this->createForm(CoursesTopbarType::class, $course_id);
 		$this->data['courses_form'] = $coursesForm->createView();
 
-
-		$projects = null;
-
-		if($course_id)
-		{
-			//			array('class_id' => $class_id, 'school_year', $schoolYear),
-			$projects = $projectRepository->findBy(
-				array(
-					'schoolYear' => $schoolYear, 
-					'course' => $course_id
-				),
-				array(
-					'course' => 'ASC', 
-					'startDate' => 'DESC'
-				)
-			);
-		}
-		else
-		{
-			//		array('schoolYear' => SchoolYear::getSchoolYear()),
-			$projects = $projectRepository->findBy(
-				array(
-					'schoolYear' => $schoolYear
-				),
-				array('course' => 'ASC', 
-				'startDate' => 'DESC'
-				)
-			);
-		}
-
-		if ($projects === null)
-		{
-			throw $this->createNotFoundException('Aucun projet trouvé.');
-		}
-
-		$this->data['projects'] = $projects;
+		$this->data['courses'] = $courses;
 
 		return $this->render('teacher/projects/manage/index.html.twig', $this->data);
 	}

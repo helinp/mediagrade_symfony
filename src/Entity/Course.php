@@ -6,6 +6,7 @@ use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity(repositoryClass=CourseRepository::class)
@@ -117,6 +118,17 @@ class Course
     public function getProjects(): Collection
     {
         return $this->projects;
+    }
+
+
+    public function getCurrentProjects($schoolyear = null)
+    {
+        $criteria = Criteria::create()
+        ->andWhere(Criteria::expr()->eq('schoolYear', ($schoolyear ? $schoolyear : \App\Utils\SchoolYear::getSchoolYear())))
+        ->orderBy(['startDate' => 'DESC'])
+        ;
+        return $this->getProjects()->matching($criteria);
+
     }
 
     public function addProject(Project $project): self

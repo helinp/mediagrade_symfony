@@ -277,6 +277,14 @@ class User implements UserInterface
         return $this->courses;
     }
 
+    public function getOrderedCourses(): Collection
+    {
+    $criteria = Criteria::create()
+    ->orderBy(['name' => 'ASC'])
+    ;
+    return $this->getCourses()->matching($criteria);
+    }
+
     public function addCourse(Course $course): self
     {
         if (!$this->courses->contains($course)) {
