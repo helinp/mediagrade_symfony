@@ -284,4 +284,21 @@ public function getResultByStudentAndProject($student, $project)
 	;
 }
 
+public function getSkillsGroupsResultByStudentAndProject($student, $project)
+{
+	return $this->createQueryBuilder('r')
+	
+	->select('SUM(r.userVote) / SUM(r.maxVote) * 100 AS percentage, sg.name')
+	->leftjoin('r.assessment', 'a')
+	->leftjoin('a.skill', 's')
+	->leftjoin('s.skillsGroup', 'sg')
+	->andWhere('r.student = :val')
+	->setParameter('val', $student)
+	->andWhere('a.project = :val1')
+	->setParameter('val1', $project)
+	->groupBy('sg.name')
+	->getQuery()
+	->getResult();
+}
+
 }

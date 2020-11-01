@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Repository\ProjectRepository;
+use App\Repository\ResultRepository;
 use App\Repository\SubmissionRepository;
 use App\Repository\StudentClasseRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,30 +29,25 @@ class simplifiedController extends AbstractController
 	public function index(
 		ProjectRepository $projectRepository,
 		UserInterface $student,
+		ResultRepository $resultRepository,
 		SubmissionRepository $submissionRepository,
 		StudentClasseRepository $studentClasseRepository)
 	{
 
-		// get current student classe and courses
-		// TODO Should be in session info
-
-		// Workaround to get all courses projects
-		$courses = $student->getCurrentClasse()->getClasse()->getCourses();
-		$courses_id = array();
-		foreach ($courses as $course)
-		{
-			$courses_id[] = $course->getId();
-		}
-
-		$projects = $projectRepository->findBy(
-				array('course' => $courses_id),
-				array('hardDeadline' => 'DESC')
-			);
-
+		// Get projects
 		$school_year = \App\Utils\SchoolYear::getSchoolYear();
 		$classe = $student->getCurrentClasse()->getClasse();
 		$projects = $projectRepository->findByClasseAndSchoolyear($classe, $school_year);
 
+		// Get results for each projects 
+		$projects_result_sg = array();
+		foreach ($projects as $project) 
+		{
+			$projects_result_sg[$project->getId()] = $resultRepository->getSkillsGroupsResultByStudentAndProject($student->getId(), $project->getId());
+		}
+		$this->data['results_sg'] = $projects_result_sg;
+
+		// Get submissions
 		$this->data['submissions'] = $submissionRepository->findBy(
 				array('project' => $projects, 'student' => $student),
 		);
@@ -60,7 +56,7 @@ class simplifiedController extends AbstractController
 		$this->data['student'] = $student;
 		$this->data['h1_title'] = 'Résultats des projets';
 
-		return $this->render('student/results/simplified.bak.html.twig', $this->data);
+		return $this->render('student/results/simplified.html.twig', $this->data);
 	}
 
 }
