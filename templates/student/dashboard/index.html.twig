@@ -68,27 +68,28 @@
 		<div class="card shadow border-left-primary h-100 py-2">
 			<div class="card-body">
 				<div class="font-weight-bold text-uppercase mb-1">
-					Status des projets
+					Projets en cours
 				</div>
 				<div class="d-flex results-board">
 					<table class="table table-sm">
 						<thead>
 							<tr>
+								<th>Cours</th>
 								<th>Projet</th>
 								<th>Période</th>
 								<th>Deadline</th>
-								<th>Status</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for project in projects %}
+							{% if (project.hardDeadline|date("ymd") >= "now"|date("ymd")) and (project.external == false )%}
 								<tr>
+									<td>{{project.course.name}}</td>
 									<td>{{project.name}}</td>
 									<td>{{project.term.description}}</td>
 									<td>{{project.softDeadline | date('d/m/y')}}</td>
-									<td></td>
 								</tr>
-
+							{% endif %}
 							{% endfor %}
 						</tbody>
 					</table>
