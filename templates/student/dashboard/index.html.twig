@@ -24,15 +24,33 @@
 						<div class="p-2 m-2">
 
 							<div class="card">
-								<div class="card-header text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
+								<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
 									<big>{{ result.description }}</big>
 								</div>
 
-								<div class="card-body">
+								<div class="card-body card-body pb-0">
 									<h5 class="card-text">"{{ get_title_from_percentage(result.percentage) }}"</h5>
 									{{ result.percentage | custom_round }}
 									%
 								</div>
+								<div class="d-flex pt-0">
+
+					{% for result in sg_results %}
+						<div class="p-2 m-2">
+
+							<div class="card">
+								<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
+									{{ result.name }}
+								</div>
+
+								<div class="card-body py-2">
+									{{ result.percentage | custom_round }}&nbsp;%
+								</div>
+							</div>
+
+						</div>
+					{% endfor %}
+							</div>
 							</div>
 
 						</div>
@@ -41,10 +59,11 @@
 			</div>
 		</div>
 	</div>
-	<!-- ./ a corriger -->
 
 
-	<!-- A corriger-->
+
+
+
 	<div class="col-12 col-md-6  mb-4">
 		<div class="card shadow border-left-primary h-100 py-2">
 			<div class="card-body">
