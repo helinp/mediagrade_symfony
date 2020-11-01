@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{{ include("student/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("student/_topbar.html.twig") }}
+{% endblock %}
+
+{% block title %}
+	{{h1_title}}
+{% endblock %}
+
+{% block body %}
+
+
+	{% for classe in classes %}
+		<div class="col-12 mt-4">
+
+			<h3 class="text-primary">{{classe.description}}</h3>
+		</div>
+
+
+		{% for studentClasse in classe.currentStudents %}
+
+			{% set student = studentClasse.student %}
+			<div class="col-xl-3 col-lg-4 col-sm-6 col-12 p-2 mb-2">
+				<div class="card shadow border-left-primary h-100 m-2 ">
+
+					<div class="card-header pt-3 pb-2">
+						<h4>
+							<small class="text-muted">{{student.lastName | title }}</small>
+							<br/>
+							{{student.firstName | title }}
+						</h4>
+					</div>
+
+					<div class="card-body">
+						<div class="card-text text-center p-2">
+							<img class="img-thumbnail img-fluid rounded-circle" src={% if student.userAvatar is not empty %} "{{ avatar(vich_uploader_asset(student.userAvatar.imageFile)) | imagine_filter('letterbox_thumbnail_small') }}" {% else %} "{{avatar('') }}1{{student.id * 5}}" {% endif %}/>
+						</div>
+					</div>
+
+
+					<div class="card-footer" style="min-height: 3.5em;">
+						{% if student.motto %}
+							<div class="card-text text-center">
+								<blockquote class="blockquote m-0">
+									<p class="mb-0">
+										"{{student.motto}}"
+									</p>
+								</blockquote>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+			</div>
+		{% endfor %}
+	{% endfor %}
+{% endblock %}
+{% block scripts %}{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block page_scripts %}{% endblock %}

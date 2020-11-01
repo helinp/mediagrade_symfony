@@ -38,7 +38,7 @@ class AvatarExtension extends AbstractExtension
 
 	public function avatar($url)
 	{
-		return (empty($url) ? 'https://api.adorable.io/avatars/100/' . rand(0, 1000) : $url);
+		return (empty($url) ? 'https://i.pravatar.cc/300/?u=' : $url);
 	}
 
 
