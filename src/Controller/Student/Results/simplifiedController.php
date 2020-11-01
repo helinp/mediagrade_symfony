@@ -8,10 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProjectRepository;
 use App\Repository\ResultRepository;
 use App\Repository\SubmissionRepository;
-use App\Repository\StudentClasseRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use App\Utils\SchoolYear;
 
 class simplifiedController extends AbstractController
 {
@@ -30,8 +28,8 @@ class simplifiedController extends AbstractController
 		ProjectRepository $projectRepository,
 		UserInterface $student,
 		ResultRepository $resultRepository,
-		SubmissionRepository $submissionRepository,
-		StudentClasseRepository $studentClasseRepository)
+		SubmissionRepository $submissionRepository
+		)
 	{
 
 		// Get projects
