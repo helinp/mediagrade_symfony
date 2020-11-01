@@ -65,12 +65,14 @@
 					{% for result in criterion_results %}
 						<tr>
 							<td>{{result.name}}</td>
-							<td>
+							<td class="align-middle">
+							<div class="progress" style="height: 20px;">
 								<div role="progressbar" 
 									class="progress-bar gradebook-lsu-{{get_color_from_percentage(result.percentage | custom_round)}}" style="width: {{result.percentage | custom_round}}%;" 
 									aria-valuenow="{{result.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
 									{{get_title_from_percentage(result.percentage | custom_round)}}
 								</div>
+							</div>
 							
 							</td>
 							<td>{{result.nbAssessed}}</td>
