@@ -38,8 +38,9 @@ class ProjectRepository extends ServiceEntityRepository
 				->setParameter('val1', $classe)
 				->andWhere('p.schoolYear = :val2')
 				->setParameter('val2', $school_year)
-				->orderBy('p.term', 'DESC')
-				->orderBy('p.softDeadline', 'ASC')
+				->addOrderBy('p.term', 'DESC')
+				//->addOrderBy('p.course', 'ASC')
+				->addOrderBy('p.startDate', 'DESC')
 				->getQuery()
 				->getResult()
 		  ;
