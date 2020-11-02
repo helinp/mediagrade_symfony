@@ -271,3 +271,7 @@ th.rotate > div > span {
 	max-height: 25em;
 
 }
+
+.paginator-col-center nav ul {
+  justify-content: center !important;
+}

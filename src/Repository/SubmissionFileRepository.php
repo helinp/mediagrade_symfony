@@ -22,19 +22,39 @@ class SubmissionFileRepository extends ServiceEntityRepository
     // /**
     //  * @return SubmissionFile[] Returns an array of SubmissionFile objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findAllGallery()
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('s.submission', 'sub')
+            ->join('sub.project', 'p')
+            ->join('sub.student', 'st')
+            ->andWhere('s.public = TRUE')
+            ->orderBy('p.startDate', 'DESC')
+            ->addOrderBy('st.lastName', 'ASC')
+            ->addOrderBy('st.firstName', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }   
+
+    public function findAllGalleryByStudent($student)
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.submission', 'sub')
+            ->join('sub.project', 'p')
+            ->join('sub.student', 'st')
+            ->andWhere('s.public = TRUE')
+            ->andWhere('sub.student = :val')
+            ->setParameter('val', $student)
+            ->orderBy('p.startDate', 'DESC')
+            ->addOrderBy('st.lastName', 'ASC')
+            ->addOrderBy('st.firstName', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?SubmissionFile

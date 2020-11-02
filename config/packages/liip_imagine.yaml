@@ -23,6 +23,16 @@ liip_imagine:
                     allow_upscale: true
                     jpeg_quality:          85
                     auto_rotate: ~
+
+        gallery_thumbnail:
+            filters:
+                thumbnail:
+                    size:          [450, 300]
+                    mode:          outbound
+                    allow_upscale: true
+                    jpeg_quality:          85
+                    auto_rotate: false
+
 #
 #            # set your image quality defaults
 #            jpeg_quality:          85
