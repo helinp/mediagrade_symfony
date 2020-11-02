@@ -16,12 +16,12 @@
 
 			{{ knp_pagination_render(gallerie) }}
 		</div>
-<div class="row ">
+<div class="row lightgallery">
 	{% for item in gallerie %}
 		<div class="col-lg-3 col-md-4 col-xs-12 mb-4 p-2 text-center">
 			<div class="card shadow">
 				<div class="card-body p-2">
-					<div class="card-text text-center p-0 lightgallery">
+					<div class="card-text text-center p-0 ">
 						{% if "image" in item.mime %}
 						<a href="{{ asset(vich_uploader_asset(item)) }}" data-toggle="lightbox" data-max-width="100%">
 							<img class="img-fluid" src="{{ asset(vich_uploader_asset(item)) | imagine_filter('gallery_thumbnail') }}"  />
@@ -36,10 +36,9 @@
 				<div class="card-footer p-2 pb-3">
 					<p class="caption" style="margin:0">
 						<small>
-							<a href="">#{{item.submission.student.firstName}}
-								{{item.submission.student.lastName | first}}.
-								<small>({{item.submission.project.schoolYear}})</small>
-							</a>
+						{{item.submission.project.name}}
+							par <i>{{item.submission.student.firstName}}
+								{{item.submission.student.lastName | first}}</i>.
 						</small>
 					</p>
 				</div>
@@ -63,7 +62,9 @@
 {% block page_scripts %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-$(".lightgallery").lightGallery();
-});
+$(".lightgallery").lightGallery({
+        selector: 'a'
+    })
+		});
 	</script>
 {% endblock %}
