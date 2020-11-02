@@ -40,8 +40,15 @@ class dashboardController extends AbstractController
 		$this->data['student'] = $student;
 		$this->data['projects'] = $projectRepository->findByClasseAndSchoolyear($classe, $school_year);
 		$this->data['attendance'] = $attendanceRepository->getAttendanceStatistics($school_year, $student);
-		$this->data['terms_results'] = $resultsRepository->getStudentResultByTerms($student, $school_year);
-		$this->data['sg_results'] = $resultsRepository->getSkillsGroupsResultByStudent($student, $school_year);
+		
+		$terms_global_results = $resultsRepository->getStudentResultByTerms($student, $school_year);
+		$this->data['terms_results'] = $terms_global_results;
+		dump($terms_global_results);
+		foreach ($terms_global_results as $term) 
+		{
+			$this->data['sg_results'][$term['term_id']] = $resultsRepository->getSkillsGroupsResultByTermAndStudent($term['term_id'], $student, $school_year);
+		}
+		
 
 
 

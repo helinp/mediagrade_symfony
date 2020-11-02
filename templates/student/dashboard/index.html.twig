@@ -35,22 +35,22 @@
 								</div>
 								<div class="d-flex pt-0">
 
-					{% for result in sg_results %}
-						<div class="p-2 m-2">
+									{% for t_result in sg_results[result.term_id] %}
+										<div class="p-2 m-2">
 
-							<div class="card">
-								<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
-									{{ result.name }}
+											<div class="card">
+												<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(t_result.percentage)}}">
+													{{ t_result.name }}
+												</div>
+
+												<div class="card-body py-2">
+													{{ t_result.percentage | custom_round }}&nbsp;%
+												</div>
+											</div>
+
+										</div>
+									{% endfor %}
 								</div>
-
-								<div class="card-body py-2">
-									{{ result.percentage | custom_round }}&nbsp;%
-								</div>
-							</div>
-
-						</div>
-					{% endfor %}
-							</div>
 							</div>
 
 						</div>
@@ -59,9 +59,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 
 
 	<div class="col-12 col-md-6  mb-4">
@@ -82,14 +79,14 @@
 						</thead>
 						<tbody>
 							{% for project in projects %}
-							{% if (project.hardDeadline|date("ymd") >= "now"|date("ymd")) and (project.external == false )%}
-								<tr>
-									<td>{{project.course.name}}</td>
-									<td>{{project.name}}</td>
-									<td>{{project.term.description}}</td>
-									<td>{{project.softDeadline | date('d/m/y')}}</td>
-								</tr>
-							{% endif %}
+								{% if (project.hardDeadline|date("ymd") >= "now"|date("ymd")) and (project.external == false )%}
+									<tr>
+										<td>{{project.course.name}}</td>
+										<td>{{project.name}}</td>
+										<td>{{project.term.description}}</td>
+										<td>{{project.softDeadline | date('d/m/y')}}</td>
+									</tr>
+								{% endif %}
 							{% endfor %}
 						</tbody>
 					</table>
@@ -98,7 +95,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- ./ a corriger -->
+	
 	{% if attendance is not empty %}
 		<div class="col-12 col-md-6 mb-4">
 			<div class="card shadow border-left-primary h-100 py-2">
@@ -124,12 +121,12 @@
 						</tr>
 					</table>
 					<table class="table table-sm table-hover table-bordered mt-2">
-					{% for attendanceR in attendances %}
-						<tr>
-							<td>{{attendanceR.date | format_date('full', '', 'Europe/Brussels' ) | capitalize}}</td>
-							<td class="text-center">{{attendanceR.status}}</td>
-						</tr>
-					{% endfor %}
+						{% for attendanceR in attendances %}
+							<tr>
+								<td>{{attendanceR.date | format_date('full', '', 'Europe/Brussels' ) | capitalize}}</td>
+								<td class="text-center">{{attendanceR.status}}</td>
+							</tr>
+						{% endfor %}
 					</table>
 				</div>
 			</div>
