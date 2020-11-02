@@ -44,7 +44,6 @@ class SubmissionFileRepository extends ServiceEntityRepository
             ->join('s.submission', 'sub')
             ->join('sub.project', 'p')
             ->join('sub.student', 'st')
-            ->andWhere('s.public = TRUE')
             ->andWhere('sub.student = :val')
             ->setParameter('val', $student)
             ->orderBy('p.startDate', 'DESC')
