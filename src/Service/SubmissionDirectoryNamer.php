@@ -12,7 +12,7 @@ class SubmissionDirectoryNamer implements DirectoryNamerInterface
 	{
 		$slugger = new AsciiSlugger();
 
-		$project_name = $slugger->slug( $object->getSubmission()->getProject()->getName() );
+		$project_name = mb_strtolower($slugger->slug( $object->getSubmission()->getProject()->getName() ));
 		$course = $slugger->slug( $object->getSubmission()->getProject()->getCourse()->getName() );
 		$term = $slugger->slug( $object->getSubmission()->getProject()->getTerm()->getName() );
 
