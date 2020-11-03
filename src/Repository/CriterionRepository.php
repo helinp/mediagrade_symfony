@@ -47,4 +47,17 @@ class CriterionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllMatching(string $query, int $limit = 5)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.name')
+            ->distinct('c.name')
+            ->orderBy('c.name', 'ASC')
+            ->andWhere('c.name like :val')
+            ->setParameter('val', '%' . $query . '%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

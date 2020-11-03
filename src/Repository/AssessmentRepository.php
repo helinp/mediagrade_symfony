@@ -47,4 +47,18 @@ class AssessmentRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllMatchingIndicators(string $query, int $limit = 5)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.indicator')
+            ->distinct('a.indicator')
+            ->orderBy('a.indicator', 'ASC')
+            ->andWhere('a.indicator like :val')
+            ->setParameter('val', '%' . $query .'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

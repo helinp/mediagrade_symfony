@@ -290,10 +290,13 @@
 			toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image spellchecker ",
 			autosave_ask_before_unload: false,
 			spellchecker_dialog: true
-	
 			})
 }}
 
 {{ parent() }}
+<script src="{{ asset('js/typeahead/typeahead.bundle.min.js') }}"></script>
 
-<script src="{{ asset('js/projects-management.min.js') }}"></script>{% endblock %}
+<script src="{{ asset('js/projects-management.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('css/typeahead.min.css') }}">
+{% endblock %}
+

@@ -20,9 +20,18 @@ use App\Entity\GradingSystem;
 use App\Entity\Achievement;
 use App\Entity\Assessment;
 
+use Symfony\Component\Routing\RouterInterface;
+
 class AssessmentGridType extends AbstractType
 {
 
+	private $router;
+
+	public function __construct(RouterInterface $router)
+    {
+		$this->router = $router;
+	}
+	
 	/**
 	 * Used to set up a new project 
 	 */
@@ -35,9 +44,14 @@ class AssessmentGridType extends AbstractType
 			'group_by' => 'skillsGroup.name',
 			'attr' => array('style' => 'width: 5em')
 		])
-		->add('criterion', CriterionType::class )
+		->add('criterion', CriterionType::class)
 
-		->add('indicator', TextareaType::class )
+		->add('indicator', TextareaType::class, [
+			'attr' => [
+				'class' => 'typeahead typeahead_indicator',
+				'data-autocomplete-url' => $this->router->generate('admin_indicator_list')
+				]
+		])
 
 		->add('gradingSystem', EntityType::class, [
 			'class' => GradingSystem::class,
