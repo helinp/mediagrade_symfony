@@ -16,7 +16,7 @@ class SubmissionDirectoryNamer implements DirectoryNamerInterface
 		$course = $slugger->slug( $object->getSubmission()->getProject()->getCourse()->getName() );
 		$term = $slugger->slug( $object->getSubmission()->getProject()->getTerm()->getName() );
 
-		$school_year =  $slugger->slug( \App\Utils\SchoolYear::getSchoolYear() );
+		$school_year =  $object->getSubmission()->getProject()->getSchoolYear();
 
 		$dir = $school_year . '/' . $course .  '/' .  $term . '_' . $project_name . '/';
 
