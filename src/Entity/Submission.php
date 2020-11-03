@@ -31,7 +31,7 @@ class Submission
     private $datetime;
 
     /**
-     * @ORM\ManyToOne(targetEntity=project::class, inversedBy="submissions")
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="submissions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $project;
