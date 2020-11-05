@@ -13,13 +13,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Assessment;
 use App\Entity\Project;
-use App\Entity\Submission;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use App\Entity\SubmissionFile;
 
 use App\Form\Type\SubmissionType;
 
 use App\Repository\StudentClasseRepository;
-
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Mime\MimeTypes;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,8 +30,12 @@ class submissionsController extends AbstractController
 
 	public $data = array();
 
-	public function __construct()
+	public function __construct(Security $security)
 	{
+		if( ! $security->getUser()->getCurrentClasse() )
+		{
+			throw new  AccessDeniedException('Vous n\'êtes pas enregistré comme élève.');
+		}
 	}
 
 

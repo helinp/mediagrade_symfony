@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProjectRepository;
 use App\Repository\ResultRepository;
 use App\Repository\SubmissionRepository;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -16,9 +18,14 @@ class simplifiedController extends AbstractController
 
 	public $data = array();
 
-	public function __construct()
+	public function __construct(Security $security)
 	{
+		if( ! $security->getUser()->getCurrentClasse() )
+		{
+			throw new  AccessDeniedException('Vous n\'êtes pas enregistré comme élève.');
+		}
 	}
+
 
 
 	/**

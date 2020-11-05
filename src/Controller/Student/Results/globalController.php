@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Repository\ResultRepository;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class globalController extends AbstractController
@@ -13,9 +15,14 @@ class globalController extends AbstractController
 
 	public $data = array();
 
-	public function __construct()
+	public function __construct(Security $security)
 	{
+		if( ! $security->getUser()->getCurrentClasse() )
+		{
+			throw new  AccessDeniedException('Vous n\'êtes pas enregistré comme élève.');
+		}
 	}
+
 
 
 	/**
