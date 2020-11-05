@@ -38,11 +38,14 @@
 									<tr>
 										<td>{{attendance.vars.value.getStudent.lastName | upper}}<br/>{{attendance.vars.value.getStudent.firstName}}</td>
 										<td>
-										{{form_widget(attendance.status)}}
+											{{form_widget(attendance.status)}}
 										</td>
 									</tr>
 								{% endfor %}
 							</table>
+							{% if attendance_grid is defined %}
+								<a class="btn btn-danger" href="{{path('teacher_attendance_delete', {'attendanceGrid':attendance_grid.id})}}">Supprimer la fiche</a>
+							{% endif %}
 							{{ form_end(form) }}
 
 						</div>
