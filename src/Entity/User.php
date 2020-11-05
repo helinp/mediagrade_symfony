@@ -74,7 +74,7 @@ class User implements UserInterface
 
     private $classe;
 
-    
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -279,10 +279,10 @@ class User implements UserInterface
 
     public function getOrderedCourses(): Collection
     {
-    $criteria = Criteria::create()
-    ->orderBy(['name' => 'ASC'])
-    ;
-    return $this->getCourses()->matching($criteria);
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('teacher', $this))
+            ->orderBy(['name' => 'ASC']);
+        return $this->getCourses()->matching($criteria);
     }
 
     public function addCourse(Course $course): self
@@ -506,20 +506,14 @@ class User implements UserInterface
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->eq('schoolyear', \App\Utils\SchoolYear::getSchoolYear()));
-            $result = $this->getStudentClasses()->matching($criteria)->last();
-        
-        if($result === false)
-        {
+        $result = $this->getStudentClasses()->matching($criteria)->last();
+
+        if ($result === false) {
 
             return $this->getStudentClasses()->last();
-             
-        }
-        else
-        {
+        } else {
             return $result;
-            
         }
-        
     }
 
     public function addStudentClass(StudentClasse $studentClass): self
@@ -657,7 +651,7 @@ class User implements UserInterface
 
 
 
-     public function getUserAvatar(): ?UserAvatar
+    public function getUserAvatar(): ?UserAvatar
     {
         return $this->userAvatar;
     }
