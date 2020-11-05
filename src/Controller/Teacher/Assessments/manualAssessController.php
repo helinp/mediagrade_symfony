@@ -9,22 +9,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use App\Repository\ProjectRepository;
 use App\Repository\AssessmentRepository;
-use App\Repository\UserRepository;
-use App\Repository\SubmissionRepository;
 use App\Repository\ResultRepository;
 
 use App\Entity\Assessment;
 use App\Entity\Result;
-use App\Entity\StudentClasse;
-use App\Form\Type\AssessGridManualType;
 use App\Utils\CustomRound;
 use App\Utils\LettersVote;
 
 use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\Type\AssessSuperGridManualType;
-use stdClass;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 

@@ -7,18 +7,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Repository\ProjectRepository;
 use App\Repository\SubmissionRepository;
-use App\Utils\SchoolYear;
 
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-use App\Entity\Assessment;
-use App\Entity\Project;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use App\Entity\SubmissionFile;
 
 use App\Form\Type\SubmissionType;
 
-use App\Repository\StudentClasseRepository;
+
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Mime\MimeTypes;
 

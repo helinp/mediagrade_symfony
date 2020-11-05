@@ -13,12 +13,10 @@ use App\Repository\UserRepository;
 use App\Repository\SubmissionRepository;
 use App\Repository\ResultRepository;
 
-use App\Entity\Project;
-use App\Entity\Assessment;
 use App\Entity\Result;
 use App\Entity\Submission;
 use App\Entity\SubmissionFile;
-use App\Form\Type\AssessGridManualType;
+
 use App\Utils\CustomRound;
 use App\Utils\LettersVote;
 
@@ -26,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use App\Form\Type\AssessGridType;
 use App\Form\Type\SubmissionType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 

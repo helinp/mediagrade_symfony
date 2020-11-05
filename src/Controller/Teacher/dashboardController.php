@@ -5,7 +5,7 @@ namespace App\Controller\Teacher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\SchoolYear;
-use App\Entity\Project;
+
 use App\Repository\ProjectRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 

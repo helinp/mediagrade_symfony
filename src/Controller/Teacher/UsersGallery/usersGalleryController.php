@@ -5,15 +5,8 @@ namespace App\Controller\Teacher\UsersGallery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Repository\ProjectRepository;
-use App\Repository\SubmissionRepository;
-use App\Entity\SubmissionFile;
-
 use App\Repository\ClasseRepository;
 
-
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class usersGalleryController extends AbstractController
 {
