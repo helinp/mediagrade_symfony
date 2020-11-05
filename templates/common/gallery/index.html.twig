@@ -12,47 +12,48 @@
 
 {% block body %}
 
-		<div class="col-12 mt-4 text-center paginator-col-center">
+	<div class="col-12 mt-4 text-center paginator-col-center">
 
-			{{ knp_pagination_render(gallerie) }}
-		</div>
-<div class="row lightgallery">
-	{% for item in gallerie %}
-		<div class="col-lg-3 col-md-4 col-xs-12 mb-4 p-2 text-center">
-			<div class="card shadow">
-				<div class="card-body p-2">
-					<div class="card-text text-center p-0 ">
-						{% if "image" in item.mime %}
-						<a href="{{ asset(vich_uploader_asset(item)) }}" data-toggle="lightbox" data-max-width="100%">
-							<img class="img-fluid" src="{{ asset(vich_uploader_asset(item)) | imagine_filter('gallery_thumbnail') }}"  />
-						</a>
-						{% elseif "video" in item.mime %}
-							{{ asset(vich_uploader_asset(item)) | get_html_media_viewer(item.mime) }}
-						{% endif %}
+		{{ knp_pagination_render(gallerie) }}
+	</div>
+	<div class="row lightgallery">
+		{% for item in gallerie %}
+			<div class="col-lg-3 col-md-4 col-xs-12 mb-4 p-2 text-center">
+				<div class="card shadow">
+					<div class="card-body p-2">
+						<div class="card-text text-center p-0 ">
+							{% if "image" in item.mime %}
+								<a href="{{ asset(vich_uploader_asset(item)) }}" data-toggle="lightbox" data-max-width="100%">
+									<img class="img-fluid" src="{{ asset(vich_uploader_asset(item)) | imagine_filter('gallery_thumbnail') }}"/>
+								</a>
+							{% elseif "video" in item.mime %}
+								{{ asset(vich_uploader_asset(item)) | get_html_media_viewer(item.mime) }}
+							{% endif %}
+						</div>
+					</div>
+
+
+					<div class="card-footer p-2 pb-3">
+						<p class="caption" style="margin:0">
+							<small>
+								{{item.submission.project.name}}
+								par
+								<i>{{item.submission.student.firstName}}
+									{{item.submission.student.lastName | first}}</i>.
+							</small>
+						</p>
 					</div>
 				</div>
-
-
-				<div class="card-footer p-2 pb-3">
-					<p class="caption" style="margin:0">
-						<small>
-						{{item.submission.project.name}}
-							par <i>{{item.submission.student.firstName}}
-								{{item.submission.student.lastName | first}}</i>.
-						</small>
-					</p>
-				</div>
 			</div>
-		</div>
 
 		{% endfor %}
-		</div>
+	</div>
 
-		<div class="col-12 mt-4 paginator-col-center">
+	<div class="col-12 mt-4 paginator-col-center">
 
-			{{ knp_pagination_render(gallerie) }}
-		</div>
-	{% endblock %}
+		{{ knp_pagination_render(gallerie) }}
+	</div>
+{% endblock %}
 
 {% block scripts %}
 	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
@@ -62,9 +63,7 @@
 {% block page_scripts %}
 	<script type="text/javascript">
 		$(document).ready(function () {
-$(".lightgallery").lightGallery({
-        selector: 'a'
-    })
-		});
+$(".lightgallery").lightGallery({selector: 'a'})
+});
 	</script>
 {% endblock %}
