@@ -26,7 +26,7 @@ class usersGalleryController extends AbstractController
 
 
 	/**
-	* @Route("/gallery/users/", name="teacher_users_gallery")
+	* @Route("/teacher/gallery/users/", name="teacher_users_gallery")
 	*/
 	public function index(
 		ClasseRepository $classeRopository

@@ -1,10 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block sidebar %}
-	{{ include("student/_sidebar.html.twig") }}
+	{% if is_granted('ROLE_TEACHER') %}
+		{{ include("teacher/_sidebar.html.twig") }}
+	{% else %}
+		{{ include("student/_sidebar.html.twig") }}
+	{% endif %}
 {% endblock %}
 {% block topbar %}
-	{{ include("student/_topbar.html.twig") }}
+	{% if is_granted('ROLE_TEACHER') %}
+		{{ include("teacher/_topbar.html.twig") }}
+	{% else %}
+		{{ include("student/_topbar.html.twig") }}
+	{% endif %}
 {% endblock %}
 
 {% block title %}Gallerie
