@@ -39,7 +39,6 @@ class manageController extends AbstractController
 	*/
 	public function index(
 		$course_id = false, 
-		ProjectRepository $projectRepository, 
 		Request $request, 
 		CourseRepository $courseRepository,
 		UserInterface $teacher
