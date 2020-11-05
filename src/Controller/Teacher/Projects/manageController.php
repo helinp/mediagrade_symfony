@@ -138,6 +138,7 @@ class manageController extends AbstractController
 				return $this->redirectToRoute('teacher_projects_manage');
 			}
 
+		$this->data['h1_title'] = $h1_title;
 		$this->data['form'] = $form->createView();
 
 		return $this->render('teacher/projects/manage/edit.html.twig', $this->data);
