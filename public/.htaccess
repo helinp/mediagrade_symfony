@@ -64,3 +64,8 @@ DirectoryIndex index.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+RewriteEngine On
+<FilesMatch "\.(jpe?g|png|gif|mp4)$">
+    ErrorDocument 404 "/img/indisponible.png"
+ </FilesMatch>
