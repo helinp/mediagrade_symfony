@@ -7,7 +7,8 @@
 	{{ include("teacher/_topbar.html.twig") }}
 
 	{% block topbar_widget %}
-		<div class="container-fluid row">
+		<div class="container-fluid">
+		<div class="row">
 			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
 				<div class="form-group">
 					{{form_widget(courses_form)}}
@@ -17,6 +18,7 @@
 				<div class="form-group">
 					{{form_widget(school_year_form)}}
 				</div>
+			</div>
 			</div>
 
 		</div>
