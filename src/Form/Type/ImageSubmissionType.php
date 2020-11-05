@@ -2,20 +2,12 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
-use App\Entity\Submission;
 use App\Entity\SubmissionFile;
-use App\Entity\SelfAssessmentAnswer;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Constraints\File;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ImageSubmissionType extends AbstractType
 {

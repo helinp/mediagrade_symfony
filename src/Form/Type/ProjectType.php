@@ -2,11 +2,9 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use App\Form\Type\SelfAssessmentIdsType;
 use App\Form\Type\fileExtensionType;
 use App\Form\Type\AssessmentGridType;
 
@@ -14,7 +12,6 @@ use App\Entity\Project;
 use App\Entity\Term;
 use App\Entity\Course;
 use App\Entity\Skill;
-use App\Entity\Assessment;
 use App\Entity\selfAssessmentQuestion;
 use App\Entity\AssessmentType;
 
@@ -24,7 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\Security;
 
