@@ -45,7 +45,7 @@ class AttendancesGridType extends AbstractType
 			'format' => 'yyyy-MM-dd'
 		])
 		->add('save', SubmitType::class, [
-			'attr' => ['class' => 'btn btn-danger'],
+			'attr' => ['class' => 'btn btn-success'],
 			'label' => 'Sauver les modifications'
 		])
 
