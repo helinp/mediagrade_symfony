@@ -22,60 +22,60 @@
 						<table class="table table-responsive table-sm table-hover">
 							<thead>
 								<tr>
-									<th>
-									</th>
+									<th></th>
 									{% for assessment in assessments %}
-									<th colspan="2">
-										{{assessment.criterion.name}}
-									</th>
+										<th colspan="2">
+											{{assessment.criterion.name}}
+										</th>
 									{% endfor %}
 								</tr>
 								<tr>
 									<th>
 										Élève
-										
+
 									</th>
 									{%for assessment in assessments %}
-									<th>Évaluation (/{{assessment.maxVote}})</th>
-									<th>Commentaire</th>
+										<th>Évaluation (/{{assessment.maxVote}})</th>
+										<th>Commentaire</th>
 									{% endfor %}
 								</tr>
 							</thead>
 							<tbody>
 
 								{% for student in form.students %}
-								
-											
-									<tr>
-									<td>
-							{{students[loop.index0].lastName | upper}} {{students[loop.index0].firstName}}
-									</td>
-								{% for result in student.results %}
-									
-										
-												<td>
-											{{form_widget(result.userVote)}}
-												</td>
-												<td>
-											{{form_widget(result.comment)}}
-											
-												</td>
 
-											
-										
-									{% endfor %}
-										</tr>
-									{% endfor %}
-								</tbody>
+
+									<tr>
+										<td>
+											{{students[loop.index0].lastName | upper}}
+											{{students[loop.index0].firstName}}
+										</td>
+										{% for result in student.results %}
+
+
+											<td>
+											{% if result.userVote is defined %}
+												{{form_widget(result.userVote)}}
+											{% else %}
+												{{form_widget(result.userLetter)}}
+											{% endif %}
+											</td>
+											<td>
+												{{form_widget(result.comment)}}
+
+											</td>
+
+
+										{% endfor %}
+									</tr>
+								{% endfor %}
 							</tbody>
-						</table>
-						{{ form_widget(form.save) }}
-						{{ form_end(form) }}
-					</div>
+						</tbody>
+					</table>
+					{{ form_widget(form.save) }}
+					{{ form_end(form) }}
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-{% endblock %}
+</div>{% endblock %}
