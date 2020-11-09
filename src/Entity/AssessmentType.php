@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AssessmentType
 {
+
+    const TYPE_FORMATIVE = 1;
+    const TYPE_CERTIFICATIVE = 2;
+    const TYPE_DIAGNOSTIC = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
