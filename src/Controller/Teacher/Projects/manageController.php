@@ -128,7 +128,7 @@ class manageController extends AbstractController
 				$project->setSchoolYear(\App\Utils\SchoolYear::getSchoolYear());
 				$project->setActivated(TRUE);
 				$project->setTeacher($teacher);
-				if(empty($project->getExternal)) $project->setExternal(FALSE);
+				if(empty($project->getExternal())) $project->setExternal(FALSE);
 
 				$em->persist($project);
 				$em->flush();
@@ -182,7 +182,7 @@ class manageController extends AbstractController
 			$project->setSchoolYear(\App\Utils\SchoolYear::getSchoolYear());
 
 			// Default values
-			if(empty($project->getExternal)) $project->setExternal(FALSE);
+			if(empty($project->getExternal())) $project->setExternal(FALSE);
 
 			// Relink assessments 
 			foreach($assessments as $assessment)
