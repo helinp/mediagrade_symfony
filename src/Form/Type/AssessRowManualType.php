@@ -24,6 +24,7 @@ class AssessRowManualType extends AbstractType
 			if($result->getAssessment()->getGradingSystem()->getId() === 1 )
 			{
 				$form->add('userLetter', ChoiceType::class, [
+					'required' => false,
 					'choices'  => [
 						'Acquis' => 'A',
 						'En Aquisition' => 'EA',
