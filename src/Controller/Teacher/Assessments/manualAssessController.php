@@ -159,10 +159,18 @@ class manualAssessController extends AbstractController
 								else
 								{
 									$numeric_result = LettersVote::getNumericFromLetterVote($result->getUserLetter());
-									$customVote = CustomRound::customVote($numeric_result, $result->getMaxVote());
 
-									$customVote = CustomRound::CustomRound($customVote);
-									$result->setUserVote($customVote + .0);
+									
+									if($numeric_result === null)
+									{
+										$result->setUserVote(null);
+									}
+									else
+									{
+										$customVote = CustomRound::customVote($numeric_result, $result->getMaxVote());
+										$customVote = CustomRound::CustomRound($customVote);
+										$result->setUserVote($customVote + .0);
+									}
 
 								}
 								$em->persist($result);
