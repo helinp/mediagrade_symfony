@@ -19,6 +19,9 @@ class LettersVote
 		  case 'NR':
 			  return 0;
 			  break;
+		  default:
+			  return null;
+			  break;
 		}
 	}
 
