@@ -92,6 +92,12 @@ class GradeExtension extends AbstractExtension
 		  case 'NR':
 			  return 'red';
 			  break;
+		  case 'ABS':
+			  return 'na';
+			  break;
+		  case 'NE':
+			  return 'na';
+			  break;
 		}
 	}	static public function getTextFromLetterVote($letter)
 	{
@@ -107,6 +113,12 @@ class GradeExtension extends AbstractExtension
 			  break;
 		  case 'NR':
 			  return 'Non remis';
+			  break;
+		  case 'ABS':
+			  return 'Absent';
+			  break;
+		  case 'NE':
+			  return 'Non évalué';
 			  break;
 		}
 	}
