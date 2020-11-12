@@ -123,25 +123,30 @@
 											<td>
 											{% if(assessment.gradingSystem.id == 3) %}
 												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
-												{{result.userLetter}}
+												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">{{result.userLetter}}
 												</span>
-												<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
-
+												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+													<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+												</a>
 											{% elseif (assessment.gradingSystem.id == 1)%}
 												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
 												{{result.userLetter}}
 												</span>
-												<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+													<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+												</a>
 											
 											{% else %}
-												<span class="align-middle number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.userVote | custom_round}}</span>
+												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+													<span class="align-middle number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.userVote | custom_round}}</span>
+												</a>
 											{% endif %}
 											</td>
 										{% endif %}
 									{% endfor %}
 									{% if result_test is null %}
 										<td>
-											--
+											<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">--</a>
 										</td>
 									{% endif %}
 								{% endfor %}
