@@ -8,7 +8,7 @@ use Twig\TwigFunction;
 use Symfony\Component\Form\FormFactoryInterface;
 
 
-class AttendanceExtension extends AbstractExtension
+class FrenchExtension extends AbstractExtension
 {
 
 	public function __construct(FormFactoryInterface $formFactory)
@@ -24,31 +24,43 @@ class AttendanceExtension extends AbstractExtension
 			// Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
 			// new TwigFilter('d', [$this, 'd']),
 		//	new TwigFilter('custom_round', [$this, 'customRound']),
-		new TwigFilter('get_color_from_status', [$this, 'getColorFromStatus']),
 		];
 	}
 
 	public function getFunctions(): array
 	{
 		return [
-			new TwigFunction('get_color_from_attendance_percentage', [$this, 'getColorFromPercentage']),
+			new TwigFunction('numbers_french', [$this, 'getNumberAbbr'], ['is_safe' => ['html']]),
 		];
 	}
 
-	static public function getColorFromStatus($status)
+	static public function getNumberAbbr($number, $masculin = FALSE, $pluriel = FALSE)
 	{
-		switch ($status) {
-			case 'P':
-				return "green";
+		$temp = '';
+
+		switch ($number) {
+			case '1':
+			case 1:
+				$temp = "<sup>er";
 				break;
-			case 'R':
-				return "orange";
-				break;
-			case 'A':
 			default:
-				return "red";
+				$temp = "<sup>e";
 				break;
 		}
+
+		if($masculin === FALSE AND $number == 1)
+		{
+			$temp = '<sup>re';
+		}
+		
+		if($pluriel === TRUE)
+		{
+			$temp .= 's';
+
+		}
+
+		return $number . $temp . '</sup>';
+
 	}
 
 	static public function getColorFromPercentage($percentage)

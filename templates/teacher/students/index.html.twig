@@ -108,7 +108,7 @@
 						<table id="old-users-table" class="datatables table table-sm table-bordered table-hover table-stripped">
 							<thead>
 								<tr>
-								
+
 									<th>Nom</th>
 									<th>Prénom</th>
 									<th>Nom d'utilisateur</th>
@@ -163,46 +163,89 @@
 
 {% block page_scripts %}
 	{{ parent() }}
-	<script src="{{ asset('js/projects-management.min.js') }}"></script>
+	<script src="{{ asset('js/projects-management.min.js') }}">
+	</script>
 
 	<script>
-		$('body').on('click', '[data-toggle="modal"]', function () {
-$($(this).data("target") + ' .modal-body').load($(this).data("remote"));
+		$('body').on('click', '[data-toggle="modal"]', function() {
+    $($(this).data("target") + ' .modal-body').load($(this).data("remote"));
 });
+	</script>
 
 // Datatables
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+ <script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
+	<script>
 
 var table = $('#users-table').DataTable({
+    "order": [],
+    "paging": true,
+    "language": {
+        "url": "dataTables.french.lang"
+    },
+    "field": {
+        "className": 'form-control bg-light border-0 small'
+    },
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'pdf'
+    ],
 
-"language": {
-"url": "dataTables.french.lang"
-},
-"field": {
-"className": 'form-control bg-light border-0 small'
-}
+    buttons: [{
+        extend: 'print',
+        className: 'ml-4 btn-sm btn-info',
+        text: '<i class="fas fa-print"></i> Vue d\'impression',
+        orientation: 'landscape',
+        autoPrint: false
+    }, {
+        extend: 'excel',
+        className: 'ml-2 btn-sm btn-info',
+        text: '<i class="far fa-file-excel"></i> Excel',
+        orientation: 'landscape',
+        autoPrint: false
+    }]
 });
 
 var tableb = $('#old-users-table').DataTable({
-"order": [],
-"paging": true,
-"language": {
-"url": "dataTables.french.lang"
-},
-"field": {
-"className": 'form-control bg-light border-0 small'
-}
+    "order": [],
+    "paging": true,
+    "language": {
+        "url": "dataTables.french.lang"
+    },
+    "field": {
+        "className": 'form-control bg-light border-0 small'
+    },
+    dom: 'Bfrtip',
+    buttons: [
+        'excel', 'pdf'
+    ],
+
+    buttons: [{
+        extend: 'print',
+        className: 'ml-4 btn-sm btn-info',
+        text: '<i class="fas fa-print"></i> Vue d\'impression',
+        orientation: 'landscape',
+        autoPrint: false
+    }, {
+        extend: 'excel',
+        className: 'ml-2 btn-sm btn-info',
+        text: '<i class="far fa-file-excel"></i> Excel',
+        orientation: 'landscape',
+        autoPrint: false
+    }]
 });
 
 
-$(':input').on('propertychange input', (function () {
+$(':input').on('propertychange input', (function() {
 
-var lastName = $("#new_student_lastName").val();
-var firstName = $("#new_student_firstName").val();
-var userName = firstName + "." + lastName;
-userName = userName.toLowerCase();
-userName = userName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    var lastName = $("#new_student_lastName").val();
+    var firstName = $("#new_student_firstName").val();
+    var userName = firstName + "." + lastName;
+    userName = userName.toLowerCase();
+    userName = userName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-$("#new_student_userName").val(userName);
+    $("#new_student_userName").val(userName);
 }));
 	</script>
 

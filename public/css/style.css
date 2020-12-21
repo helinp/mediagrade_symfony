@@ -276,3 +276,15 @@ th.rotate > div > span {
 .paginator-col-center nav ul {
   justify-content: center !important;
 }
+
+/* Datatables */
+.DTFC_LeftBodyLiner {
+  overflow-x: hidden!important;
+  background: white;
+  }
+.DTFC_LeftBodyLiner table thead {
+  height: 5px!important;
+  }
+.dataTables_scrollBody table thead tr{
+  background: white !important;
+  }

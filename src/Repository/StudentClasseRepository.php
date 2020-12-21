@@ -22,30 +22,30 @@ class StudentClasseRepository extends ServiceEntityRepository
 
 	 public function getAttendanceStatistics($school_year)
  	{
- 		return $this->createQueryBuilder('s')
- 		->select('u.firstName, u.lastName, c.name AS classe,
-			COUNT(a.id) AS total,
-			SUM(a.isAbsent) AS absent,
-			SUM(a.isPresent) AS present,
-			SUM(a.isLate) AS late,
-			(SUM(a.isPresent) / COUNT(a.status)) * 100 AS percentage
-		')
-		->join('s.student', 'u')
-		->leftJoin('u.attendances', 'a')
-		->leftJoin('a.attendanceGrid', 'g')
-		->leftJoin('s.classe', 'c')
- 		->andWhere('s.schoolyear = :val')
-		->setParameter('val', $school_year)
- 		->andWhere('g.schoolYear = :val')
- 		->setParameter('val', $school_year)
- 		->groupBy('u.id')
-		->orderBy('c.name', 'ASC')
-		->AddOrderBy('u.lastName', 'ASC')
-		->AddOrderBy('u.firstName', 'ASC')
- 		->getQuery()
- 		->getResult()
- 		;
- 	}
+        return $this->createQueryBuilder('s')
+        ->select('u.firstName, u.lastName, c.name AS classe,
+           COUNT(a.id) AS total,
+           SUM(a.isAbsent) AS absent,
+           SUM(a.isPresent) AS present,
+           SUM(a.isLate) AS late,
+           (SUM(a.isPresent) / COUNT(a.status)) * 100 AS percentage
+       ')
+       ->join('s.student', 'u')
+       ->leftJoin('u.attendances', 'a')
+       ->leftJoin('a.attendanceGrid', 'g')
+       ->leftJoin('s.classe', 'c')
+        ->andWhere('s.schoolyear = :val')
+       ->setParameter('val', $school_year)
+        ->andWhere('g.schoolYear = :val')
+        ->setParameter('val', $school_year)
+        ->groupBy('u.id')
+       ->orderBy('c.name', 'ASC')
+       ->AddOrderBy('u.lastName', 'ASC')
+       ->AddOrderBy('u.firstName', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 
     // /**
     //  * @return StudentClasse[] Returns an array of StudentClasse objects
