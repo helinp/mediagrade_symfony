@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+	{{ include("teacher/_sidebar.html.twig") }}
+{% endblock %}
+{% block topbar %}
+	{{ include("teacher/_topbar.html.twig") }}
+
+	{% block topbar_widget %}
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+					<div class="form-group">
+						{{form_widget(students_form)}}
+					</div>
+				</div>
+				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+					<div class="form-group">
+						{{form_widget(school_year_form)}}
+					</div>
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}
+{% endblock %}
+
+{% block title %}Résultats simplifiés
+{% endblock %}
+
+{% block body %}
+	<div class="results-overview-row col-12 card shadow border-left-primary h-100 py-2 mb-4">
+		<div class="card-body row">
+			<div class="col-12">
+				Veuillez choisir un élève.
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+$('#school_years_schoolYear').change(function () { 
+    params.set('school_year', $(this).val());
+    window.location.href = '?' + params.toString();
+});
+
+$('#students_topbar_id').change(function () { 
+    params.set('student_id', $(this).val());
+    window.location.href = '?' +  params.toString();
+});
+
+
+</script>
+{% endblock %}

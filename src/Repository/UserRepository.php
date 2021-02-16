@@ -51,7 +51,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
-
+    public function findAllStudentsQueryBuilder($school_year)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_STUDENT"%')
+            ->andWhere('sc.schoolyear = :val')
+            ->setParameter('val', $school_year)
+            ->leftJoin('u.studentClasses', 'sc')
+            ->leftJoin('sc.classe', 'c')
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('u.lastName', 'ASC')
+            ->addOrderBy('u.firstName', 'ASC');
+    }
+    
     public function findAllOldStudents($school_year)
     {
         return $this->createQueryBuilder('u')

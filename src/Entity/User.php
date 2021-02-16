@@ -232,6 +232,11 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    public function getDisplayName(): ?string
+    {
+        return mb_strtoupper($this->lastName) . ' ' .  $this->firstName;
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
