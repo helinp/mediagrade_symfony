@@ -47,13 +47,31 @@ class ProjectRepository extends ServiceEntityRepository
             ->setParameter('val3', $objDateTime)
 
             ->addOrderBy('c.name', 'ASC')
+            ->addOrderBy('p.term', 'DESC')
             ->addOrderBy('p.hardDeadline', 'DESC')
 
             ->getQuery()
             ->getResult();
     }
 
+    public function getProjectsForManageController($criterias)
+    {
 
+        $qb = $this->createQueryBuilder('p')
+        ->join('p.course', 'c')
+        ->addOrderBy('c.name', 'ASC')
+        ->addOrderBy('p.term', 'DESC')
+        ->addOrderBy('p.startDate', 'DESC')
+        ;
+
+        foreach($criterias as $key => $value)
+        {
+            $qb->andWhere('p.' . $key . ' = :val_' . $key)
+            ->setParameter('val_' . $key, $value);
+        }
+
+         return $qb->getQuery()->getResult();
+    }
     public function findByClasseAndSchoolyear($classe, $school_year)
     {
         return $this->createQueryBuilder('p')

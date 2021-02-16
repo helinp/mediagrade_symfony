@@ -8,17 +8,17 @@
 
 	{% block topbar_widget %}
 		<div class="container-fluid">
-		<div class="row">
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-				<div class="form-group">
-					{{form_widget(courses_form)}}
+			<div class="row">
+				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+					<div class="form-group">
+						{{form_widget(courses_form)}}
+					</div>
 				</div>
-			</div>
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-				<div class="form-group">
-					{{form_widget(school_year_form)}}
+				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+					<div class="form-group">
+						{{form_widget(school_year_form)}}
+					</div>
 				</div>
-			</div>
 			</div>
 
 		</div>
@@ -37,77 +37,89 @@
 			<i class="fas fa-file fa-sm text-white-50"></i>
 			Nouveau projet
 		</a>
-		{% for course in courses %}
-		{% if course.currentProjects | length > 0 %}
-			<div class="row mt-4 text-primary mb-2" style='border-bottom: 1px dashed lightgray'>
-				<div class="col">
-					<h3>{{ course.name }}</h3>
-				</div>
-			</div>
-			<div class="row">
-				{% for project in course.currentProjects %}
-					<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 p-2">
-						<div class="card shadow">
-							<div class="card-body">
-								<div class="card-text">
-									<div class="row mb-2 pb-1" style='border-bottom: 1px dashed lightgray'>
-										<div class="col mb-2">
-											<h5 class="m-0 font-weight-bold text-primary">{{project.name}}</h5>
-											<h6 class="m-0 font-weight-bold text-primary">
-												{{project.course.name}}
-												/
-												{{project.term.name}}
-											</h6>
-										</div>
+
+
+            {% set tmp_course = null %}
+		<div class="row">
+			{% for project in projects %}
+
+            {% if tmp_course != project.course.name %}
+                {% set tmp_course = project.course.name %}
+                        </div>
+                		<div class="row mt-4 text-primary mb-2" style='border-bottom: 1px dashed lightgray'>
+                            <div class="col">
+                                <h3>{{project.course.name}}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+			{% endif %}
+            
+            	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 p-2">
+					<div class="card shadow">
+						<div class="card-body">
+							<div class="card-text">
+								<div class="row mb-2 pb-1" style='border-bottom: 1px dashed lightgray'>
+									<div class="col mb-2">
+										<h5 class="m-0 font-weight-bold text-primary">{{project.name}}</h5>
+										<h6 class="m-0 font-weight-bold text-primary">
+											{{project.course.name}}
+											/
+											{{project.term.name}}
+										</h6>
 									</div>
 								</div>
-								<div class="card-text" style="min-height: 4em;">
-									<q>{{project.context}}</q>
-								</div>
 							</div>
-							<div class="card-footer">
-								<span class="badge badge-success mr-2" data-toggle="tooltip" data-placement="top" title="Évaluation {{project.assessmentType.description}}">{{project.assessmentType.name}}</span>
-
-								<span class="mr-2">
-									<i class="fas fa-play-circle"></i>
-									{{project.startDate|date("d/m")}}
-								</span>
-
-								<span class="mr-2">
-									<i class="fas fa-pause-circle"></i>
-									{{project.softDeadline|date("d/m")}}
-								</span>
-
-								<span class="mr-2">
-									<i class="fas fa-stop-circle"></i>
-									{{project.hardDeadline|date("d/m")}}
-								</span>
-
-								<a href="/teacher/projects/edit/{{project.id}}" class="btn btn-sm btn-secondary float-right">
-									<i class="fas fa-edit"></i>
-									Modifier</a>
-
+							<div class="card-text" style="min-height: 4em;">
+								<q>{{project.context}}</q>
 							</div>
 						</div>
-					</div>
+						<div class="card-footer">
+							<span class="badge badge-success mr-2" data-toggle="tooltip" data-placement="top" title="Évaluation {{project.assessmentType.description}}">{{project.assessmentType.name}}</span>
 
-				{% endfor %}
-			</div>
-		{% endif %}
-		{% endfor %}
+							<span class="mr-2">
+								<i class="fas fa-play-circle"></i>
+								{{project.startDate|date("d/m")}}
+							</span>
+
+							<span class="mr-2">
+								<i class="fas fa-pause-circle"></i>
+								{{project.softDeadline|date("d/m")}}
+							</span>
+
+							<span class="mr-2">
+								<i class="fas fa-stop-circle"></i>
+								{{project.hardDeadline|date("d/m")}}
+							</span>
+
+							<a href="/teacher/projects/edit/{{project.id}}" class="btn btn-sm btn-secondary float-right">
+								<i class="fas fa-edit"></i>
+								Modifier</a>
+
+						</div>
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+
 	</div>
 
 {% endblock %}
 {% block page_scripts %}
-	<script>
+<script>
 
+const params = new URLSearchParams(window.location.search);
 
-		{% set currentPath = path(app.request.attributes.get('_route'),
-                       app.request.attributes.get('_route_params')) %}
-
-$('#school_years_schoolYear').change(function () { // set the window's location property to the value of the option the user has selected
-window.location = '{{ currentPath }}?school_year=' + $(this).val();
+$('#school_years_schoolYear').change(function () { 
+    params.set('school_year', $(this).val());
+    window.location.href = '?' + params.toString();
 });
 
-	</script>
+$('#courses_topbar_id').change(function () { 
+    params.set('course_id', $(this).val());
+    window.location.href = '?' +  params.toString();
+});
+
+
+</script>
 {% endblock %}
