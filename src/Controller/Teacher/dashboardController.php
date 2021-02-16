@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\SchoolYear;
 
 use App\Repository\ProjectRepository;
+use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class dashboardController extends AbstractController
@@ -25,11 +26,9 @@ class dashboardController extends AbstractController
 	public function index(ProjectRepository $projectRepository, UserInterface $teacher)
 	{
 
-		//		array('schoolYear' => SchoolYear::getSchoolYear()),
-		$projects = $projectRepository->findBy(
-			array('teacher' => $teacher->getId(), 'schoolYear' => SchoolYear::getSchoolYear()),
-			array('course' => 'ASC', 'hardDeadline' => 'DESC')
-		);
+		$schoolYear = \App\Utils\SchoolYear::getSchoolYear();
+
+		$projects = $projectRepository->getCurrentProjects($teacher, $schoolYear);
 
 		$this->data['projects'] = $projects;
 		return $this->render('teacher/dashboard/index.html.twig', $this->data);
