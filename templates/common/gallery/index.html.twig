@@ -15,33 +15,32 @@
 	{% endif %}
 {% endblock %}
 
-{% block title %}Gallerie
+{% block page_title %}Gallerie
 {% endblock %}
 
 {% block body %}
 
-	<div class="col-12 mt-4 text-center paginator-col-center">
-
-		{{ knp_pagination_render(gallerie) }}
+	<div class="row">
+		<div class="col-md-12 mt-4 text-center paginator-col-center">
+			{{ knp_pagination_render(gallerie) }}
+		</div>
 	</div>
+
 	<div class="row lightgallery">
 		{% for item in gallerie %}
 			<div class="col-lg-3 col-md-4 col-xs-12 mb-4 p-2 text-center">
-				<div class="card shadow">
-					<div class="card-body p-2">
-						<div class="card-text text-center p-0 ">
-							{% if "image" in item.mime %}
-								<a href="{{ asset(vich_uploader_asset(item)) }}" data-toggle="lightbox" data-max-width="100%">
-									<img class="img-fluid" src="{{ asset(vich_uploader_asset(item)) | imagine_filter('gallery_thumbnail') }}"/>
-								</a>
-							{% elseif "video" in item.mime %}
-								{{ asset(vich_uploader_asset(item)) | get_html_media_viewer(item.mime) }}
-							{% endif %}
-						</div>
+				<div class="box">
+					<div class="box-body">
+						{% if "image" in item.mime %}
+							<a href="{{ asset(vich_uploader_asset(item)) }}" data-toggle="lightbox" data-max-width="100%">
+								<img class="img-responsive" src="{{ asset(vich_uploader_asset(item)) | imagine_filter('gallery_thumbnail') }}"/>
+							</a>
+						{% elseif "video" in item.mime %}
+							{{ asset(vich_uploader_asset(item)) | get_html_media_viewer(item.mime) }}
+						{% endif %}
 					</div>
 
-
-					<div class="card-footer p-2 pb-3">
+					<div class="box-footer p-2 pb-3">
 						<p class="caption" style="margin:0">
 							<small>
 								{{item.submission.project.name}}
@@ -53,22 +52,28 @@
 					</div>
 				</div>
 			</div>
-
 		{% endfor %}
 	</div>
 
-	<div class="col-12 mt-4 paginator-col-center">
-
-		{{ knp_pagination_render(gallerie) }}
+	<div class="row">
+		<div class="col-md-12 mt-4 text-center paginator-col-center">
+			{{ knp_pagination_render(gallerie) }}
+		</div>
 	</div>
 {% endblock %}
 
 {% block scripts %}
+	{{parent()}}
 	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 {% endblock %}
-{% block stylesheets %}<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
+
+{% block stylesheets %}
+	{{parent()}}
+	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
 {% endblock %}
+
 {% block page_scripts %}
+	{{parent()}}
 	<script type="text/javascript">
 		$(document).ready(function () {
 $(".lightgallery").lightGallery({selector: 'a'})

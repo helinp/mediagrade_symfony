@@ -1,58 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestion des classes{% endblock %}
-
-{% block sidebar %}
-{{ include("teacher/_sidebar.html.twig") }}
+{% block page_title %}Gestion des classes
 {% endblock %}
-{% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
-
 
 {% block body %}
+	<div class="row">
+		<div class="col-xs-12 col mb-2">
+			<div class="box">
+				<div class="box-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nom court</th>
+								<th>Description</th>
+								<th>Modifier</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for classe in classes %}
+								<tr>
+									<td>{{ classe.name }}</td>
+									<td>{{ classe.description }}</td>
+									<td>
+										<a class="btn btn-sm btn-primary" href="{{ path('classes_edit', {'id': classe.id}) }}">
+											<i class="fas fa-edit"></i>
+										</a>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="4">no records found</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="box-footer">
+					<a class="btn btn-sm btn-primary" href="{{ path('classes_new') }}">
+						<i class="fas fa-plus-circle"></i>
+						Ajouter</a>
+				</div>
+			</div>
+		</div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom court</th>
-                <th>Description</th>
-                <th>Modifier</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for classe in classes %}
-            <tr>
-                <td>{{ classe.name }}</td>
-                <td>{{ classe.description }}</td>
-                <td>
-                    <a class="btn btn-sm btn-primary" href="{{ path('classes_edit', {'id': classe.id}) }}"> <i class="fas fa-edit"></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a class="btn btn-sm btn-primary" href="{{ path('classes_new') }}"><i class="fas fa-plus-circle"></i> Ajouter</a>
-
-{% endblock %}
-{% block page_scripts %}
-<script>
-var table = $('#table-skills').DataTable({
-	"lengthChange": false,
-	"paging": false,
-	"language": {
-			"url": "dataTables.french.lang"
-	},
-	"field": {
-		"className" : 'form-control bg-light border-0 small'
-	}
+	{% endblock %}
+	{% block page_scripts %}
+		<script>
+			var table = $('#table-skills').DataTable({
+"lengthChange": false,
+"paging": false,
+"language": {
+"url": "dataTables.french.lang"
+},
+"field": {
+"className": 'form-control bg-light border-0 small'
+}
 });
-
-
-</script>
-{% endblock %}
+		</script>
+	{% endblock %}

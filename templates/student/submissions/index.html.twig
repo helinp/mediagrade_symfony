@@ -1,13 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("student/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("student/_topbar.html.twig") }}
-{% endblock %}
-
-{% block title %}Remises des projets
+{% block page_title %}Remises des projets
 {% endblock %}
 
 {% block body %}
@@ -15,12 +8,14 @@
 
 	{% if projects | length == 0 %}
 
-		<div class="col-12">
-			<div class="card shadow border-left-primary h-100 py-2">
-				<div class="card-body">
+		<div class="row">
+			<div class="col-xs-12 col mb-2">
+				<div class="box">
+					<div class="box-body">
 
-					Aucun projet n'a encore été mis en ligne par le professeur.
+						Aucun projet n'a encore été mis en ligne par le professeur.
 
+					</div>
 				</div>
 			</div>
 		</div>
@@ -29,111 +24,120 @@
 
 	{% for project in projects %}
 
-	{% if project.external == false %}
-		<div class="results-overview-row col-12 card shadow border-left-primary h-100 py-2 mb-4">
-			<div class="card-body row">
-				<div class="col-12">
-					<h5 class="font-weight-bold text-primary text-uppercase">
-						{{project.course.name}}
-						/
-						{{project.name}}
-						<br/><small>{{project.term.description}}
-							/
-							{{project.assessmentType.description}}</small>
-					</h5>
-					<p class="text-context">{{project.context}}</p>
-				</div>
+		{% if project.external == false %}
+			<div class="row">
+				<div class="col-xs-12 col mb-2">
+					<div class="box">
+						<div class="box-header">
+							<h3>
+								{{project.course.name}}
+								/
+								{{project.name}}
+								<br/><small>{{project.term.description}}
+									/
+									{{project.assessmentType.description}}</small>
+							</h3>
+						</div>
+						<div class="box-body">
+							<p class="text-context">"{{project.context}}"</p>
 
-				{% set submitted = false %}
-				{% for submission in submissions %}
+							<span class="text-primary ml-3">
+								<i class="fas fa-calendar-times"></i>
+								À remettre pour le
+								<b>{{project.softDeadline|format_date('full', '', 'Europe/Brussels' )}}</b>.
+							</span>
 
-					{% for submissionFile in submission.submissionFiles  %}
-						{% if submission.project.id == project.id %}
-							{% set submitted = true %}
-						{% endif %}
-					{% endfor %}
+						</div>
+						<div class="box-body">
+							{% set submitted = false %}
+							{% for submission in submissions %}
 
-				{% endfor %}
+								{% for submissionFile in submission.submissionFiles  %}
+									{% if submission.project.id == project.id %}
+										{% set submitted = true %}
+									{% endif %}
+								{% endfor %}
 
-				{% if project.hardDeadline|date("ymd") >= "now"|date("ymd") %}
-					<div class="col-12">
-						<div class="row">
-							<div class="col-xl-3 col-md-12">
-								{% if submitted == true and project.softDeadline|date("ymd") >= "now"|date("ymd") %}
+							{% endfor %}
 
-									<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-success btn-sm mr-2">
-										<i class="fas fa-file-upload"></i>
-										Remettre à nouveau
-									</a>
-								{% elseif project.softDeadline|date("ymd") >= "now"|date("ymd") %}
-									<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-warning btn-sm mr-2">
-										<i class="fas fa-file-upload"></i>
-										Remettre
-									</a>
-								{% elseif submitted == false %}
-									<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-danger btn-sm">
-										<i class="fas fa-file-upload"></i>
-										Remettre en retard
-									</a>
+							{% if project.hardDeadline|date("ymd") >= "now"|date("ymd") %}
+								<div class="col-12">
+									<div class="row">
+										<div class="col-xl-3 col-md-12">
+											{% if submitted == true and project.softDeadline|date("ymd") >= "now"|date("ymd") %}
+
+												<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-success btn-sm mr-2">
+													<i class="fas fa-file-upload"></i>
+													Remettre à nouveau
+												</a>
+											{% elseif project.softDeadline|date("ymd") >= "now"|date("ymd") %}
+												<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-warning btn-sm mr-2">
+													<i class="fas fa-file-upload"></i>
+													Remettre
+												</a>
+											{% elseif submitted == false %}
+												<a href="{{path("student_submit", {"project_id":project.id})}}" class="btn btn-danger btn-sm">
+													<i class="fas fa-file-upload"></i>
+													Remettre en retard
+												</a>
+											{% endif %}
+
+										</div>
+									</div>
+								</div>
+
+							{% endif %}
+
+							{% set evalue = 0 %}
+							{% for assessment in project.assessments %}
+								{% for result in assessment.results %}
+									{% if result.student == student %}
+										{% set evalue = 1 %}
+
+									{% endif %}
+								{% endfor %}
+							{% endfor %}
+
+							<div class="box-footer">
+								{% if submitted == false and project.external == false %}
+
+									<span class="label label-danger">Non remis</span>
+
+
+								{% elseif submitted == true and project.external == false %}
+									<span class="label label-success">Remis</span>
+								{% elseif  project.external == true %}
+									<span class="label  label-success">Évaluation écrite</span>
+								{% endif %}
+
+								{% if evalue == 1 %}
+									<span class="label label-info">Évalué</span>
 								{% endif %}
 
 							</div>
 						</div>
+
+
 					</div>
-
 				{% endif %}
+			{% endfor %}
+		{% endblock %}
+		{% block scripts %}
+			{{parent()}}
+			<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
+		{% endblock %}
 
-				{% set evalue = 0 %}
-				{% for assessment in project.assessments %}
-					{% for result in assessment.results %}
-						{% if result.student == student %}
-							{% set evalue = 1 %}
+		{% block stylesheets %}
+			{{parent()}}
+			<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
+		{% endblock %}
 
-						{% endif %}
-					{% endfor %}
-				{% endfor %}
-
-				<div class="card-body dashed-top-border pb-0">
-					{% if submitted == false and project.external == false %}
-
-						<span class="badge badge-danger">Non remis</span>
-						<span class="text-primary ml-3">
-							<i class="fas fa-calendar-times"></i>
-							À remettre pour le
-							<b>{{project.softDeadline|format_date('full', '', 'Europe/Brussels' )}}</b>.
-						</span>
-
-					{% elseif submitted == true and project.external == false %}
-						<span class="badge badge-success">Remis</span>
-					{% elseif  project.external == true %}
-						<span class="badge  badge-success">Évaluation écrite</span>
-					{% endif %}
-
-					{% if evalue == 1 %}
-						<span class="badge badge-info">Évalué</span>
-					{% endif %}
-
-				</div>
-			</div>
-
-
-		</div>
-		{% endif %}
-	{% endfor %}
-{% endblock %}
-{% block scripts %}
-	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
-{% endblock %}
-
-{% block stylesheets %}
-	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
-{% endblock %}
-
-{% block page_scripts %}
-	<script type="text/javascript">
-		$(document).ready(function () {
+		{% block page_scripts %}
+			{{parent()}}
+			<script type="text/javascript">
+				$(document).ready(function () {
 $(".lightgallery").lightGallery();
 });
-	</script>
+			</script>
 
-{% endblock %}
+		{% endblock %}

@@ -29,14 +29,9 @@ body ::-webkit-scrollbar {
   margin-top: 40px;
 }
 
-.card {
-  overflow-y: auto;
-}
-
 .card-overflow {
   max-height: none !important;
 }
-
 
 @media (min-width: 768px) {
   .ui.vertical.menu.sidebar-menu {
@@ -95,7 +90,7 @@ body ::-webkit-scrollbar {
   text-align: center;
   color: white;
   vertical-align: middle;
-  line-height: 1.5rem;
+  line-height: 2.4rem;
   font-size: small;
 }
 
@@ -171,6 +166,45 @@ body ::-webkit-scrollbar {
   background-size: 1.1em;
 }
 
+/* BOXES */
+.box.box-solid.box-orange {
+  border: 1px solid #f4aa1b;
+}
+
+.box.box-solid.box-orange > .box-header,
+.bg-orange {
+  color: #fff!important;
+  background-color: #f4aa1b!important;;
+}
+.box.box-solid.box-red {
+  border: 1px solid #e61806;
+}
+
+.box.box-solid.box-red > .box-header,
+.bg-red  {
+  color: #fff!important;
+  background-color: #e61806!important;;
+}
+.box.box-solid.box-green {
+  border: 1px solid #56d90d;
+}
+
+.box.box-solid.box-green > .box-header,
+.bg-green {
+  color: #fff!important;
+  background-color: #56d90d!important;
+}
+.box.box-solid.box-blue {
+  border: 1px solid #2b4cff;
+}
+
+.box.box-solid.box-blue > .box-header,
+.bg-blue {
+  color: #fff!important;
+  background-color: #2b4cff!important;;
+}
+
+
 /******* GRADEBOOK ***************/
 
 .gradebook_col_1 {
@@ -184,7 +218,9 @@ body ::-webkit-scrollbar {
   font-size: small;
 }
 
-#table-gradebook tbody tr td {
+#table-gradebook thead tr:first-child th,
+#table-gradebook_wrapper > table > thead > tr:first-child > th {
+  min-width: 10em;
 }
 #table-gradebook {
   width: auto !important;
@@ -229,11 +265,6 @@ th.rotate > div > span {
   border-top: 1px solid lightgray;
 }
 
-/******* Student Dashboard ***********/
-.results-board div {
-  border-radius: 0.35rem;
-}
-
 /********* TOOLTIPS *****************/
 
 /*************/
@@ -252,9 +283,6 @@ th.rotate > div > span {
   overflow-y: auto;
 }
 
-
-
-
 .accordion-toggle:before {
   font-family: "Font Awesome 5 Free";
   font-weight: bolder;
@@ -266,11 +294,9 @@ th.rotate > div > span {
   content: "\f078";
 }
 
-.table-max-height
-{
-	overflow-y: auto;
-	max-height: 25em;
-
+.table-max-height {
+  overflow-y: auto;
+  max-height: 20em;
 }
 
 .paginator-col-center nav ul {
@@ -279,12 +305,70 @@ th.rotate > div > span {
 
 /* Datatables */
 .DTFC_LeftBodyLiner {
-  overflow-x: hidden!important;
+  overflow-x: hidden !important;
   background: white;
-  }
+}
 .DTFC_LeftBodyLiner table thead {
-  height: 5px!important;
-  }
-.dataTables_scrollBody table thead tr{
+  height: 5px !important;
+}
+.dataTables_scrollBody table thead tr {
   background: white !important;
-  }
+}
+
+/* OVERRIDES*/
+
+.box-header h3 {
+  color: #e74a3b;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  font-size: 2rem;
+  margin-top: 0.1em;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.box-header h4 {
+  font-weight: 600 !important;
+  font-size: 1.4em;
+  margin-top: 0.1em;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-check-inline {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 0;
+  margin-right: 0.75rem;
+}
+
+/* UTILS */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+input[type="date"].form-control, input[type="datetime-local"].form-control, input[type="month"].form-control, input[type="time"].form-control {
+  line-height: inherit;
+}
+
+/* LOGIN */
+.login-page, .register-page {
+  background: #1454d5;
+}
+
+body.login-page .login-logo {
+  padding-top: 0;
+  margin-bottom: 0;
+}

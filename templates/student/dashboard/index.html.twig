@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tableau de bord
+{% block page_title %}Tableau de bord
 {% endblock %}
 
 {% block sidebar %}
@@ -12,62 +12,61 @@
 
 {% block body %}
 
-	<!-- A corriger-->
-	<div class="col-12 mb-4">
-		<div class="card shadow border-left-primary h-100 py-2">
-			<div class="card-body">
-				<div class="font-weight-bold text-uppercase mb-1">
-					Résultats de l'année
+	<div class="row">
+		<div class="col-md-12 mb-4">
+			<div class="box box-primary">
+				<div class="box-header">
+					<h3>
+						Résultats de l'année
+					</h3>
 				</div>
-				<div class="d-flex justify-content-center text-center results-board">
-					{% for result in terms_results %}
-						<div class="p-2 m-2">
+				<div class="box-body">
 
-							<div class="card">
-								<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
-									<big>{{ result.description }}</big>
-								</div>
+					<div class="row">
+						{% for result in terms_results %}
+							<div class="col-md-3">
+								<div class="box with-border box-{{get_color_from_percentage(result.percentage)}} box-solid">
+									<div class="box-header">
+										<h4>{{ result.description }}</h4>
+									</div>
+									<div class="box-body">
+										<div class="inner text-center">
+											{{ result.percentage | custom_round }}%
+											"{{ get_title_from_percentage(result.percentage) }}"
+										</div>
+									</div>
+									<div class="box-body">
+										{% for t_result in sg_results[result.term_id] %}
 
-								<div class="card-body card-body pb-0">
-									<h5 class="card-text">"{{ get_title_from_percentage(result.percentage) }}"</h5>
-									{{ result.percentage | custom_round }}
-									%
-								</div>
-								<div class="d-flex flex-md-row flex-column pt-0">
-
-									{% for t_result in sg_results[result.term_id] %}
-										<div class="p-2 m-2">
-
-											<div class="card">
-												<div class="card-header py-2 text-white gradebook-lsu-{{get_color_from_percentage(t_result.percentage)}}">
-													{{ t_result.name }}
-												</div>
-
-												<div class="card-body py-2">
-													{{ t_result.percentage | custom_round }}&nbsp;%
+											<div class="progress-group">
+												<span class="progress-text">{{ t_result.name }}</span>
+												<span class="progress-number">
+													<b>{{ t_result.percentage | custom_round }}</b>%</span>
+												<div class="progress sm">
+													<div class="progress-bar progress-bar-{{get_color_from_percentage(t_result.percentage)}}" style="width: {{ t_result.percentage | custom_round }}%"></div>
 												</div>
 											</div>
 
-										</div>
-									{% endfor %}
-								</div>
-							</div>
 
-						</div>
-					{% endfor %}
+										{% endfor %}
+									</div>
+
+								</div>
+
+							</div>
+						{% endfor %}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
 
-	<div class="col-12 col-md-6  mb-4">
-		<div class="card shadow border-left-primary h-100 py-2">
-			<div class="card-body">
-				<div class="font-weight-bold text-uppercase mb-1">
-					Projets en cours
-				</div>
-				<div class="d-flex results-board">
+		<div class="col-12 col-md-6  mb-4">
+			<div class="box box-primary">
+				<div class="box-body">
+					<div class="font-weight-bold text-uppercase mb-1">
+						Projets en cours
+					</div>
 					<table class="table table-responsive-sm table-sm">
 						<thead>
 							<tr>
@@ -91,49 +90,48 @@
 						</tbody>
 					</table>
 
+
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	{% if attendance is not empty %}
-		<div class="col-12 col-md-6 mb-4">
-			<div class="card shadow border-left-primary h-100 py-2">
-				<div class="card-body">
-					<div class="font-weight-bold text-uppercase mb-1">
-						Taux de présence aux cours
-					</div>
-					<div class="d-flex justify-content-center text-center results-board">
+
+		{% if attendance is not empty %}
+			<div class="col-12 col-md-6 mb-4">
+				<div class="box box-primary">
+					<div class="box-body">
+						<div class="font-weight-bold text-uppercase mb-1">
+							Taux de présence aux cours
+						</div>
 						<div class="progress-student">
 							<div class="progress-bar" role="progressbar" style="background-color:{{get_color_from_attendance_percentage(attendance.percentage | custom_round)}};width: {{attendance.percentage | custom_round}}%;" aria-valuenow="{{attendance.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
 								{{attendance.percentage | custom_round}}%
 							</div>
 						</div>
-					</div>
-					<table class="table table-responsive-sm table-sm table-bordered mt-2">
-						<tr class="text-center">
-							<td>Présences:
-								{{attendance.present}}</td>
-							<td>Retards:
-								{{attendance.late}}</td>
-							<td>Absences:
-								{{attendance.absent}}</td>
-						</tr>
-					</table>
-					<table class="table table-responsive-sm  table-sm table-hover table-bordered mt-2">
-						{% for attendanceR in attendances %}
-							<tr>
-								<td>{{attendanceR.date | format_date('full', '', 'Europe/Brussels' ) | capitalize}}</td>
-								<td class="text-center">{{attendanceR.status}}</td>
+
+						<table class="table table-responsive-sm table-sm table-bordered mt-2">
+							<tr class="text-center">
+								<td>Présences:
+									{{attendance.present}}</td>
+								<td>Retards:
+									{{attendance.late}}</td>
+								<td>Absences:
+									{{attendance.absent}}</td>
 							</tr>
-						{% endfor %}
-					</table>
+						</table>
+						<table class="table table-responsive-sm  table-sm table-hover table-bordered mt-2">
+							{% for attendanceR in attendances %}
+								<tr>
+									<td>{{attendanceR.date | format_date('full', '', 'Europe/Brussels' ) | capitalize}}</td>
+									<td class="text-center">{{attendanceR.status}}</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
-	{% endif %}
+		{% endif %}
 
 
-	<script></script>
+		<script></script>
 
-{% endblock %}
+	{% endblock %}

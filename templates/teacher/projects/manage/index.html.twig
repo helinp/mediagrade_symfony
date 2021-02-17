@@ -1,11 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-
 	{% block topbar_widget %}
 		<div class="container-fluid">
 			<div class="row">
@@ -23,9 +17,9 @@
 
 		</div>
 	{% endblock %}
-{% endblock %}
 
-{% block title %}Gestion des projets
+
+{% block page_title %}Gestion des projets
 {% endblock %}
 
 {% block body %}
@@ -37,44 +31,39 @@
 			<i class="fas fa-file fa-sm text-white-50"></i>
 			Nouveau projet
 		</a>
-
-
-            {% set tmp_course = null %}
+		{% set tmp_course = null %}
 		<div class="row">
 			{% for project in projects %}
 
-            {% if tmp_course != project.course.name %}
-                {% set tmp_course = project.course.name %}
-                        </div>
-                		<div class="row mt-4 text-primary mb-2" style='border-bottom: 1px dashed lightgray'>
-                            <div class="col">
-                                <h3>{{project.course.name}}</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-			{% endif %}
-            
-            	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 p-2">
-					<div class="card shadow">
-						<div class="card-body">
-							<div class="card-text">
-								<div class="row mb-2 pb-1" style='border-bottom: 1px dashed lightgray'>
-									<div class="col mb-2">
-										<h5 class="m-0 font-weight-bold text-primary">{{project.name}}</h5>
-										<h6 class="m-0 font-weight-bold text-primary">
-											{{project.course.name}}
-											/
-											{{project.term.name}}
-										</h6>
-									</div>
-								</div>
-							</div>
-							<div class="card-text" style="min-height: 4em;">
+				{% if tmp_course != project.course.name %}
+					{% set tmp_course = project.course.name %}
+				</div>
+				<div class="row mt-4 text-primary mb-2" style='border-bottom: 1px dashed lightgray; margin-bottom:1em'>
+					<div class="col-md-12">
+						<h2>{{project.course.name}}</h2>
+					</div>
+				</div>
+				<div class="row">
+				{% endif %}
+
+				<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 p-2">
+					<div class="box">
+						<div class="box-body">
+							<div class="box-header">
+								<h3>{{project.name}}<br />
+									<small>
+										{{project.course.name}}
+										/
+										{{project.term.name}}
+									</small>
+								</h3>
 								<q>{{project.context}}</q>
 							</div>
+							<div class="box-body" style="min-height: 4em;">
+							</div>
 						</div>
-						<div class="card-footer">
-							<span class="badge badge-success mr-2" data-toggle="tooltip" data-placement="top" title="Évaluation {{project.assessmentType.description}}">{{project.assessmentType.name}}</span>
+						<div class="box-footer">
+							<span class="label label-success mr-2" data-toggle="tooltip" data-placement="top" title="Évaluation {{project.assessmentType.description}}">{{project.assessmentType.name}}</span>
 
 							<span class="mr-2">
 								<i class="fas fa-play-circle"></i>
@@ -91,7 +80,7 @@
 								{{project.hardDeadline|date("d/m")}}
 							</span>
 
-							<a href="/teacher/projects/edit/{{project.id}}" class="btn btn-sm btn-secondary float-right">
+							<a href="/teacher/projects/edit/{{project.id}}" class="btn btn-secondary pull-right">
 								<i class="fas fa-edit"></i>
 								Modifier</a>
 
@@ -110,16 +99,14 @@
 
 const params = new URLSearchParams(window.location.search);
 
-$('#school_years_schoolYear').change(function () { 
-    params.set('school_year', $(this).val());
-    window.location.href = '?' + params.toString();
+$('#school_years_schoolYear').change(function () {
+params.set('school_year', $(this).val());
+window.location.href = '?' + params.toString();
 });
 
-$('#courses_topbar_id').change(function () { 
-    params.set('course_id', $(this).val());
-    window.location.href = '?' +  params.toString();
+$('#courses_topbar_id').change(function () {
+params.set('course_id', $(this).val());
+window.location.href = '?' + params.toString();
 });
-
-
 </script>
 {% endblock %}

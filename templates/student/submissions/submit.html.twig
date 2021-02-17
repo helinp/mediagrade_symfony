@@ -7,14 +7,14 @@
 {{ include("student/_topbar.html.twig") }}
 {% endblock %}
 
-{% block title %}Remise des projets{% endblock %}
+{% block page_title %}Remise des projets{% endblock %}
 
 {% block body %}
 
 
 <div class="col mb-2">
 	<div class="shadow mb-4">
-		<div class="card-body">
+		<div class="box-body">
 			<div class="row mb-2" style='border-bottom: 1px dashed lightgray'>
 				<div class="col mb-2">
 					<h5 class="m-0 font-weight-bold text-primary">{{project.name}}</h5>
@@ -50,7 +50,7 @@
 
 
 	<div class="shadow mb-4">
-		<div class="card-body">
+		<div class="box-body">
 			<div class="row mb-2">
 				<div class="col text-primary">
 				</div>
@@ -90,7 +90,7 @@
 	</div>
 
 	<div class="shadow mb-4">
-		<div class="card-body">
+		<div class="box-body">
 			<div class="row mb-2">
 				<div class="col">
 					<h5>Grille d'évaluation</h5>

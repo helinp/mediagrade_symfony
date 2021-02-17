@@ -1,87 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présences
+{% block page_title %}Présences
 {% endblock %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
 
 {% block body %}
 
-	<div class="col-12 mb-4">
-		<div class="card shadow card-gradebook h-100 py-2 ">
-			<div class="card-body">
-				<div class="row no-gutters align-items-center">
-					<div class="col mr-2">
-						<div class=" font-weight-bold text-danger text-uppercase mb-1">
-							Taux de présence
-						</div>
-
-						<table id="table" class="table table-sm table-sm-responsive table-hover">
-							<thead>
+	<div class="row">
+		<div class="col-md-12 mb-4">
+			<div class="box card-gradebook h-100 py-2 ">
+				<div class="box-header">
+					<h3>Taux de présence
+					</h3>
+				</div>
+				<div class="box-body">
+					<table id="table" class="table table-sm table-sm-responsive table-hover">
+						<thead>
+							<tr>
+								<th>Classe</th>
+								<th>Nom</th>
+								<th>Prénom</th>
+								<th class="text-center">Présences</th>
+								<th class="text-center">Retards</th>
+								<th class="text-center">Absences</th>
+								<th>Taux</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for attendance in attendances %}
 								<tr>
-									<th>Classe</th>
-									<th>Nom</th>
-									<th>Prénom</th>
-									<th class="text-center">Présences</th>
-									<th class="text-center">Retards</th>
-									<th class="text-center">Absences</th>
-									<th>Taux</th>
+									<td>
+										{{attendance.classe | upper}}
+									</td>
+									<td>
+										{{attendance.lastName | upper}}
+									</td>
+									<td>
+										{{attendance.firstName}}
+									</td>
+									<td class="text-center">
+										{{attendance.present}}
+									</td>
+									<td class="text-center">
+										{{attendance.late}}
+									</td>
+									<td class="text-center">
+										{{attendance.absent}}
+									</td>
+									<td class="align-middle">
+										<div class="progress">
+											<div class="progress-bar" role="progressbar" style="background-color:{{get_color_from_attendance_percentage(attendance.percentage | custom_round)}};width: {{attendance.percentage | custom_round}}%;" aria-valuenow="{{attendance.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">{{attendance.percentage | custom_round}}%</div>
+										</div>
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								{% for attendance in attendances %}
-									<tr>
-										<td>
-											{{attendance.classe | upper}}
-										</td>
-										<td>
-											{{attendance.lastName | upper}}
-										</td>
-										<td>
-											{{attendance.firstName}}
-										</td>
-										<td class="text-center">
-											{{attendance.present}}
-										</td>
-										<td class="text-center">
-											{{attendance.late}}
-										</td>
-										<td class="text-center">
-											{{attendance.absent}}
-										</td>
-										<td class="align-middle">
-											<div class="progress">
-												<div class="progress-bar" role="progressbar" style="background-color:{{get_color_from_attendance_percentage(attendance.percentage | custom_round)}};width: {{attendance.percentage | custom_round}}%;" aria-valuenow="{{attendance.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">{{attendance.percentage | custom_round}}%</div>
-											</div>
-										</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}
 {% block page_scripts %}
 	<script>
-		var table = $('#table').DataTable({
-"lengthChange": false,
-"paging": false,
-"language": {
-"url": "dataTables.french.lang"
-},
-"field": {
-"className": 'form-control bg-light border-0 small'
-}
-});
+	{{ get_simple_datatables_JS() }}
 	</script>
 {% endblock %}

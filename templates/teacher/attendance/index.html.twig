@@ -1,100 +1,80 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présences{% endblock %}
+{% block page_title %}Présences
+{% endblock %}
 
-{% block sidebar %}
-{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
 
 {% block body %}
 
-<div class="col-12 mb-4">
-	<div class="card shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-danger text-uppercase mb-1">
-						Encoder les présences
-					</div>
+	<div class="row">
+		<div class="col col-md-12 mb-4">
+			<div class="box h-100 py-2">
+				<div class="box-header">
+					<h3>Encoder les présences</h3>
 
 					{% for course in courses %}
-					<a class="btn btn-primary mb-1" href="{{path('teacher_attendance_new', {'course_id': course.id, 'action': 'new'})}}">{{course.name}}</a>
+						<a class="btn btn-primary mb-1" href="{{path('teacher_attendance_new', {'course_id': course.id, 'action': 'new'})}}">{{course.name}}</a>
 					{% endfor %}
+
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
 
-<div class="col-12 mb-4">
-	<div class="card shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-danger text-uppercase mb-1">
-						Registres de présences
+				<div class="box-body">
+					<div class="table-max-height">
+						<table class="table table-sm table-responsive-sm" id="lightgallery">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Heure</th>
+									<th>Classe</th>
+									<th class="text-center">Présences</th>
+									<th>Photo</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for attendanceGrid in attendancesGrid %}
+									<tr>
+										<td>{{attendanceGrid.date | date("d/m/y") }}</td>
+										<td>{{attendanceGrid.schoolHour}}</td>
+										<td>{{attendanceGrid.course.name | upper}}</td>
+										<td class="text-center">{{attendanceGrid.attendances | filter(v => v.status != "A") | length}}
+											/
+											{{attendanceGrid.attendances | length}}</td>
+										<td>
+											{% if attendanceGrid.picture is not null %}
+												<a href="{{vich_uploader_asset(attendanceGrid)}}" class="selector">
+													<i class="far fa-image"></i>
+												</a>
+											{% endif %}
+										</td>
+										<td>
+											<a class="btn btn-sm btn-primary" href="{{path('teacher_attendance_new', {'course_id' : 0, 'attendance_grid_id': attendanceGrid.id, 'action': 'edit'})}}">
+												<i class="fas fa-edit"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
 					</div>
-
-					<table class="table table-sm table-responsive-sm"  id="lightgallery">
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Heure</th>
-							<th>Classe</th>
-							<th class="text-center">Présences</th>
-							<th>Photo</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for attendanceGrid in attendancesGrid %}
-						<tr>
-							<td>{{attendanceGrid.date | date("d/m/y") }}</td>
-							<td>{{attendanceGrid.schoolHour}}</td>
-							<td>{{attendanceGrid.course.name | upper}}</td>
-							<td class="text-center">{{attendanceGrid.attendances | filter(v => v.status != "A") | length}} / {{attendanceGrid.attendances | length}}</td>
-							<td>
-							{% if attendanceGrid.picture is not null %}
-							<a href="{{vich_uploader_asset(attendanceGrid)}}" class="selector"><i class="far fa-image"></i> </a>
-							{% endif %}
-							</td>
-							<td>
-								<a class="btn btn-sm btn-primary" href="{{path('teacher_attendance_new', {'course_id' : 0, 'attendance_grid_id': attendanceGrid.id, 'action': 'edit'})}}"><i class="fas fa-edit"></i></a>
-							</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-					</table>
-
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
 {% endblock %}
-
-
-
 {% block scripts %}
+	{{ parent() }}
 	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 {% endblock %}
-
 {% block stylesheets %}
+	{{ parent() }}
 	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
 {% endblock %}
-
 {% block page_scripts %}
+	{{ parent() }}
 	<script type="text/javascript">
-	
-$('#lightgallery').lightGallery({
-    selector: '.selector'
-});
-
+		$('#lightgallery').lightGallery({selector: '.selector'});
 	</script>
-
 {% endblock %}

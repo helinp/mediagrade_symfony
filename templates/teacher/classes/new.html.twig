@@ -1,15 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter une classe{% endblock %}
-{% block sidebar %}
-{{ include("teacher/_sidebar.html.twig") }}
+{% block page_title %}Ajouter une classe
 {% endblock %}
-{% block topbar %}
-{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
+
 {% block body %}
+	<div class="row">
+		<div class="col-xs-12 col mb-2">
+			<div class="box">
+				<div class="box-body">
 
-    {{ include('teacher/classes/_form.html.twig') }}
-
-    <a href="{{ path('classes_index') }}">back to list</a>
+					{{ include('teacher/classes/_form.html.twig') }}
+				</div>
+				<div class="box-footer">
+					<a href="{{ path('classes_index') }}">Retourner à la liste</a>
+				</div>
+			</div>
 {% endblock %}

@@ -1,31 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
 
-	{% block topbar_widget %}
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="form-group">
-						{{form_widget(students_form)}}
-					</div>
-				</div>
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="form-group">
-						{{form_widget(school_year_form)}}
-					</div>
+{% block topbar_widget %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(students_form)}}
 				</div>
 			</div>
-
+			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+				<div class="form-group">
+					{{form_widget(school_year_form)}}
+				</div>
+			</div>
 		</div>
-	{% endblock %}
+
+	</div>
 {% endblock %}
 
-{% block title %}Résultats simplifiés
+
+{% block page_title %}Résultats simplifiés
 {% endblock %}
 
 {% block body %}
@@ -33,157 +28,165 @@
 
 	{% if projects | length == 0 %}
 
-		<div class="col-12">
-			<div class="card shadow border-left-primary h-100 py-2">
-				<div class="card-body">
+		<div class="row">
+			<div class="col-xs-12 col mb-2">
+				<div class="box">
+					<div class="box-body">
 
-					Aucun projet n'a encore été mis en ligne par le professeur.
+						Aucun projet n'a encore été mis en ligne par le professeur.
 
+					</div>
 				</div>
 			</div>
 		</div>
 
 	{% endif %}
 	{% for project in projects %}
-		<div class="results-overview-row col-12 card shadow border-left-primary h-100 py-2 mb-4">
-			<div class="card-body row">
-				<div class="col-12">
-					<h5 class="font-weight-bold text-primary text-uppercase">
-						{{project.course.name}}
-						/
-						{{project.name}}
-						<br/><small>{{project.term.description}}
+		<div class="row">
+			<div class="col-xs-12 col mb-2">
+				<div class="box">
+					<div class="box-header">
+						<h3>
+							{{project.course.name}}
 							/
-							{{project.assessmentType.description}}</small>
-					</h5>
-					<p class="text-context">{{project.context}}</p>
+							{{project.name}}
+							<br/><small>{{project.term.description}}
+								/
+								{{project.assessmentType.description}}</small>
+						</h3>
+						<p class="text-context">{{project.context}}</p>
 
-				</div>
-
-
-				<div class="col-12">
-					<div class="dashed-top-border row pt-3 pb-3">
-						<div class="col-xl-3 col-md-12 mb-2">
-							<h5 class="text-primary text-uppercase">Remises</h5>
-							<div class="flex-d mb-2 lightgallery">
-								{% set submitted = false %}
-								{% for submission in submissions %}
-
-									{% for submissionFile in submission.submissionFiles  %}
-										{% if submission.project.id == project.id %}
-											{% set submitted = true %}
-											{% if "image" in submissionFile.mime %}
-
-												<a href="{{asset(vich_uploader_asset(submissionFile))}}" data-toggle="lightbox" data-max-width="100%">
-													{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('squared_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
-												</a>
-
-											{% elseif "video" in submissionFile.mime %}
-
-												{{ asset(vich_uploader_asset(submissionFile)) | get_html_media_viewer(submissionFile.mime) }}
-
-											{% endif %}
-										{% endif %}
-									{% endfor %}
-
-								{% endfor %}
-
-							</div>
-						</div>
-
-						<div class="col-xl-4 col-md-12  mb-2">
-							<h5 class="text-primary text-uppercase">Résultats</h5>
-					<div class="d-flex flex-md-row flex-column">
-						{% for result in results_sg[project.id] %}
-							<div class="card mr-2 mb-2">
-								<div class="card-body py-2 text-white gradebook-lsu-{{get_color_from_percentage(result.percentage)}}">
-									{{ result.name }}
-								</div>
-								<div class="card-body p-3">
-									<p class="small mb-2">"{{ get_title_from_percentage(result.percentage) }}"</p>
-									<big class="font-weight-bold">
-									{{ result.percentage | custom_round }}
-									</big>
-									%
-								</div>
-							</div>
-						{% endfor %}
 					</div>
-						</div>
+					<div class="box-body">
 
-						<div class="col-xl-5 col-md-12 mb-2">
-							<h5 class="text-primary text-uppercase">Détails de l'évaluation</h5>
-							<div class="student-instructions-div">
-								<table class="table table-responsive-sm table-sm table-borderless">
-									{% set evalue = 0 %}
-									{% for assessment in project.assessments %}
-										<tr style="border-bottom: 1px solid lightgray;">
+						<div
+							class="dashed-top-border row pt-3 pb-3">
+							<!-- COL 1 -->
+							<div class="col-md-3 col-sm-12 mb-2">
+								<h4 class="text-primary text-uppercase">Remises</h4>
+								<div class="flex-d mb-2 lightgallery">
+									{% set submitted = false %}
+									{% for submission in submissions %}
 
-											{% for result in assessment.results %}
-												{% if result.student == student %}
-													{% set evalue = 1 %}
-													<td>
-													
-														<p>
-															{% if assessment.gradingSystem.id == 3 %}
-																<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" 
-																class="color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
-																	{{result.userLetter}}
-																</span>
+										{% for submissionFile in submission.submissionFiles  %}
+											{% if submission.project.id == project.id %}
+												{% set submitted = true %}
+												{% if "image" in submissionFile.mime %}
 
+													<a href="{{asset(vich_uploader_asset(submissionFile))}}" data-toggle="lightbox" data-max-width="100%">
+														{{ asset(vich_uploader_asset(submissionFile)) | imagine_filter('squared_thumbnail_small') | get_html_media_viewer(submissionFile.mime) }}
+													</a>
 
-															{% elseif assessment.gradingSystem.id == 1 %}
-																<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" 
-																class="color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
-																	{{result.userLetter}}
-																</span>
+												{% elseif "video" in submissionFile.mime %}
 
-															{% else %}
-																<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" 
-																class="number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.percentage | custom_round}}&nbsp;%</span>
-
-															{% endif %}
-														</p>
-													</td>
-
-													<td class="indicator">
-														<p><b>{{assessment.skill.skillsGroup.name}}</b> - J'ai
-															{{assessment.indicator}}</p>
-														{% if (result.comment | length > 2) %}
-															<p>
-																<blockquote class="blockquote">&laquo;{{result.comment}}&raquo;</blockquote>
-															</p>
-														{% endif %}
-													</td>
+													{{ asset(vich_uploader_asset(submissionFile)) | get_html_media_viewer(submissionFile.mime) }}
 
 												{% endif %}
-											{% endfor %}
-											{% if evalue == 0 %}
-												<td class="indicator">
-													<p>J'ai
-														{{assessment.indicator}}</p>
-												</td>
 											{% endif %}
-										</tr>
+										{% endfor %}
+
 									{% endfor %}
 
-								</table>
+								</div>
+							</div>
+
+							<!-- COL 2 -->
+							<div class="col-md-4 col-sm-12 mb-2">
+								<h4 class="text-primary text-uppercase">Résultats</h4>
+								<div class="d-flex flex-md-row flex-column">
+									{% for result in results_sg[project.id] %}
+										<div class="small-box bg-{{get_color_from_percentage(result.percentage)}} mr-2 mb-2">
+											<div class="small-box-footer">
+												{{ result.name }}
+											</div>
+
+											<div class="inner">
+												<h3>{{ result.percentage | custom_round }}<sup style="font-size: 20px">%</sup>
+												</h3>
+												<p>"{{ get_title_from_percentage(result.percentage) }}"</p>
+											</div>
+
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+
+							<!-- COL 3 -->
+							<div class="col-md-5 col-sm-12 mb-2">
+								<h4 class="text-primary text-uppercase">Détails de l'évaluation</h4>
+								<div class="student-instructions-div">
+									<table class="table table-responsive-sm table-sm table-borderless">
+										{% set evalue = 0 %}
+										{% for assessment in project.assessments %}
+											<tr style="border-bottom: 1px solid lightgray;">
+
+												{% for result in assessment.results %}
+													{% if result.student == student %}
+														{% set evalue = 1 %}
+														<td>
+															<p>
+																{% if assessment.gradingSystem.id == 3 %}
+																	<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" class="color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
+																		{{result.userLetter}}
+																	</span>
+
+
+																{% elseif assessment.gradingSystem.id == 1 %}
+																	<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" class="color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
+																		{{result.userLetter}}
+																	</span>
+
+																{% else %}
+																	<span data-toggle="tooltip" data-placement="right" title="{{assessment.skill.skillsGroup.name}}" class="number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.percentage | custom_round}}&nbsp;%</span>
+
+																{% endif %}
+															</p>
+														</td>
+
+														<td class="indicator">
+															<p>
+																<b>{{assessment.skill.skillsGroup.name}}</b>
+																- J'ai
+																{{assessment.indicator}}</p>
+															{% if (result.comment | length > 2) %}
+																<p>
+																	<blockquote class="blockquote">&laquo;{{result.comment}}&raquo;</blockquote>
+																</p>
+															{% endif %}
+														</td>
+
+													{% endif %}
+												{% endfor %}
+												{% if evalue == 0 %}
+													<td class="indicator">
+														<p>J'ai
+															{{assessment.indicator}}</p>
+													</td>
+												{% endif %}
+											</tr>
+										{% endfor %}
+
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 	{% endfor %}
 {% endblock %}
+
+
 {% block scripts %}
+	{{parent()}}
 	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
+	{{parent()}}
 {% endblock %}
 {% block page_scripts %}
+	{{parent()}}
 	<script type="text/javascript">
 		$(document).ready(function () {
 $(".lightgallery").lightGallery();
@@ -191,16 +194,14 @@ $(".lightgallery").lightGallery();
 
 const params = new URLSearchParams(window.location.search);
 
-$('#school_years_schoolYear').change(function () { 
-    params.set('school_year', $(this).val());
-    window.location.href = '?' + params.toString();
+$('#school_years_schoolYear').change(function () {
+params.set('school_year', $(this).val());
+window.location.href = '?' + params.toString();
 });
 
-$('#students_topbar_id').change(function () { 
-    params.set('student_id', $(this).val());
-    window.location.href = '?' +  params.toString();
+$('#students_topbar_id').change(function () {
+params.set('student_id', $(this).val());
+window.location.href = '?' + params.toString();
 });
-
-
-</script>
+	</script>
 {% endblock %}

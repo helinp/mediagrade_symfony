@@ -1,218 +1,217 @@
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
 
-	{% block topbar_widget %}
-		<div class="container-fluid row">
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-				<div class="form-group">
-					{{form_widget(courses_form)}}
-				</div>
+{% block topbar_widget %}
+	<div class="container-fluid row">
+		<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+			<div class="form-group">
+				{{form_widget(courses_form)}}
 			</div>
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-				<div class="form-group">
-					{{form_widget(term_form)}}
-				</div>
-			</div>
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-				<div class="form-group">
-					{{form_widget(school_year_form)}}
-				</div>
-			</div>
-
 		</div>
-	{% endblock %}
+		<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+			<div class="form-group">
+				{{form_widget(term_form)}}
+			</div>
+		</div>
+		<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+			<div class="form-group">
+				{{form_widget(school_year_form)}}
+			</div>
+		</div>
+
+	</div>
 {% endblock %}
-{% block title %}Cahier de cotes
+
+{% block page_title %}Cahier de cotes
 {% endblock %}
 {% block body %}
 
-	<div class="col-12 mb-4">
-		<div class="card shadow card-gradebook h-100 p-2" style="overflow-y: auto;">
-			<table id="table-gradebook" class="table table-striped table-bordered table-sm table-hover">
-				<thead>
-					<tr class="bg-primary text-white">
-						<th class="text-center align-middle">
-							<big>{{ course.name }}</big><br />
-							{% if totals_terms is defined %}
-							Période
-							{% else %}
-							Année {{school_year}}
-							{% endif %}
-						</th>
-						{% for project in projects %}
-							<th class="" colspan="{{project.assessments|length}}">
-								<div>
-									<big>{{project.name}}</big>
-								</div>
-								{{project.term.name}}
-								-
-								{{project.startDate | date('d/m')}} > {{project.softDeadline | date('d/m')}} > {{project.hardDeadline | date('d/m')}}<br/>
-								{{project.assessmentType.description}}
-							</th>
-						{% endfor %}
-						<th class="text-center align-middle" colspan="{{skills | length + 1}}">Totaux</th>
-					</tr>
-					<tr class="bg-secondary text-white">
-						<th>Compétence</th>
-						{% for project in projects %}
-							{% for assessment in project.assessments %}
-								<td data-toggle="tooltip" data-html="true" data-placement="bottom" title="<b>{{assessment.skill.skillsGroup.name}}</b><p>{{assessment.skill.description}}</p>">
-									{{assessment.skill.skillsGroup.shortName}}
-									-
-									{{assessment.skill.shortName}}
-								</td>
-							{% endfor %}
-						{% endfor %}
-						{% for skill in skills %}
-							<td class="align-middle text-center" data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{skill.name }}">{{skill.shortName }}</td>
-						{% endfor %}
-						<td class="align-middle text-center"><b>TOTAL</b></td>
+	<div class="row">
+		<div class="col col-mb-12 mb-4">
+			<div class="box" style="overflow-y: auto;">
+				<div class="box-body card-gradebook">
 
-					</tr>
-					<tr class="bg-secondary text-white">
-						<th>Critère</th>
-						{% for project in projects %}
-							{% for assessment in project.assessments %}
-								<td data-toggle="tooltip" data-placement="bottom" title="{{assessment.indicator}}">
-									{{assessment.criterion.name}}
-								</td>
-							{% endfor %}
-						{% endfor %}
-						{% for skill in skills %}
-							<td style="width: 3em;" class="align-middle text-center"></td>
-						{% endfor %}
-						<td></td>
-					</tr>
-					<tr class="bg-secondary text-white">
-						<th>Pondération</th>
-						{% for project in projects %}
-							{% for assessment in project.assessments %}
-								<td>
-									{{assessment.maxVote}}
-								</td>
-							{% endfor %}
-						{% endfor %}
-						{% for skill in skills %}
-							<td class="align-middle text-center">%</td>
-						{% endfor %}
-
-
-						<td class="align-middle text-center">%</td>
-					</tr>
-				</thead>
-				<tbody>
-					{% for studentClasse in course.classe.currentStudents(schoolyear) %}
-						<tr>
-							<th>{{studentClasse.student.lastName | upper}}&nbsp;{{studentClasse.student.firstName}}</th>
-							{% for project in projects %}
-								{% for assessment in project.assessments %}
-
-									{% set result_test = null %}
-									{% for result in assessment.results %}
-										{% if result.student == studentClasse.student %}
-											{% set result_test = 'ok' %}
-											<td>
-											{% if(assessment.gradingSystem.id == 3) %}
-												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
-												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">{{result.userLetter}}
-												</span>
-												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
-													<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
-												</a>
-											{% elseif (assessment.gradingSystem.id == 1)%}
-												<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
-												{{result.userLetter}}
-												</span>
-												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
-													<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
-												</a>
-											
-											{% else %}
-												<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
-													<span class="align-middle number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.userVote | custom_round}}</span>
-												</a>
-											{% endif %}
-											</td>
-										{% endif %}
-									{% endfor %}
-									{% if result_test is null %}
-										<td>
-											<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">--</a>
-										</td>
+					<table id="table-gradebook" class="table table-striped table-bordered table-sm table-hover">
+						<thead>
+							<tr class="bg-primary text-white">
+								<th class="text-center align-middle">
+									<big>{{ course.name }}</big><br/>
+									{% if totals_terms is defined %}
+										Période
+									{% else %}
+										Année
+										{{school_year}}
 									{% endif %}
+								</th>
+								{% for project in projects %}
+									<th class="" colspan="{{project.assessments|length}}">
+										<div>
+											<big class="ellipsis">{{project.name}}</big>
+										</div>
+										{{project.term.name}}
+										<br />
+										{{project.startDate | date('d/m')}}
+										>
+										{{project.softDeadline | date('d/m')}}
+										<br />
+										{{project.hardDeadline | date('d/m')}}<br/>
+										{{project.assessmentType.description}}
+									</th>
 								{% endfor %}
-							{% endfor %}
-							{% for skill in skills %}
-								<td class="align-middle text-center">
-								{% if sg_totals[studentClasse.student.id] is defined %}
-									{% for sr in sg_totals[studentClasse.student.id] %}
-										{% if sr.id == skill.id %}
-										<span class="number-result-{{get_color_from_percentage(sr.percentage) }}">{{sr.percentage | custom_round }}</span>
-										{% endif %}
+								<th class="text-center align-middle" colspan="{{skills | length + 1}}">Totaux</th>
+							</tr>
+							<tr class="bg-secondary text-white">
+								<th>Compétence</th>
+								{% for project in projects %}
+									{% for assessment in project.assessments %}
+										<td data-toggle="tooltip" data-html="true" data-placement="bottom" title="<b>{{assessment.skill.skillsGroup.name}}</b><p>{{assessment.skill.description}}</p>">
+											{{assessment.skill.skillsGroup.shortName}}
+											-
+											{{assessment.skill.shortName}}
+										</td>
 									{% endfor %}
-								{% else %}
-									--
-								{% endif %}
+								{% endfor %}
+								{% for skill in skills %}
+									<td class="align-middle text-center" data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{skill.name }}">{{skill.shortName }}</td>
+								{% endfor %}
+								<td class="align-middle text-center">
+									<b>TOTAL</b>
 								</td>
-							{% endfor %}
 
-							<td class="align-middle text-left">
-								{% if totals_terms is defined %}
-									{% if totals_terms[studentClasse.student.id] is defined %}
-										{% if totals_terms[studentClasse.student.id].percentage is defined %}
-
-
-												<span  data-toggle="tooltip" data-html="true" data-placement="bottom" 
-													title="{{get_title_from_percentage(totals_terms[studentClasse.student.id].percentage)}}"  
-													class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals_terms[studentClasse.student.id].percentage)}}">
-												{{get_letter_from_percentage(totals_terms[studentClasse.student.id].percentage | custom_round)}}
-												</span>
-												<span class="align-middle number-vote">{{totals_terms[studentClasse.student.id].percentage | custom_round}}</span>
-
-
-							
-										{% endif %}
-									{% endif %}
-								{% elseif totals is defined %}
-									{% if totals[studentClasse.student.id] is defined %}
-										{% if totals[studentClasse.student.id].percentage is defined %}
-
-												<span  data-toggle="tooltip" data-html="true" data-placement="bottom" 
-													title="{{get_title_from_percentage(totals[studentClasse.student.id].percentage)}}"  
-													class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals[studentClasse.student.id].percentage)}}">
-												{{get_letter_from_percentage(totals[studentClasse.student.id].percentage | custom_round)}}
-												</span>
-												<span class="align-middle number-vote">{{totals[studentClasse.student.id].percentage | custom_round}}</span>
-
-
-											<b></b>
-										{% endif %}
-									{% endif %}
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-
-				</tbody>
+							</tr>
+							<tr class="bg-secondary text-white">
+								<th>Critère</th>
+								{% for project in projects %}
+									{% for assessment in project.assessments %}
+										<td data-toggle="tooltip" data-placement="bottom" title="{{assessment.indicator}}">
+											{{assessment.criterion.name}}
+										</td>
+									{% endfor %}
+								{% endfor %}
+								{% for skill in skills %}
+									<td style="width: 3em;" class="align-middle text-center"></td>
+								{% endfor %}
+								<td></td>
+							</tr>
+							<tr class="bg-secondary text-white">
+								<th>Pondération</th>
+								{% for project in projects %}
+									{% for assessment in project.assessments %}
+										<td>
+											{{assessment.maxVote}}
+										</td>
+									{% endfor %}
+								{% endfor %}
+								{% for skill in skills %}
+									<td class="align-middle text-center">%</td>
+								{% endfor %}
 
 
-			</table>
+								<td class="align-middle text-center">%</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for studentClasse in course.classe.currentStudents(schoolyear) %}
+								<tr>
+									<th>{{studentClasse.student.lastName | upper}}&nbsp;{{studentClasse.student.firstName}}</th>
+									{% for project in projects %}
+										{% for assessment in project.assessments %}
+
+											{% set result_test = null %}
+											{% for result in assessment.results %}
+												{% if result.student == studentClasse.student %}
+													{% set result_test = 'ok' %}
+													<td>
+														{% if(assessment.gradingSystem.id == 3) %}
+															<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
+																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">{{result.userLetter}}
+																</span>
+																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+																	<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+																</a>
+															{% elseif (assessment.gradingSystem.id == 1)%}
+																<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
+																	{{result.userLetter}}
+																</span>
+																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+																	<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
+																</a>
+
+															{% else %}
+																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
+																	<span class="align-middle number-vote number-result-{{get_color_from_percentage(result.percentage) }}">{{result.userVote | custom_round}}</span>
+																</a>
+															{% endif %}
+														</td>
+													{% endif %}
+												{% endfor %}
+												{% if result_test is null %}
+													<td>
+														<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">--</a>
+													</td>
+												{% endif %}
+											{% endfor %}
+										{% endfor %}
+										{% for skill in skills %}
+											<td class="align-middle text-center">
+												{% if sg_totals[studentClasse.student.id] is defined %}
+													{% for sr in sg_totals[studentClasse.student.id] %}
+														{% if sr.id == skill.id %}
+															<span class="number-result-{{get_color_from_percentage(sr.percentage) }}">{{sr.percentage | custom_round }}</span>
+														{% endif %}
+													{% endfor %}
+												{% else %}
+													--
+												{% endif %}
+											</td>
+										{% endfor %}
+
+										<td class="align-middle text-left">
+											{% if totals_terms is defined %}
+												{% if totals_terms[studentClasse.student.id] is defined %}
+													{% if totals_terms[studentClasse.student.id].percentage is defined %}
+
+
+														<span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{get_title_from_percentage(totals_terms[studentClasse.student.id].percentage)}}" class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals_terms[studentClasse.student.id].percentage)}}">
+															{{get_letter_from_percentage(totals_terms[studentClasse.student.id].percentage | custom_round)}}
+														</span>
+														<span class="align-middle number-vote">{{totals_terms[studentClasse.student.id].percentage | custom_round}}</span>
+
+
+													{% endif %}
+												{% endif %}
+											{% elseif totals is defined %}
+												{% if totals[studentClasse.student.id] is defined %}
+													{% if totals[studentClasse.student.id].percentage is defined %}
+
+														<span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{get_title_from_percentage(totals[studentClasse.student.id].percentage)}}" class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals[studentClasse.student.id].percentage)}}">
+															{{get_letter_from_percentage(totals[studentClasse.student.id].percentage | custom_round)}}
+														</span>
+														<span class="align-middle number-vote">{{totals[studentClasse.student.id].percentage | custom_round}}</span>
+
+
+														<b></b>
+													{% endif %}
+												{% endif %}
+											{% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}
 {% block page_scripts %}
-	
-	
- 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
- <script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
-	
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
+
 	<script>
 		$(document).ready(function () {
 $("body").tooltip({selector: '[data-toggle=tooltip]'});
@@ -270,46 +269,40 @@ window.location = url + '/' + $(this).val();
 })
 
 
-
-
-
 var table = $('#table-gradebook').DataTable({
-	"lengthChange": false,
-	"paging": false,
-        "language": {
-            "url": "{{asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json')}}"
-        },
-	"field": {
-		"className" : 'form-control bg-light border-0 small'
-	},
-	        scrollX:        true,
-        scrollCollapse: false,
-	     "fixedColumns": {
-        leftColumns: 1
-      },
-      dom: 'Bfrtip',
-      buttons: [
-        'excel', 'pdf'
-      ],
+"lengthChange": false,
+"paging": false,
+"language": {
+"url": "{{ asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json') }}"
+},
+"field": {
+"className": 'form-control bg-light border-0 small'
+},
+scrollX: true,
+scrollCollapse: false,
+"fixedColumns": {
+leftColumns: 1
+},
+dom: 'Bfrtip',
+buttons: [
+'excel', 'pdf'
+],
 
-      buttons: [{
-          extend: 'print',
-          className: 'ml-4 btn-sm btn-info',
-          text: '<i class="fas fa-print"></i> Vue d\'impression',
-          orientation: 'landscape',
-          autoPrint: false
-        },
-        {
-          extend: 'excel',
-          className: 'ml-2 btn-sm btn-info',
-          text: '<i class="far fa-file-excel"></i> Excel',
-          orientation: 'landscape',
-          autoPrint: false
-        }
-      ],
+buttons: [
+{
+extend: 'print',
+className: 'ml-4 btn-sm btn-info',
+text: '<i class="fas fa-print"></i> Vue d\'impression',
+orientation: 'landscape',
+autoPrint: false
+}, {
+extend: 'excel',
+className: 'ml-2 btn-sm btn-info',
+text: '<i class="far fa-file-excel"></i> Excel',
+orientation: 'landscape',
+autoPrint: false
+}
+]
 });
-
-
-
 	</script>
 {% endblock %}

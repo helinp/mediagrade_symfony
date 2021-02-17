@@ -661,6 +661,11 @@ class User implements UserInterface
         return $this->userAvatar;
     }
 
+    public function getAvatar(): ?UserAvatar
+    {
+        return $this->userAvatar;
+    }
+
     public function setUserAvatar(UserAvatar $userAvatar): self
     {
         $this->userAvatar = $userAvatar;

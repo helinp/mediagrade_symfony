@@ -1,206 +1,192 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats globaux{% endblock %}
-
-{% block sidebar %}
-{{ include("student/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-{{ include("student/_topbar.html.twig") }}
+{% block page_title %}Résultats globaux
 {% endblock %}
 
 {% block body %}
 
-
-<div class="col-xl-6 col-lg-6 col-12 mb-4">
-	<div class="card border-left-primary shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Moyenne globale par pôle de compétences
-					</div>
-					<div class="">
-						<canvas id="skillsGroupsChart" width="400" height="200"></canvas>
-					</div>
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col mb-2">
+			<div class="box">
+				<div class="box-header">
+					<h3>Moyenne globale par pôle de compétences</h3>
 				</div>
+				<div class="box-body">
+					<canvas id="skillsGroupsChart" width="400" height="200"></canvas>
+				</div>
+
 			</div>
 		</div>
-	</div>
-</div>
-<div class="col-xl-6 col-lg-6 col-12 mb-4">
-	<div class="card border-left-primary shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Moyenne globale par thème
-					</div>
-					<div class="">
+
+		<div class="col-xs-12 col-md-6 col mb-2">
+			<div class="box">
+				<div class="box-header">
+					<h3>Moyenne globale par thème</h3>
+					<div class="box-body">
 						<canvas id="topicsChart" width="400" height="200"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="col-xl-6 col-lg-6 col-12 mb-4">
-	<div class="card border-left-primary shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Moyenne globale par critère
-					</div>
+
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col mb-2">
+			<div class="box">
+				<div class="box-header">
+					<h3>Moyenne globale par critère</h3>
+				</div>
+				<div class="box-body">
 					<table id="table-criterion" class="table table-sm">
-					<thead>
-					<tr>
-						<th>Critère</th>
-						<th>Évaluation</th>
-						<th>Nombre d'évaluations</th>
-						
-					</tr>
-					</thead>
-					<tbody>
-					{% for result in criterion_results %}
-						<tr>
-							<td>{{result.name}}</td>
-							<td class="align-middle">
-							<div class="progress" style="height: 20px;">
-								<div role="progressbar" 
-									class="progress-bar gradebook-lsu-{{get_color_from_percentage(result.percentage | custom_round)}}" style="width: {{result.percentage | custom_round}}%;" 
-									aria-valuenow="{{result.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
-									{{get_title_from_percentage(result.percentage | custom_round)}}
-								</div>
-							</div>
-							
-							</td>
-							<td>{{result.nbAssessed}}</td>
-							
-						</tr>
-					{% endfor %}
-					</tbody>
+						<thead>
+							<tr>
+								<th>Critère</th>
+								<th>Évaluation</th>
+								<th>Nombre d'évaluations</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for result in criterion_results %}
+								<tr>
+									<td>{{result.name}}</td>
+									<td class="align-middle">
+										<div class="progress" style="height: 20px;">
+											<div role="progressbar" class="progress-bar gradebook-lsu-{{get_color_from_percentage(result.percentage | custom_round)}}" style="width: {{result.percentage | custom_round}}%;" aria-valuenow="{{result.percentage | custom_round}}" aria-valuemin="0" aria-valuemax="100">
+												{{get_title_from_percentage(result.percentage | custom_round)}}
+											</div>
+										</div>
+
+									</td>
+									<td>{{result.nbAssessed}}</td>
+
+								</tr>
+							{% endfor %}
+						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-<div class="col-xl-6 col-lg-6 col-12 mb-4">
-	<div class="card border-left-primary shadow h-100 py-2">
-		<div class="card-body">
-			<div class="row no-gutters align-items-center">
-				<div class="col mr-2">
-					<div class=" font-weight-bold text-primary text-uppercase mb-1">
-						Moyenne globale par compétence
-					</div>
-					<div class="">
+
+		<div class="col-xs-12 col-md-6 col mb-2">
+			<div class="box">
+				<div class="box-header">
+					<h3>Moyenne globale par compétence
+					</h3>
+					<div class="box-body">
 						<canvas id="skillsChart" width="400" height="200"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
 
+{% endblock %}
 
+{% block page_scripts %}	
 
-
+{{parent()}}
 
 <script>
 var ctx = document.getElementById('topicsChart');
 var topicsChart = new Chart(ctx, {
-	data: {
-		labels: [{{topics_results | chart_data_convert('name') | raw }}],
-		datasets: [{
-			data: [{{topics_results | chart_data_convert('percentage') | raw }}],
-			backgroundColor: [
-				'rgba(255, 99, 132, .6)',
-				'rgba(54, 162, 235, .6)',
-				'rgba(255, 206, 86, .6)',
-				'rgba(75, 192, 192, .6)',
-				'rgba(153, 102, 255, .6)',
-			],
-			borderWidth: 0
-		}]
-	},
-	{{ get_chart_radar_config() | raw}},
+data: {
+labels: [{{ topics_results | chart_data_convert('name') | raw }}],
+datasets: [
+{
+data: [{{ topics_results | chart_data_convert('percentage') | raw }}],
+backgroundColor: [
+'rgba(255, 99, 132, .6)',
+'rgba(54, 162, 235, .6)',
+'rgba(255, 206, 86, .6)',
+'rgba(75, 192, 192, .6)',
+'rgba(153, 102, 255, .6)',
+],
+borderWidth: 0
+}
+]
+},
+{{ get_chart_radar_config() | raw }}
 });
 
 var ctx1 = document.getElementById('skillsChart');
 var skillsChart = new Chart(ctx1, {
-	data: {
-		labels: [{{skills_results | chart_data_convert('shortName') | raw }}],
-		datasets: [{
-			data: [{{skills_results | chart_data_convert('percentage') | raw }}],
-			backgroundColor: [
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-			],
-			borderWidth: 0,
-			maxBarThickness: 50,
-		}]
-	},
-	{{ get_chart_bar_config() | raw}},
+data: {
+labels: [{{ skills_results | chart_data_convert('shortName') | raw }}],
+datasets: [
+{
+data: [{{ skills_results | chart_data_convert('percentage') | raw }}],
+backgroundColor: [
+'rgba(255, 99, 132, 1)',
+'rgba(54, 162, 235, 1)',
+'rgba(255, 206, 86, 1)',
+'rgba(75, 192, 192, 1)',
+'rgba(153, 102, 255, 1)',
+],
+borderWidth: 0,
+maxBarThickness: 50
+}
+]
+},
+{{ get_chart_bar_config() | raw }}
 });
 
 var dataset = skillsChart.data.datasets[0];
 for (var i = 0; i < dataset.data.length; i++) {
-  if (dataset.data[i] > 79) {
-    dataset.backgroundColor[i] = '#2b4cff';
-  }
-  else if (dataset.data[i] > 69) {
-    dataset.backgroundColor[i] = '#56d90d';
+if (dataset.data[i] > 79) {
+dataset.backgroundColor[i] = '#2b4cff';
+} else if (dataset.data[i] > 69) {
+dataset.backgroundColor[i] = '#56d90d';
 
-  }
-  else if (dataset.data[i] > 49) {
-    dataset.backgroundColor[i] = '#f4aa1b';
+} else if (dataset.data[i] > 49) {
+dataset.backgroundColor[i] = '#f4aa1b';
 
-  }
-  else {
-    dataset.backgroundColor[i] = '#E61806';
+} else {
+dataset.backgroundColor[i] = '#E61806';
 
-  }
+}
 }
 skillsChart.update();
 
 
 var ctx2 = document.getElementById('skillsGroupsChart');
 var groupChart = new Chart(ctx2, {
-	data: {
-		labels: [{{skills_groups_results | chart_data_convert('name') | raw }}],
-		datasets: [{
-			data: [{{skills_groups_results | chart_data_convert('percentage') | raw }}],
-			backgroundColor: [
-				'rgba(255, 99, 132, .6)',
-				'rgba(54, 162, 235, .6)',
-				'rgba(255, 206, 86, .6)',
-				'rgba(75, 192, 192, .6)',
-				'rgba(153, 102, 255, .6)',
-			],
-			borderWidth: 0
-		}]
-	},
-	{{ get_chart_radar_config() | raw}},
+data: {
+labels: [{{ skills_groups_results | chart_data_convert('name') | raw }}],
+datasets: [
+{
+data: [{{ skills_groups_results | chart_data_convert('percentage') | raw }}],
+backgroundColor: [
+'rgba(255, 99, 132, .6)',
+'rgba(54, 162, 235, .6)',
+'rgba(255, 206, 86, .6)',
+'rgba(75, 192, 192, .6)',
+'rgba(153, 102, 255, .6)',
+],
+borderWidth: 0
+}
+]
+},
+{{ get_chart_radar_config() | raw }}
 });
 
 
-var table = $('#table-criterion').DataTable({
-	"lengthChange": false,
-	"paging": false,
-        "language": {
-            "url": "{{asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json')}}"
-        },
-	"field": {
-		"className" : 'form-control bg-light border-0 small'
-	}
-});
-
+{{get_simple_datatables_JS()}}
 </script>
 
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+$("#school_years_schoolYear").change(function() {
+    params.set("school_year", $(this).val());
+    window.location.href = "?" + params.toString();
+});
+
+$("#students_topbar_id").change(function() {
+    params.set("student_id", $(this).val());
+    window.location.href = "?" + params.toString();
+});
+</script>
 {% endblock %}

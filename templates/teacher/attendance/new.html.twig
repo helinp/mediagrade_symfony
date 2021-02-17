@@ -1,62 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Présences
+{% block page_title %}Présences
 {% endblock %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
 
 {% block body %}
 
 
-	<div class="col-12 mb-4">
-		<div class="card card-no-overflow shadow h-100 py-2">
-			<div class="card-body">
-				<div class="row no-gutters align-items-center">
-					<div class="col mr-2">
-						<div class=" font-weight-bold text-danger text-uppercase mb-1">
-							Liste des présences
+	<div class="row">
+		<div class="col-md-12 mb-4">
+			<div class="box">
+				<div class="box-header">
+					<h3>
+						Liste des présences
+					</h3>
+					{{ form_start(form) }}
+				</div>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="form-group">
+								{{form_label(form.schoolHour)}}
+								{{form_widget(form.schoolHour)}}
+							</div>
 						</div>
-						{{ form_start(form) }}
-
-						<div class="form-group">
-							{{form_label(form.schoolHour)}}
-							{{form_widget(form.schoolHour)}}
-						</div>
-						<div class="form-group">
-							{{form_label(form.date)}}
-							{{form_widget(form.date)}}
-						</div>
-
-						<div class="form-group">
-							<table class="table table-sm table-hover table-responsive-sm">
-								{% for attendance in form.attendances %}
-									<tr>
-										<td>{{attendance.vars.value.getStudent.lastName | upper}}<br/>{{attendance.vars.value.getStudent.firstName}}</td>
-										<td>
-											{{form_widget(attendance.status)}}
-										</td>
-									</tr>
-								{% endfor %}
-							</table>
-								
-
-							{{ form_rest(form) }}
-							{% if attendance_grid is defined %}
-								<a class="btn btn-danger float-right" href="{{path('teacher_attendance_delete', {'attendanceGrid':attendance_grid.id})}}"><i class="fas fa-trash-alt"></i> Supprimer la fiche</a>
-							{% endif %}
-							{{ form_end(form) }}
-
+						<div class="col-md-6 col-sm-12">
+							<div class="form-group">
+								<label>Date</label>
+								<div class="input-group date">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									{{form_widget(form.date)}}
+								</div>
+							</div>
 						</div>
 					</div>
+
+					<div class="form-group">
+						<table class="table table-sm table-hover table-responsive-sm">
+							{% for attendance in form.attendances %}
+								<tr>
+									<td>{{attendance.vars.value.getStudent.lastName | upper}}<br/>{{attendance.vars.value.getStudent.firstName}}</td>
+									<td>
+										{{form_widget(attendance.status)}}
+									</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-header">
+					<h3>
+						Photo de la fiche de présence
+					</h3>
+
+					<div class="form-group">
+						{{form_widget(form.imageFile)}}
+					</div>
+
+
+					{% if attendance_grid is defined %}
+						<a class="btn btn-danger float-right" href="{{path('teacher_attendance_delete', {'attendanceGrid':attendance_grid.id})}}">
+							<i class="fas fa-trash-alt"></i>
+							Supprimer la fiche</a>
+					{% endif %}
+					{{ form_end(form) }}
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-{% endblock %}
+</div>{% endblock %}

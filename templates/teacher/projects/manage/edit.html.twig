@@ -33,238 +33,238 @@
 
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
+{% block page_title %}Gestion d'un projet
 {% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
-
 
 {% block body %}
-	<div class="col-xs-12 col mb-2">
+	<div class="row">
+		<div class="col-xs-12 col mb-2">
 
-		{{ form_start(form) }}
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-6 col-12 col-lg-3">
-						<div class="form-group">
-							<label for="title">Titre du projet</label>
-							{{ form_widget(form.name) }}
+			<div class="box">
+				<div class="box-body">
+
+					{{ form_start(form) }}
+
+					<div class="row">
+						<div class="col-md-4 col-12 col-lg-4">
+							<div class="form-group">
+								<label for="title">Titre du projet</label>
+								{{ form_widget(form.name) }}
+							</div>
+						</div>
+						<div class="col-md-4 col-12 col-lg-4">
+							<label for="assessment_type">Type d'évaluation</label>
+							{{ form_widget(form.assessmentType) }}
+						</div>
+						<div class="col-md-4 col-12 col-lg-4">
+							<label for="title">Période</label>
+							{{ form_widget(form.term) }}
 						</div>
 					</div>
-					<div class="col-md-6 col-12 col-lg-3">
-						<label for="assessment_type">Type d'évaluation</label>
-						{{ form_widget(form.assessmentType) }}
-					</div>
-					<div class="col-md-6 col-12 col-lg-3">
-						<label for="title">Période</label>
-						{{ form_widget(form.term) }}
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-6 col-12 col-lg-3">
-						<div class="form-group">
-							<label class="control-label">Début du projet</label>
-							<div class="date">
-								<div class="input-group input-append date datePicker">
+					<div class="row">
+						<div class="col-md-3 col-12 col-lg-3">
+							<div class="form-group">
+								<label class="control-label">Début du projet</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
 									{{ form_widget(form.startDate) }}
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-6 col-12 col-lg-3">
-						<div class="form-group">
-							<label class="control-label">Deadline (jour inclu)</label>
-							<div class="date">
-								<div class="input-group input-append date datePicker">
-									{{ form_widget(form.hardDeadline) }}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-12 col-lg-3">
-						<div class="form-group">
-							<label class="control-label">Deadline douce</label>
-							<div class="date">
-								<div class="input-group input-append date datePicker">
+						<div class="col-md-3 col-12 col-lg-3">
+							<div class="form-group">
+								<label class="control-label">Deadline douce</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
 									{{ form_widget(form.softDeadline) }}
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-6 col-12 col-lg-3">
-						<div class="form-group">
-							<label for="title">Cours</label>
-							{{ form_widget(form.course) }}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12">
-						<div class="form-group">
-							<label for="title">Compétences travaillées</label>
-							{{ form_widget(form.trainedSkills) }}
-							<p class="help-block with-errors">Maintenez appuyée la touche
-								<kbd>CTRL</kbd>
-								pour une sélection multiple</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12">
-						<div class="form-group">
-							<h3>Consignes</h3>
-							<!-- MISE EN SITUATION / CONSIGNES-->
-							<label>Mise en situation</label>
-							{{ form_widget(form.context) }}
-
-							<label>Consignes</label>
-							{{ form_widget(form.instructions) }}
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-
-				<h3>Remises</h3>
-				<div class="row">
-					<div class="col-12 col-md-6">
-						<div class="form-group">
-							<label class="control-label">Extension du fichier attendu</label>
-							{{ form_widget(form.fileExtension) }}
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
-							<label class="control-label">Nombre de fichiers à remettre</label>
-							{{ form_widget(form.numberOfFiles) }}
-						</div>
-					</div>
-					<div class="col-xs-12 col-4"></div>
-				</div>
-
-				<div class="row">
-					<div class="col-xs-6 col-6">
-						<div class="checkbox">
-							<label>
-								{{ form_widget(form.teacherSubmitted) }}
-							</label>
-						</div>
-					</div>
-					<div class="col-xs-6 col-6">
-						<div class="checkbox">
-							<label>
-								{{ form_widget(form.external) }}
-							</label>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-xs-12 col-md-12">
-						<h3>Grille d'évaluation</h3>
-						<div class="table-responsive-md">
-							<table id="assessment-table" class="table">
-								<thead>
-									<tr>
-										<th>Compétence</th>
-										<th>Critère</th>
-										<th>Indicateurs (l'élève a:)</th>
-										<th>Type d'évaluation</th>
-										<th>Maximum</th>
-										<th>Thème</th>
-										<th>Badge</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody id="assessment-grid" data-prototype="{{ formMacros.printAssessementRow(form.assessments.vars.prototype)|e('html_attr') }}" data-index="{{ form.assessments|length }}">
-
-									{% for assessmen in form.assessments %}
-										{{ formMacros.printAssessementRow(assessmen) }}
-									{% endfor %}
-
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="7">
-											<button type="button" class="js-assessments-add btn btn-info btn-sm">
-												<i class="fas fa-plus-square"></i>
-												Ajouter un critère
-											</button>
-										</td>
-									</tr>
-								</tfoot>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-xs-12 col-md-12">
-						<h3>Auto-évaluation</h3>
-						<label>Questions déjà enregistrées</label>
-						{{ form_widget(form.selfAssessments) }}
-						<div class="form-group mt-2">
-							<label>Ajouter une question</label>
-							{{ form_widget(form.extraSelfAssessment) }}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12 col-md-6">
-						<input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.refreshToken('authenticate') }}"/>
-						{{ form_errors(form) }}
-						<div class="form-group p-2">
-							{{ form_widget(form.save) }}
-						</div>
-					</div>
-					{% if project is defined %}
-						<div class="col-12 col-md-6">
-							<div class="form-inline float-right">
-								<div class="form-group float-right p-2">
-									<a class="btn btn-sm btn-primary" href="{{path('teacher_projects_duplicate', {'project':project.id} )}}">
-										<i class="far fa-clone"></i>
-										Dupliquer</a>
-								</div>
-								<div class="form-group float-right p-2">
-									<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#deleteModal">
-										<i class="fas fa-trash"></i>
-										Supprimer</a>
+						<div class="col-md-3 col-12 col-lg-3">
+							<div class="form-group">
+								<label class="control-label">Deadline</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									{{ form_widget(form.hardDeadline) }}
 								</div>
 							</div>
 						</div>
-					{% endif %}
+
+						<div class="col-md-3 col-12 col-lg-3">
+							<div class="form-group">
+								<label for="title">Cours</label>
+								{{ form_widget(form.course) }}
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+
+			<div class="box">
+				<div class="box-header">
+					<h3>Compétences travaillées</h3>
+				</div>
+				<div class="box-body">
+
+					<div class="form-group">
+						{{ form_widget(form.trainedSkills) }}
+						<p class="help-block with-errors">Maintenez appuyée la touche
+							<kbd>CTRL</kbd>
+							pour une sélection multiple</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="box">
+				<div class="box-header">
+					<h3>Consignes</h3>
+				</div>
+				<div class="box-body">
+					<div class="form-group">
+						<label>Mise en situation</label>
+						{{ form_widget(form.context) }}
+
+						<label>Consignes</label>
+						{{ form_widget(form.instructions) }}
+					</div>
+				</div>
+			</div>
+			<div class="box">
+				<div class="box-header">
+					<h3>Remises</h3>
+				</div>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label class="control-label">
+									Format du fichier attendu</label>
+								{{ form_widget(form.fileExtension) }}
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label class="control-label">
+									Nombre de fichiers à remettre</label>
+								{{ form_widget(form.numberOfFiles) }}
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-xs-6 col-6">
+							<div class="checkbox">
+								<label>
+									{{ form_widget(form.teacherSubmitted) }}
+								</label>
+							</div>
+						</div>
+						<div class="col-xs-6 col-6">
+							<div class="checkbox">
+								<label>
+									{{ form_widget(form.external) }}
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="box">
+				<div class="box-header">
+					<h3>Grille d'évaluation</h3>
+				</div>
+
+				<div class="box-body">
+					<div class="table-responsive-md">
+						<table id="assessment-table" class="table">
+							<thead>
+								<tr>
+									<th>Compétence</th>
+									<th>Critère</th>
+									<th>Indicateurs (l'élève a:)</th>
+									<th>Type d'évaluation</th>
+									<th>Maximum</th>
+									<th>Thème</th>
+									<th>Badge</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="assessment-grid" data-prototype="{{ formMacros.printAssessementRow(form.assessments.vars.prototype)|e('html_attr') }}" data-index="{{ form.assessments|length }}">
+
+								{% for assessmen in form.assessments %}
+									{{ formMacros.printAssessementRow(assessmen) }}
+								{% endfor %}
+
+							</tbody>
+						</table>
+					</div>
+					<div class="box-footer">
+						<button type="button" class="js-assessments-add btn btn-info btn-sm">
+							<i class="fas fa-plus-square"></i>
+							Ajouter un critère
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="box">
+				<div class="box-header">
+					<h3>Auto-évaluation</h3>
+				</div>
+				<div class="box-body">
+					<label>Questions déjà enregistrées</label>
+					{{ form_widget(form.selfAssessments) }}
+				</div>
+				<div class="box-footer">
+
+					<div class="form-group mt-2">
+						<label>Ajouter une question</label>
+						{{ form_widget(form.extraSelfAssessment) }}</div>
+				</div>
+			</div>
+
+			<div class="box">
+				<div class="box-body">
+					<input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.refreshToken('authenticate') }}"/>
+					{{ form_errors(form) }}
+					
+						{{ form_widget(form.save) }}
+					
+
+
+					{% if project is defined %}
+
+						<div class="form-inline pull-right">
+							<div class="form-group pull-right p-2">
+								<a class="btn btn-sm btn-primary" href="{{path('teacher_projects_duplicate', {'project':project.id} )}}">
+									<i class="far fa-clone"></i>
+									Dupliquer</a>
+							</div>
+							<div class="form-group pull-right p-2">
+								<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#deleteModal">
+									<i class="fas fa-trash"></i>
+									Supprimer</a>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+
+			</div>
 		</div>
+
 	</div>
+
 	{{ form_end(form) }}
+
 	<!-- Delete Modal-->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -275,9 +275,7 @@
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					Veuillez confirmer la suppression.
-				</div>
+				<div class="modal-body">Veuillez confirmer la suppression.</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
 					{% if project is defined %}
@@ -288,10 +286,8 @@
 		</div>
 	</div>
 {% endblock %}
-
 {% block page_scripts %}
-	{{ parent() }}
-	{{
+	{{ parent() }}{{
 	tinymce_init({
 		theme:{
 			'simple':{
@@ -303,10 +299,6 @@
 		autosave_ask_before_unload:false,
 		spellchecker_dialog:true
 	})
-}}
-
-<script src="{{asset('js/typeahead/typeahead.bundle.min.js')}}"></script>
-<script src="{{ asset('js/projects-management.min.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/typeahead.min.css') }}">
-
+}}<script src="{{asset('js/typeahead/typeahead.bundle.min.js')}}"></script>
+	<script src="{{ asset('js/projects-management.min.js') }}"></script><link rel="stylesheet" href="{{ asset('css/typeahead.min.css') }}">
 {% endblock %}

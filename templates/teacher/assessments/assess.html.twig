@@ -3,31 +3,20 @@
 {% block title %}Tableau de bord
 {% endblock %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-{% endblock %}
 
 {% block body %}
 
-	<div class="col-12 mb-2">
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12">
-						<div class="col mr-2 dashed-bottom-border">
-							<div class=" font-weight-bold text-uppercase mb-1">
-								{{project.name}}
-								<br/>
-								<span class="text-primary">{{student.fullName}}</span>
-							</div>
-						</div>
-					</div>
+	<div class="row">
+		<div class="col col-md-12">
+			<div class="box">
+				<div class="box-header dashed-bottom-border">
+					<h3>{{student.fullName}}
+						<br/>
+						<small>{{project.name}}</small>
+					</h3>
 				</div>
-				<div class="d-flex mt-3" id="lightgallery">
 
+				<div class="box-body" id="lightgallery">
 					{% set submitted = false %}
 					{% for submission in submissions %}
 
@@ -49,105 +38,103 @@
 						{% endfor %}
 
 					{% endfor %}
-
 				</div>
 
 				{% if project.teacherSubmitted %}
-				 <a data-toggle="collapse" href="#collapseUpload" role="button" aria-expanded="false" aria-controls="collapseUpload"><i class="my-2 fas fa-file-import"></i></a>
-				<div class=" collapse" id="collapseUpload">
-					{{ form_start(submission_form) }}
-					<div class="row">
-						{% for formSub in submission_form.submissionFiles %}
-							<div class="col-12 col-lg-3 p-3">
-								{{form_widget(formSub.imageFile)}}
-								{{form_widget(formSub.public)}}
-							</div>
-						{% endfor %}
+					<div class="box-body">
+						<a data-toggle="collapse" href="#collapseUpload" role="button" aria-expanded="false" aria-controls="collapseUpload">
+							<i class="my-2 fas fa-file-import"></i>
+						</a>
+						<div class="collapse" id="collapseUpload">
+							{{ form_start(submission_form) }}
+							<div class="row">
+								{% for formSub in submission_form.submissionFiles %}
+									<div class="col-12 col-lg-3 p-3">
+										{{form_widget(formSub.imageFile)}}
+										{{form_widget(formSub.public)}}
+									</div>
+								{% endfor %}
 
-					</div>
-					{{ form_end(submission_form)}}
+							</div>
+							{{ form_end(submission_form)}}
+						</div>
 					</div>
 				{% endif %}
 
-			</div>
-		</div>
-	</div>
+				<div class="box-body">
 
-	<div class="col-12 mb-2">
-		<div class="shadow mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-xs-12 col-md-12">
-						{{ form_start(form) }}
-						<table class="table table-sm">
-							<thead>
+					{{ form_start(form) }}
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th>
+									Cpt.
+								</th>
+								<th>
+									Critère
+								</th>
+								<th>
+									Indicateur
+								</th>
+								<th>
+									Pondération
+								</th>
+								<th>
+									Évaluation
+								</th>
+								<th>
+									Commentaire
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% set i = 0 %}
+							{% for result in form.results %}
 								<tr>
-									<th>
-										Cpt.
-									</th>
-									<th>
-										Critère
-									</th>
-									<th>
-										Indicateur
-									</th>
-									<th>
-										Pondération
-									</th>
-									<th>
-										Évaluation
-									</th>
-									<th>
-										Commentaire
-									</th>
+									<td data-toggle="tooltip" data-placement="top" title="{{ assessments[i].skill.description}}">
+										{{ assessments[i].skill.shortName}}
+									</td>
+									<td>
+										{{ assessments[i].criterion.name}}
+									</td>
+									<td>
+										{{ assessments[i].indicator}}
+									</td>
+									<td>
+										{{ assessments[i].maxVote}}
+									</td>
+									<td>
+										{{ form_widget(result.userLetter) }}
+									</td>
+									<td>
+										{{ form_widget(result.comment) }}
+									</td>
 								</tr>
-							</thead>
-							<tbody>
-								{% set i = 0 %}
-								{% for result in form.results %}
-									<tr>
-										<td data-toggle="tooltip" data-placement="top" title="{{ assessments[i].skill.description}}">
-											{{ assessments[i].skill.shortName}}
-										</td>
-										<td>
-											{{ assessments[i].criterion.name}}
-										</td>
-										<td>
-											{{ assessments[i].indicator}}
-										</td>
-										<td>
-											{{ assessments[i].maxVote}}
-										</td>
-										<td>
-											{{ form_widget(result.userLetter) }}
-										</td>
-										<td>
-											{{ form_widget(result.comment) }}
-										</td>
-									</tr>
-								</tbody>
-								{% set i = i + 1 %}
-							{% endfor %}
-						</table>
-						{{ form_widget(form.save) }}
-						{{ form_end(form) }}
-					</div>
+							</tbody>
+							{% set i = i + 1 %}
+						{% endfor %}
+					</table>
+					{{ form_widget(form.save) }}
+					{{ form_end(form) }}
+
 				</div>
 			</div>
 		</div>
-
 	</div>
 {% endblock %}
 
 {% block scripts %}
+	{{ parent() }}
 	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
+	{{ parent() }}
 	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
 {% endblock %}
 
 {% block page_scripts %}
+	{{ parent() }}
 	<script type="text/javascript">
 		$(document).ready(function () {
 $("#lightgallery").lightGallery();
