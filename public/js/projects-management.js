@@ -67,7 +67,7 @@ var typeaheadOptionsIndicatorB = {
       $(this).closest(".js-assessments-item").fadeOut().remove();
     });
 
-    $("#assessment-table tfoot tr td").on(
+    $("#div-assessment").on(
       "click",
       ".js-assessments-add",
       function (e) {
