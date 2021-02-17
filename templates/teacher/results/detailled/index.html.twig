@@ -1,11 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block sidebar %}
-	{{ include("teacher/_sidebar.html.twig") }}
-{% endblock %}
-{% block topbar %}
-	{{ include("teacher/_topbar.html.twig") }}
-
 	{% block topbar_widget %}
 		<div class="container-fluid">
 			<div class="row">
@@ -23,7 +17,7 @@
 
 		</div>
 	{% endblock %}
-{% endblock %}
+
 
 {% block page_title %}Résultats globaux
 {% endblock %}
@@ -107,7 +101,11 @@
 	</div>
 
 
-	
+	{% endblock %}
+
+{% block page_scripts %}
+{{ parent()}}
+
 <script>
 var ctx = document.getElementById('topicsChart');
 var topicsChart = new Chart(ctx, {
@@ -194,9 +192,7 @@ borderWidth: 0
 
 {{get_simple_datatables_JS()}}
 </script>
-{% endblock %}
 
-{% block page_scripts %}
 <script>
 const params = new URLSearchParams(window.location.search);
 
