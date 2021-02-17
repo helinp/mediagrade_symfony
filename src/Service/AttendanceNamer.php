@@ -12,7 +12,7 @@ class AttendanceNamer implements NamerInterface
 	public function name($object, PropertyMapping $mapping): string
 	{
 		$slugger = new AsciiSlugger();
-dump($object);
+
 		$schoolyear = $object->getSchoolYear();
 		$date = $object->getDate()->format('Y-m-d');
 		$school_hour = $object->getSchoolHour();
