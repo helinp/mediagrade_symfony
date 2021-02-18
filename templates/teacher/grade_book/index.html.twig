@@ -123,13 +123,15 @@
 													{% set result_test = 'ok' %}
 													<td>
 														{% if(assessment.gradingSystem.id == 3) %}
-															<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
+																<span style="display:none">{{result.userVote | custom_round}}</span>
+																<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_old_letter_vote(result.userLetter)}}">
 																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">{{result.userLetter}}
 																</span>
 																<a href="{{path('teacher_assess', {'student_id': studentClasse.student.id, 'project_id': project.id}) }}">
 																	<span class="align-middle number-vote">{{result.userVote | custom_round}}</span>
 																</a>
 															{% elseif (assessment.gradingSystem.id == 1)%}
+																	<span style="display:none">{{result.userVote | custom_round}}</span>
 																<span class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_letter_vote(result.userLetter)}}">
 																	{{result.userLetter}}
 																</span>
