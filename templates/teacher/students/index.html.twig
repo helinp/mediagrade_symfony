@@ -159,31 +159,14 @@
 
 {% block page_scripts %}
 {{ parent() }}
-<script src="{{ asset('js/projects-management.min.js') }}"></script>
+
 
 <script>
-	$('body').on('click', '[data-toggle="modal"]', function () {
-$($(this).data("target") + ' .modal-body').load($(this).data("remote"));
-});
+{{ get_simple_datatables_JS('#old-users-table') }}
+
 </script>
 
-// Datatables
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script>
+<script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
+<script src="/js/students-index.js"></script>
 
-	{{ get_simple_datatables_JS('#users-table') }}
-	{{ get_simple_datatables_JS('#old-users-table') }}
-
-$(':input').on('propertychange input', (function () {
-
-var lastName = $("#new_student_lastName").val();
-var firstName = $("#new_student_firstName").val();
-var userName = firstName + "." + lastName;
-userName = userName.toLowerCase();
-userName = userName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-$("#new_student_userName").val(userName);
-}));
-</script>
 {% endblock %}
