@@ -66,7 +66,7 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
     
             $menu->addChild('Carnet', [
                 'route' => 'teacher_attendance_book',
-            ])->setLabelAttribute('icon', 'fas fa-table');
+            ])->setLabelAttribute('icon', 'fas fa-list');
     
     
             $menu->addChild('RÉSULTATS', [
