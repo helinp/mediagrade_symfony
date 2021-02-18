@@ -122,10 +122,6 @@
 				{% endif %}
 			{% endfor %}
 		{% endblock %}
-		{% block scripts %}
-			{{parent()}}
-			<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
-		{% endblock %}
 
 		{% block stylesheets %}
 			{{parent()}}
@@ -134,6 +130,7 @@
 
 		{% block page_scripts %}
 			{{parent()}}
+			<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 			<script type="text/javascript">
 				$(document).ready(function () {
 $(".lightgallery").lightGallery();

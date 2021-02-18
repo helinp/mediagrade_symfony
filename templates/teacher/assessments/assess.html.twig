@@ -123,13 +123,10 @@
 	</div>
 {% endblock %}
 
-{% block scripts %}
-	{{ parent() }}
-	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
-{% endblock %}
 
 {% block stylesheets %}
 	{{ parent() }}
+	<script src="{{asset('js/lightgallery-all.min.js') }}"></script>
 	<link type="text/css" rel="stylesheet" href="{{asset('css/lightgallery.min.css') }}"/>
 {% endblock %}
 
