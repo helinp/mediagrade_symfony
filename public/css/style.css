@@ -355,6 +355,10 @@ th.rotate > div > span {
   text-overflow: ellipsis;
 }
 
+.align-middle {
+  vertical-align: middle!important;
+}
+
 .rounded-circle {
   border-radius: 50% !important;
 }
@@ -378,4 +382,28 @@ body.login-page .login-logo {
 div.dataTables_wrapper div.dataTables_filter {
   text-align: left;
   margin-top: 1em;
+}
+
+
+/** GRADEBOOK **/
+.card-gradebook th > h3 {
+  font-size: 1.6em;
+  font-weight: lighter;
+  margin-top: 0;
+}
+.card-gradebook th > h2 {
+  margin: 0;
+}
+
+.card-gradebook table.DTFC_Cloned tr {
+  margin-bottom: 0;
+}
+
+.gradebook-classe {
+  
+  background-color: #337ab7;
+}
+
+.tooltip {
+  z-index:9999999;
 }

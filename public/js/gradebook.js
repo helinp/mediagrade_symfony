@@ -57,9 +57,9 @@ $("#courses_topbar_id").change(function () {
 var table = $("#table-gradebook").DataTable({
   lengthChange: false,
   paging: false,
+  autoWidth: false,
   language: {
-    url:
-      "{{ asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json') }}",
+    url: "//cdn.datatables.net/plug-ins/1.10.22/i18n/French.json",
   },
   field: {
     className: "form-control bg-light border-0 small",
@@ -75,14 +75,12 @@ var table = $("#table-gradebook").DataTable({
   buttons: [
     {
       extend: "print",
-      className: "ml-4 btn-sm btn-info",
       text: '<i class="fas fa-print"></i> Vue d\'impression',
       orientation: "landscape",
       autoPrint: false,
     },
     {
       extend: "excel",
-      className: "ml-2 btn-sm btn-info",
       text: '<i class="far fa-file-excel"></i> Excel',
       orientation: "landscape",
       autoPrint: false,
