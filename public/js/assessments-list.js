@@ -26,7 +26,7 @@ var table = $("table").DataTable({
   pageLength: 16,
   order: [
     [0, "desc"],
-    [1, "asc"],
+    [1, "desc"],
     [2, "asc"],
     [3, "asc"],
     [4, "asc"],
