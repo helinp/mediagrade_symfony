@@ -35,7 +35,7 @@
 						<thead>
 							<tr class="bg-primary text-white">
 								<th class="text-center align-middle">
-									<big>{{ course.name }}</big><br/>
+									<h2>{{ course.name }}</h2>
 									{% if totals_terms is defined %}
 										Période
 									{% else %}
@@ -45,9 +45,7 @@
 								</th>
 								{% for project in projects %}
 									<th class="" colspan="{{project.assessments|length}}">
-										<div>
-											<big class="ellipsis">{{project.name}}</big>
-										</div>
+									<h3 class="ellipsis">{{project.name}}</h3>
 										{{project.term.name}}
 										<br />
 										{{project.startDate | date('d/m')}}
@@ -197,7 +195,7 @@
 										</td>
 									</tr>
 								{% endfor %}
-							</tbody>
+						
 						</tbody>
 					</table>
 				</div>
