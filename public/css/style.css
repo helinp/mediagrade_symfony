@@ -372,3 +372,10 @@ body.login-page .login-logo {
   padding-top: 0;
   margin-bottom: 0;
 }
+
+
+/** DATATABLES */
+div.dataTables_wrapper div.dataTables_filter {
+  text-align: left;
+  margin-top: 1em;
+}

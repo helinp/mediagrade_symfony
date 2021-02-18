@@ -40,15 +40,15 @@ class AssessmentListExtension extends AbstractExtension
 		{
 			if($status['result'] !== null)
 			{
-				return '<i class="fas fa-check-square text-green"></i>';
+				return '<i class="fas fa-check-square text-green"></i> <span style="color:lightgray;font-size:smaller">Corrigé</span>';
 			}
 			elseif($status['submission'] !== null)
 			{
-				return '<i class="fas fa-plus-square text-orange"></i>';
+				return '<i class="fas fa-plus-square text-orange"></i> <span style="color:lightgray;font-size:smaller">Rendu</span>';
 			}
 			else
 			{
-				return '<i class="far fa-square text-muted"></i>';
+				return '<i class="far fa-square text-muted"></i> <span style="color:lightgray;font-size:smaller">Non remis</span>';
 			}
 
 		}
