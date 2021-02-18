@@ -184,6 +184,7 @@
 												{% if totals[studentClasse.student.id] is defined %}
 													{% if totals[studentClasse.student.id].percentage is defined %}
 
+														<span style="display: none">{{totals[studentClasse.student.id].percentage | custom_round}}</span>
 														<span data-toggle="tooltip" data-html="true" data-placement="right" title="{{get_title_from_percentage(totals[studentClasse.student.id].percentage)}}" class="align-middle color-vote gradebook-lsu gradebook-lsu-{{get_color_from_percentage(totals[studentClasse.student.id].percentage)}}">
 															{{get_letter_from_percentage(totals[studentClasse.student.id].percentage | custom_round)}}
 														</span>
