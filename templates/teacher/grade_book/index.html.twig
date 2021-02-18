@@ -205,102 +205,10 @@
 {% endblock %}
 {% block page_scripts %}
 
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 	<script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
 
-	<script>
-		$(document).ready(function () {
-$("body").tooltip({selector: '[data-toggle=tooltip]'});
-});
+	<script src="/js/gradebook.min.js"></script>
 
-{% set currentPath = path(app.request.attributes.get('_route'),
-                       app.request.attributes.get('_route_params')) %}
-
-$('#school_years_schoolYear').change(function () { // set the window's location property to the value of the option the user has selected
-window.location = '{{ currentPath }}?school_year=' + $(this).val();
-});
-
-$('#terms_id').change(function () { // set the window's location property to the value of the option the user has selected
-url = window.location.href;
-const pathArray = url.split("/");
-
-if (typeof pathArray[6] !== 'undefined') {
-
-parts = url.split('/');
-parts.pop();
-url = parts.join('/');
-
-}
-window.location = url + '/' + $(this).val();
-})
-
-$('#courses_topbar_id').change(function () { // set the window's location property to the value of the option the user has selected
-url = window.location.href;
-
-const pathArray = url.split("/");
-
-if (typeof pathArray[6] !== 'undefined') {
-
-parts = url.split('/');
-parts.pop();
-url = parts.join('/');
-
-}
-if (typeof pathArray[5] !== 'undefined') {
-
-parts = url.split('/');
-parts.pop();
-url = parts.join('/');
-
-}
-if (typeof pathArray[6] !== 'undefined') {
-
-window.location = url + '/' + $(this).val() + '/' + pathArray[6];
-
-} else {
-
-window.location = url + '/' + $(this).val();
-}
-
-})
-
-
-var table = $('#table-gradebook').DataTable({
-"lengthChange": false,
-"paging": false,
-"language": {
-"url": "{{ asset('//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json') }}"
-},
-"field": {
-"className": 'form-control bg-light border-0 small'
-},
-scrollX: true,
-scrollCollapse: false,
-"fixedColumns": {
-leftColumns: 1
-},
-dom: 'Bfrtip',
-buttons: [
-'excel', 'pdf'
-],
-
-buttons: [
-{
-extend: 'print',
-className: 'ml-4 btn-sm btn-info',
-text: '<i class="fas fa-print"></i> Vue d\'impression',
-orientation: 'landscape',
-autoPrint: false
-}, {
-extend: 'excel',
-className: 'ml-2 btn-sm btn-info',
-text: '<i class="far fa-file-excel"></i> Excel',
-orientation: 'landscape',
-autoPrint: false
-}
-]
-});
-	</script>
 {% endblock %}
