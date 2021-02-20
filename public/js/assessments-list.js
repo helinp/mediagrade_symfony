@@ -5,7 +5,7 @@ var table = $("table").DataTable({
       .every(function () {
         var column = this;
         var select = $('<select><option value=""></option></select>')
-          .appendTo($(column.footer()).empty())
+          .appendTo($(column.header()).empty())
           .on("change", function () {
             var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
@@ -21,11 +21,6 @@ var table = $("table").DataTable({
           });
       });
   },
-  stateSave: true,
-  stateDuration: -1,
-  dom: "Bfrtip",
-  pageLength: 16,
-  responsive: true,
   order: [
     [0, "desc"],
     [1, "desc"],
@@ -33,6 +28,11 @@ var table = $("table").DataTable({
     [3, "asc"],
     [4, "asc"],
   ],
+  stateSave: true,
+  stateDuration: -1,
+  dom: "Bfrtip",
+  pageLength: 16,
+  responsive: true,
   buttons: ["copy", "excel"],
   language: {
     url: "//cdn.datatables.net/plug-ins/1.10.22/i18n/French.json",
