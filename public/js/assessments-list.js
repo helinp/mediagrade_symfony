@@ -21,7 +21,8 @@ var table = $("table").DataTable({
           });
       });
   },
-
+  stateSave: true,
+  stateDuration: -1,
   dom: "Bfrtip",
   pageLength: 16,
   order: [
