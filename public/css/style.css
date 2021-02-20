@@ -173,17 +173,17 @@ body ::-webkit-scrollbar {
 
 .box.box-solid.box-orange > .box-header,
 .bg-orange {
-  color: #fff!important;
-  background-color: #f4aa1b!important;;
+  color: #fff !important;
+  background-color: #f4aa1b !important;
 }
 .box.box-solid.box-red {
   border: 1px solid #e61806;
 }
 
 .box.box-solid.box-red > .box-header,
-.bg-red  {
-  color: #fff!important;
-  background-color: #e61806!important;;
+.bg-red {
+  color: #fff !important;
+  background-color: #e61806 !important;
 }
 .box.box-solid.box-green {
   border: 1px solid #56d90d;
@@ -191,8 +191,8 @@ body ::-webkit-scrollbar {
 
 .box.box-solid.box-green > .box-header,
 .bg-green {
-  color: #fff!important;
-  background-color: #56d90d!important;
+  color: #fff !important;
+  background-color: #56d90d !important;
 }
 .box.box-solid.box-blue {
   border: 1px solid #2b4cff;
@@ -200,10 +200,9 @@ body ::-webkit-scrollbar {
 
 .box.box-solid.box-blue > .box-header,
 .bg-blue {
-  color: #fff!important;
-  background-color: #2b4cff!important;;
+  color: #fff !important;
+  background-color: #2b4cff !important;
 }
-
 
 /******* GRADEBOOK ***************/
 
@@ -355,20 +354,26 @@ th.rotate > div > span {
   text-overflow: ellipsis;
 }
 
-.align-middle {
-  vertical-align: middle!important;
+.align-middle, 
+.align-middle th,
+.align-middle td {
+  vertical-align: middle !important;
 }
 
 .rounded-circle {
   border-radius: 50% !important;
 }
 
-input[type="date"].form-control, input[type="datetime-local"].form-control, input[type="month"].form-control, input[type="time"].form-control {
+input[type="date"].form-control,
+input[type="datetime-local"].form-control,
+input[type="month"].form-control,
+input[type="time"].form-control {
   line-height: inherit;
 }
 
 /* LOGIN */
-.login-page, .register-page {
+.login-page,
+.register-page {
   background: #1454d5;
 }
 
@@ -377,11 +382,30 @@ body.login-page .login-logo {
   margin-bottom: 0;
 }
 
-
 /** DATATABLES */
 div.dataTables_wrapper div.dataTables_filter {
   text-align: left;
   margin-top: 1em;
+}
+
+table.dataTable tr.dtrg-group td {
+  background-color: #e0e0e0;
+  border: none;
+  background-color: inherit;
+  padding-bottom: 0.2em;
+  padding-top: 2em;
+}
+table.dataTable tr.dtrg-group.dtrg-level-1 td {
+  background-color: inherit;
+  font-size: initial;
+  border-bottom: 1px solid #a8a8a8;
+  padding-left: .5em;
+  font-weight: bold;
+}
+table.dataTable tr.dtrg-group.dtrg-level-0 td {
+  font-size: large;
+  color: #7a0bff;
+  padding-top: 2em;
 }
 
 
@@ -400,10 +424,9 @@ div.dataTables_wrapper div.dataTables_filter {
 }
 
 .gradebook-classe {
-  
   background-color: #337ab7;
 }
 
 .tooltip {
-  z-index:9999999;
+  z-index: 9999999;
 }
