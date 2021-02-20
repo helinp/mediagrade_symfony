@@ -25,6 +25,7 @@ var table = $("table").DataTable({
   stateDuration: -1,
   dom: "Bfrtip",
   pageLength: 16,
+  responsive: true,
   order: [
     [0, "desc"],
     [1, "desc"],
