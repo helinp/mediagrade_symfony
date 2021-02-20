@@ -49,6 +49,7 @@
 									<th data-priority="5">Fin (dure)</th>
 									<th data-priority="14">Type</th>
 									<th data-priority="1"></th>
+									<th data-priority="1"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -63,6 +64,11 @@
 									<td>{{project.softDeadline|date("d/m")}} ({{project.hardDeadline|date("d/m")}})</td>
 									<td><span class="label label-success mr-2" data-toggle="tooltip" data-placement="top" title="Évaluation {{project.assessmentType.description}}">{{project.assessmentType.name}}</span></td>
 									<td><a href="/teacher/projects/edit/{{project.id}}" class="btn btn-secondary pull-right"><i class="fas fa-edit"></i> Modifier</a></td>
+									<td>
+									{% if project.external%}
+										<a href="{{path('teacher_manual_assess', {'project_id': project.id}) }}" class="btn btn-secondary pull-right"><i class="fas fa-marker"></i> Coter</a>
+									{% endif %}
+									</td>
 								</tr>
 							{% endfor %}
 							</tbody>

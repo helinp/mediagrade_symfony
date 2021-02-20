@@ -30,28 +30,16 @@ class KnpMenuBuilderSubscriber implements EventSubscriberInterface
         // TEACHER
         if($user->isGranted('ROLE_TEACHER'))
         {
-            $menu->addChild('PROJETS', [
-                'childOptions' => $event->getChildOptions()
-            ])->setAttribute('class', 'header');
             
-            $menu->addChild('Gérer', [
+            $menu->addChild('Projets', [
                 'route' => 'teacher_projects_manage',
             ])->setLabelAttribute('icon', 'fas fa-cog');
-    
-    
-            $menu->addChild('CORRECTIONS', [
-                'childOptions' => $event->getChildOptions()
-            ])->setAttribute('class', 'header');
-            
+
             $menu->addChild('Évaluer', [
                 'route' => 'teacher_assessments_list',
             ])->setLabelAttribute('icon', 'fas fa-pencil-alt');
     
-            $menu->addChild('Encoder en masse', [
-                'route' => 'teacher_manual_assess_list',
-            ])->setLabelAttribute('icon', 'fas fa-marker');
-    
-    
+            
             $menu->addChild('PRÉSENCES', [
                 'childOptions' => $event->getChildOptions()
             ])->setAttribute('class', 'header');

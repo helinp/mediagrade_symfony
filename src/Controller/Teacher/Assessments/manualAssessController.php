@@ -30,30 +30,6 @@ class manualAssessController extends AbstractController
 
 	
 	/**
-	* @Route("/teacher/assessments/manual/list/", name="teacher_manual_assess_list")
-	*/
-	public function list(
-
-		ProjectRepository $projectRepository,
-		UserInterface $teacher,
-		Request $request
-		)
-	{
-		$this->data['projects'] = $projectRepository->findBy(
-			[
-				'teacher' => $teacher, 
-				'external' => true, 
-				'schoolYear' => \App\Utils\SchoolYear::getSchoolYear()
-			],
-		['course' => 'ASC', 'startDate' => 'DESC']	);
-
-
-		return $this->render('teacher/assessments/manual_list.html.twig', $this->data);
-
-	}
-
-
-	/**
 	* @Route("/teacher/assessments/manual/{project_id}/", name="teacher_manual_assess")
 	*/
 	public function index(
