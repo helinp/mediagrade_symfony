@@ -104,7 +104,7 @@
 										{{ assessments[i].maxVote}}
 									</td>
 									<td>
-										{{ form_widget(result.userLetter) }}
+										{{ (result.userLetter is defined ? form_widget(result.userLetter) :  form_widget(result.userVote)) }}
 									</td>
 									<td>
 										{{ form_widget(result.comment) }}
